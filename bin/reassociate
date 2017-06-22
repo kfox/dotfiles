@@ -1,0 +1,32 @@
+#!/bin/bash
+
+command -v duti >/dev/null 2>&1 || { brew install duti; }
+
+extensions=(
+  erb
+  haml
+  js
+  json
+  jsx
+  md
+  rake
+  rb
+  rst
+  sh
+  sql
+  vim
+  yaml
+  yml
+)
+
+[ -z "$1" ] && application='org.vim.MacVim' || application=$1
+
+duti -s ${application} public.plain-text all
+
+for extension in "${extensions[@]}"
+do
+  echo "==> Setting ${application} as the default application to edit ${extension} files"
+  duti -s ${application} ${extension} editor
+done
+
+exit 0
