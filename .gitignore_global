@@ -1,0 +1,9 @@
+.DS_Store
+.env
+Session.vim
+*.log
+tags
+tags.lock
+tags.temp
+cscope.out
+.ruby-version

@@ -1,0 +1,52 @@
+[core]
+  excludesfile = ~/.gitignore_global
+  editor = mvim -f
+[diff]
+  tool = mvimdiff
+[difftool "mvimdiff"]
+  cmd = mvim -f -d \"$LOCAL\" \"$REMOTE\"
+[mergetool "sourcetree"]
+  cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+  trustExitCode = true
+[user]
+  name  = Kelly Fox
+  email = kelly@bumfuddled.com
+[push]
+  default = simple
+[color]
+  ui = true
+  diff   = auto
+  status = auto
+  branch = auto
+[alias]
+  alias = "!sh -c '[ $# = 2 ] && git config --global alias.\"$1\" \"$2\" && exit 0 || echo \"usage: git alias <new alias> <original command>\" >&2 && exit 1' -"
+  aliases = !git config --get-regexp 'alias.*' | colrm 1 6 | sed 's/[ ]/ = /'
+  br = branch
+  changes = diff --name-status -r
+  ci = commit
+  co = checkout
+  dc = diff --cached
+  df = diff
+  diffstat = diff --stat -r
+  history = log --follow -p --
+  laststash = diff stash@{0}^!
+  lc = log ORIG_HEAD.. --stat --no-merges
+  lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+  new = checkout -b
+  rm-merged = !git fetch -p && git branch --no-color --merged master | grep -v '\\* master' | xargs -n 1 git branch -d
+  st = status
+  undo-commit = reset --soft HEAD~1
+  whatis = show -s --pretty='tformat:%h (%s, %ad)' --date=short
+  whatsnew = !sh -c 'git log $1@{1}..$1@{0} "$@"'
+  who = shortlog -sn --
+  whois = "!sh -c 'git log -i -1 --pretty=\"format:%an <%ae>\n\" --author=\"$1\"' -"
+[github]
+  user  = kfox
+[filter "hawser"]
+  clean = git hawser clean %f
+  smudge = git hawser smudge %f
+  required = true
+[credential]
+  helper = osxkeychain
+[mailmap]
+  file = ~/.mailmap
