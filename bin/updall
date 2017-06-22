@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# homebrew
+command -v brew >/dev/null && \
+  brew update && sleep 1s && \
+  brew upgrade && sleep 1s && \
+  brew cleanup --force && sleep 1s && \
+  brew prune
+
+# npm
+command -v npm >/dev/null && \
+  npm update -g
+
+# vim
+command -v vim >/dev/null && \
+  vim +PlugUpgrade +PlugUpdate +PlugDiff

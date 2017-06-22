@@ -1,0 +1,49 @@
+#!/bin/bash
+
+if [ ! -x /usr/local/bin/SwitchAudioSource ]; then
+  echo "Please run this first: brew install switchaudio-osx"
+  exit 1
+fi
+
+# get a list of all available voices
+voices=( $(/usr/bin/say -v '?' | /usr/bin/grep en_ | /usr/bin/awk '{ print $1 }') )
+
+if [ -z "${1}" ]; then
+  # no voice selected, pick a random voice from the list
+  voice=${voices[$RANDOM % ${#voices[@]}]}
+else
+  # use the voice given as the first command-line argument
+  voice=${1}
+
+  # is the selected voice valid?
+  shopt -s nocasematch
+  if [[ ! ${voices[*]} =~ $voice ]]; then
+    # not a valid voice
+    echo "Invalid voice: $voice"
+    echo "Valid voices: ${voices[*]}"
+    exit 1
+  fi
+
+  shift 1
+fi
+
+# get the current audio output volume
+volume=$(/usr/bin/osascript -e 'output volume of (get volume settings)')
+
+# get the current audio output device
+output_device=$(/usr/local/bin/SwitchAudioSource -c)
+
+[ "$#" -eq 0 ] && phrase=$(excuse) || phrase="${@}"
+echo "$voice says: '$phrase'"
+
+# switch to the built-in output,
+# set the volume to 70/100,
+# say something in a random voice,
+# reset the volume to the previous level,
+# reset the audio output device to the previous device
+
+/usr/local/bin/SwitchAudioSource -s 'Built-in Output' >/dev/null 2>&1 && \
+  /usr/bin/osascript -e 'set volume output volume 50' && \
+  /usr/bin/say -v $voice $phrase && \
+  /usr/bin/osascript -e "set volume output volume $volume" && \
+  /usr/local/bin/SwitchAudioSource -s "$output_device" >/dev/null 2>&1

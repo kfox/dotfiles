@@ -1,0 +1,22 @@
+#!/bin/bash
+
+FILE="logicprefs.zip"
+
+if [ "${1}" = "backup" ]; then
+  for i in {9..1}
+  do
+    if [ ${i} -lt 9 ]; then
+      [ -e "$FILE.$i" ] && mv $FILE.$i $FILE.`expr $i + 1`
+    else
+      [ -e "$FILE.$i" ] && rm $FILE.$i
+    fi
+  done
+  [ -e "$FILE" ] && mv $FILE $FILE.1
+  # backup preferences
+  zip -9 ~/logicprefs ~/Library/Preferences/com.apple.logic.pro.*
+elif [ "${1}" = "restore" ]; then
+  # restore preferences
+  unzip -o logicprefs.zip -d ~/Library/Preferences/
+else
+  echo "usage: ${0} <backup|restore>"
+fi

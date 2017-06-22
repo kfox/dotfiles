@@ -1,0 +1,34 @@
+#!/bin/bash
+
+usage() {
+  echo "usage: ${0} <branch>"
+  exit 1
+}
+
+: "${JIRA_PROJECT_KEY:?Need to set JIRA_PROJECT_KEY}"
+
+[ -z "${1}" ] && usage || BRANCH=$1
+
+if [ "${BRANCH//[0-9]*}" = "" ]; then
+  BRANCH="$JIRA_PROJECT_KEY-$BRANCH"
+fi
+
+git show-ref --verify --quiet refs/heads/${BRANCH} >/dev/null 2>&1
+if [ $? != 0 ]; then
+  echo "Branch ${BRANCH} does not exist!"
+  exit 2
+fi
+
+git branch -d ${BRANCH} >/dev/null 2>&1
+if [ $? == 0 ]; then
+  echo "Deleted local branch: ${BRANCH}"
+else
+  echo "No local branch for ${BRANCH}"
+fi
+
+git push origin --delete ${BRANCH} >/dev/null 2>&1
+if [ $? == 0 ]; then
+  echo "Deleted remote branch: ${BRANCH}"
+else
+  echo "No remote branch for ${BRANCH}"
+fi

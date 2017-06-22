@@ -1,0 +1,16 @@
+#!/bin/bash
+
+usage() {
+  echo "usage: ${0} <branch>"
+  exit 1
+}
+
+: "${JIRA_PROJECT_KEY:?Need to set JIRA_PROJECT_KEY}"
+
+[ -z "${1}" ] && usage || BRANCH=$1
+
+if [ "${BRANCH//[0-9]*}" = "" ]; then
+  BRANCH="$JIRA_PROJECT_KEY-$BRANCH"
+fi
+
+git checkout -b ${BRANCH} && git push -u origin ${BRANCH}
