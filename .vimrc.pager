@@ -1,0 +1,39 @@
+set nocompatible
+color darkZ
+
+set cmdheight=1
+set display+=lastline
+set ft=man
+set guioptions=aAiMr
+set hlsearch
+set ignorecase
+set incsearch
+set laststatus=0
+set mouse=a
+set nocursorline
+set nolist
+set nomodeline
+set nomodifiable
+set nonumber norelativenumber
+set noruler
+set noshortname
+set noshowcmd
+set noshowmode
+set nowrapscan
+set readonly
+" set rulerformat=%p%%
+set smartcase
+set title="MANPAGE"
+set ts=8
+
+syntax enable
+
+nmap b <C-B><C-G>
+nmap q :q!<CR>
+nmap <Up> <C-Y><C-G>
+nmap <Down> <C-E><C-G>
+nmap k <C-Y><C-G>
+nmap j <C-E><C-G>
+
+" To map the spacebar, type *two* C-V's followed by two spaces.
+nmap   <C-F><C-G>

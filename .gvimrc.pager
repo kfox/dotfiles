@@ -1,0 +1,10 @@
+if has("gui_macvim")
+  set t_Co=256
+endif
+
+set title
+set lines=70
+set columns=140
+set guioptions-=T guioptions-=L guioptions-=r
+set transparency=0
+set guifont=Bitstream\ Vera\ Sans\ Mono:h16
