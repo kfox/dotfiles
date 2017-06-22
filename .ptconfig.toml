@@ -1,0 +1,2 @@
+ignore = ["*.min.js", "*.min.css", "tags", "*.svg"]
+smart-case = true
