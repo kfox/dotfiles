@@ -1,0 +1,6 @@
+set completion-ignore-case on
+set bell-style none
+set editing-mode vi
+set visible-stats on
+set show-all-if-ambiguous on
+set keymap vi
