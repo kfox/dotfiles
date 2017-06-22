@@ -693,7 +693,7 @@ Plug 'ekalinin/Dockerfile.vim'
 Plug 'elzr/vim-json', { 'for': 'json' }
 Plug 'ervandew/supertab'
 Plug 'fatih/vim-go', { 'for': 'go' }
-" Plug 'godlygeek/tabular'
+Plug 'godlygeek/tabular'
 Plug 'hail2u/vim-css3-syntax', { 'for': [ 'css', 'html' ] }
 Plug 'isRuslan/vim-es6', { 'for': [ 'html', 'javascript', 'javascript.jsx' ]}
 Plug 'jmcantrell/vim-virtualenv'
@@ -715,7 +715,6 @@ Plug 'Raimondi/delimitMate'
 Plug 'sheerun/vim-polyglot'
 Plug 'Shougo/unite.vim'
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
-" Plug 'stephpy/vim-yaml', { 'for': 'yaml' }
 Plug 'syngan/vim-vimlint', { 'for': 'vim' }
 Plug 'ternjs/tern_for_vim', { 'do': 'yarn', 'for': [ 'html', 'javascript', 'javascript.jsx' ] }
 Plug 'terryma/vim-expand-region'
