@@ -82,6 +82,8 @@ Nothing overwhelming here.
 
 * "Clear the screen" just by typing `c`
 
+* Open a file in a new tab of an existing MacVim window using `vt`
+
 * Add a couple of Rails and git aliases. The keystrokes you save may be
   your own.
 
@@ -112,8 +114,60 @@ Nothing overwhelming here.
 
 ### Git configuration files
 
-* .gitconfig
-* .gitignore_global
+The `.gitignore_global` file specifies filename patterns to ignore
+globally, and is specified in the `.gitconfig` file.
+
+In addition to setting up MacVim to be used as your difftool, the
+`.gitconfig` file also defines several handy aliases:
+
+* `alias` will add a new alias, e.g. `git alias <alias> <original
+  command>`
+
+* `aliases` will list all defined aliases
+
+* `br` is short for `branch`
+
+* `changes` is a more concise way of showing changed files and their
+  status
+
+* `ci` is short for `commit`
+
+* `co` is short for `checkout`
+
+* `dc` will show a diff of staged changes
+
+* `df` is short for `diff`
+
+* `diffstat` shows the number of additions/deletions per file
+
+* `history` shows a complete diff history for each commit of a given
+  file, e.g. `git history package.json`
+
+* `laststash` shows the diff of the most recent stash against the
+  current branch
+
+* `lc` gives you an annotated log of changes to file(s) or the repo
+
+* `lg` is a log with "graphing", showing merges and commits with lots of
+  pretty colors :rainbow:
+
+* `new` is a shorter way to create a new branch
+
+* `rm-merged` will locally delete merged branches
+
+* `st` is short for `status`
+
+* `undo-commit` will undo the most recent commit
+
+* `whatis` shows the commit message and date for a given sha commit hash
+
+* `whatsnew` displays the most recent commit message, author, and date
+
+* `who` shows the number of commits per committer. Will make use of a
+  `~/.mailmap` file if present to deduplicate and aggregate user names.
+
+* `whois` gives you the full name and email address of a user if you
+  provide a username
 
 ### Vim configuration files
 
