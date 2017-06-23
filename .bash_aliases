@@ -7,6 +7,9 @@ alias c='clear'
 alias be='bundle exec'
 alias ber='bundle exec rails'
 
+# macvim
+alias vt='mvim --remote-tab'
+
 # git-related aliases
 alias gd='git diff'
 alias gdf='git diff --follow'
