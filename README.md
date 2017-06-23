@@ -87,7 +87,7 @@ Nothing overwhelming here.
 
 #### `.editrc`
 
-* Lets you use <kbd>Ctrl</kbd>-R to search backward through your
+* Lets you use <kbd>Ctrl</kbd>-<kbd>R</kbd> to search backward through your
   entire command history
 
 #### `.inputrc`
@@ -97,52 +97,53 @@ Nothing overwhelming here.
 * Disables the terminal bell
 
 * Sets the default command-line editing mode to use vim keybinds
-  instead of emacs, e.g. hit <kbd>Esc</kbd>-`k` to enter edit mode,
-  then `k` to move back through your command history or other `vi`
-  command-mode commands to move and edit the current commmand.
+  instead of emacs, e.g. hit <kbd>Esc</kbd>-<kbd>K</kbd> to enter
+  edit mode, then <kbd>K</kbd> again to move back through your
+  command history or other `vi` command-mode commands to move and
+  edit the current commmand.
 
 * Shows all matches if your tab-completion would be ambiguous
 
 ### Ruby configuration files
 
-.gemrc
-.irbrc
-.pryrc
+* .gemrc
+* .irbrc
+* .pryrc
 
 ### Git configuration files
 
-.gitconfig
-.gitignore_global
+* .gitconfig
+* .gitignore_global
 
 ### Vim configuration files
 
-.vimrc
-.vimrc.pager
-.gvimrc
-.gvimrc.pager
-.vim/colors/kelly.vim
-.vim/colors/kellys.vim
+* .vimrc
+* .vimrc.pager
+* .gvimrc
+* .gvimrc.pager
+* .vim/colors/kelly.vim
+* .vim/colors/kellys.vim
 
 ### Homebrew Bundle
 
-Brewfile
+* Brewfile
 
 ## Scripts
 
-bin/bing-wallpaper.sh
-bin/colors
-bin/excuse
-bin/logicprefs
-bin/mkbr
-bin/mkfavicon
-bin/mvbr
-bin/ql
-bin/reassociate
-bin/rmbr
-bin/sayphrase
-bin/svg-to-data-uri.sh
-bin/svim
-bin/updall
+* bin/bing-wallpaper.sh
+* bin/colors
+* bin/excuse
+* bin/logicprefs
+* bin/mkbr
+* bin/mkfavicon
+* bin/mvbr
+* bin/ql
+* bin/reassociate
+* bin/rmbr
+* bin/sayphrase
+* bin/svg-to-data-uri.sh
+* bin/svim
+* bin/updall
 
 ### Miscellaneous configuration files
 
