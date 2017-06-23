@@ -26,11 +26,14 @@ function serve {
 #
 
 function st {
-  has_stree=$(command -v stree >/dev/null 2>&1)
-  if [ "${has_stree}" -eq 0 ]; then
-    dir=$(git rev-parse --show-toplevel)
-    stree $dir
-  fi
+  dir=$(git rev-parse --show-toplevel 2>/dev/null)
+
+  [ $? -ne 0 ] && { echo "Not in a git repo."; return; }
+
+  command -v stree >/dev/null 2>&1 && stree $dir || {
+    echo "Please install SourceTree first!"
+    open https://www.sourcetreeapp.com/
+  }
 }
 
 #
@@ -47,10 +50,13 @@ function st {
 
 function gh {
   repo="$1"
+
   if [ -z "$repo" ]; then
     # if no argument provided, then get the
     # URL of the repo in your current working directory
-    repo=$(git ls-remote --get-url)
+    repo=$(git ls-remote --get-url 2>/dev/null)
+    [ $? -ne 0 ] && { echo "Not in a git repo."; return; }
+
     if [[ $repo == *"git@github.com"* ]]; then
       repo=${repo/git@github.com:/https:\/\/github.com/}
       repo=${repo/.git//}
