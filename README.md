@@ -22,7 +22,7 @@ $ setup.sh
 
 #### `.bash_profile`
 
-* A simple wrapper to load `.bashrc` and `.bash_aliases`
+This is just a simple wrapper to load `.bashrc` and `.bash_aliases`.
 
 #### `.bashrc`
 
