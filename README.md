@@ -269,3 +269,8 @@ will be changing this a lot.
 
 Some settings for use with the `pt` command, a.k.a. [The Platinum
 Searcher](https://github.com/monochromegane/the_platinum_searcher).
+
+## Feedback Welcome
+
+If you see something that is broken, incorrect, or that could be
+improved, drop me a line or open an issue. Thanks! :heart_eyes:
