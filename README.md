@@ -3,15 +3,22 @@
 These are the files I use to make the terminal a happy place to live.
 :heart:
 
-Follow these directions to set up: https://developer.atlassian.com/blog/2016/02/best-way-to-store-dotfiles-git-bare-repo/
-
 **NOTE:** I highly encourage the use of [iTerm2](https://www.iterm2.com/)
 instead of the basic Terminal.app that comes with macOS. This will make
 your life on the command-line much easier.
 
+## Installation and Setup
+
+Follow these directions to set up: https://developer.atlassian.com/blog/2016/02/best-way-to-store-dotfiles-git-bare-repo/
+
+Afterward, then run the `setup.sh` script:
+```bash
+$ setup.sh
+```
+
 ## What do we have here?
 
-### Bash
+### Bash configuration files
 
 #### `.bash_profile`
 
@@ -250,6 +257,8 @@ These scripts are all located in the `bin` directory:
 
 * `sayphrase` says something using the built-in macOS speech synthesis.
   By default, it says a programming excuse (see above).
+
+* `setup.sh` is the script to install/initialize the rest of my apps
 
 * `svg-to-data-uri.sh` will take an SVG and URL-encode it for use in a
   data: URI. Full base64 encoding isn't necessary.
