@@ -108,9 +108,13 @@ Nothing overwhelming here.
 
 ### Ruby configuration files
 
-* .gemrc
-* .irbrc
-* .pryrc
+* `.gemrc` will not auto-install rubydocs when you install a gem
+
+* `.irbrc` enables readline support, with a simple prompt, and enables
+  [awesome_print](https://github.com/awesome-print/awesome_print) by
+  default
+
+* `.pryrc` adds some spiffy prompt stuff and a few convenience commands
 
 ### Git configuration files
 
