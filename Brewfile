@@ -29,9 +29,9 @@ brew "httpie"
 brew "jq"
 brew "jsonlint"
 brew "libtool"
+brew "libyaml"
 brew "lua"
 brew "luajit"
-brew "mackup"
 brew "macvim", args: ["with-lua", "with-luajit", "with-override-system-vim", "with-python3"]
 brew "mas"
 brew "nasm"
@@ -58,10 +58,15 @@ brew "z"
 cask "google-chrome"
 cask "otx"
 cask "skyfonts"
+cask "sourcetree"
 mas "Airmail 3", id: 918858936
+mas "CCMenu", id: 603117688
 mas "Fantastical 2", id: 975937182
 mas "Keynote", id: 409183694
+mas "Logic Pro X", id: 634148309
+mas "Pixelmator", id: 407963104
 mas "Slack", id: 803453959
+mas "SoundCloud", id: 412754595
 mas "Things3", id: 904280696
 mas "Tweetbot", id: 557168941
 mas "Xcode", id: 497799835
