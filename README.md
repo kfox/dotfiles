@@ -190,20 +190,50 @@ uses the `Brewfile` to specify formulae and casks to be installed.
 
 ## Scripts
 
-* bin/bing-wallpaper.sh
-* bin/colors
-* bin/excuse
-* bin/logicprefs
-* bin/mkbr
-* bin/mkfavicon
-* bin/mvbr
-* bin/ql
-* bin/reassociate
-* bin/rmbr
-* bin/sayphrase
-* bin/svg-to-data-uri.sh
-* bin/svim
-* bin/updall
+These scripts are all located in the `bin` directory.
+
+* `bing-wallpaper.sh` will download the latest
+  [Bing Homepage image](http://www.bing.com/gallery/)
+  to your `~/Pictures/Bing` directory and sets your primary desktop
+  background to that image. Add it to a cron job for a fresh picture
+  every day.
+
+* `colors` shows a color palette so you can tweak your terminal colors
+
+* `excuse` generates a programmer's excuse, for example:
+  ```bash
+  git commit -m "$(excuse.sh)"
+  ```
+
+* `logicprefs` makes backups of your
+  [Logic Pro X](https://www.apple.com/logic-pro/) preferences, and lets
+  you restore them in case you happen to jack them up.
+
+* `mkbr` creates a new git branch
+
+* `mkfavicon` generates a `favicon.ico` file at all the different
+  resolutions you probably will ever need
+
+* `mvbr` renames a git branch
+
+* `ql` is an easy way to use the macOS
+  [Quick Look](https://support.apple.com/kb/PH25575) functionality from
+  the command line
+
+* `reassociate` will associate source code file extensions with
+  MacVim so you can <kbd>Command</kbd>-click a filename in iTerm2 and
+  have it open up in MacVIm
+
+* `rmbr` deletes a git branch, locally and remotely
+
+* `sayphrase` says something using the built-in macOS speech synthesis
+
+* `svg-to-data-uri.sh` will take an SVG and URL-encode it for use in a
+  data: URI. Full base64 encoding isn't necessary.
+
+* `svim` launches MacVim with the session saved in `Session.vim`
+
+* `updall` updates homebrew, npm global installs, and MacVim plugins
 
 ### Miscellaneous configuration files
 
