@@ -114,7 +114,7 @@ Nothing overwhelming here.
   [awesome_print](https://github.com/awesome-print/awesome_print) by
   default
 
-* `.pryrc` adds some spiffy prompt stuff and a few convenience commands
+* `.pryrc` adds some spiffy prompt stuff and a few convenience methods
 
 ### Git configuration files
 
@@ -182,9 +182,11 @@ In addition to setting up MacVim to be used as your difftool, the
 * .vim/colors/kelly.vim
 * .vim/colors/kellys.vim
 
-### Homebrew Bundle
+### Homebrew
 
-* Brewfile
+My [Homebrew](https://brew.sh/) environment is preserved by way of
+[Homebrew Bundle](https://github.com/Homebrew/homebrew-bundle) which
+uses the `Brewfile` to specify formulae and casks to be installed.
 
 ## Scripts
 
