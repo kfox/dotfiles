@@ -202,7 +202,7 @@ These scripts are all located in the `bin` directory.
 
 * `excuse` generates a programmer's excuse, for example:
   ```bash
-  git commit -m "$(excuse.sh)"
+  $ git commit -m "$(excuse)"
   ```
 
 * `logicprefs` makes backups of your
@@ -226,7 +226,8 @@ These scripts are all located in the `bin` directory.
 
 * `rmbr` deletes a git branch, locally and remotely
 
-* `sayphrase` says something using the built-in macOS speech synthesis
+* `sayphrase` says something using the built-in macOS speech synthesis.
+  By default, it says a programming excuse (see above).
 
 * `svg-to-data-uri.sh` will take an SVG and URL-encode it for use in a
   data: URI. Full base64 encoding isn't necessary.
