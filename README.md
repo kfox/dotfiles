@@ -175,12 +175,34 @@ In addition to setting up MacVim to be used as your difftool, the
 
 ### Vim configuration files
 
-* .vimrc
-* .vimrc.pager
-* .gvimrc
-* .gvimrc.pager
-* .vim/colors/kelly.vim
-* .vim/colors/kellys.vim
+#### Vim
+
+* `.vimrc`
+
+#### MacVim
+
+* `.gvimrc`
+
+#### Man Page Viewer
+
+There's a `MANPAGER` variable setting exported in the `.bashrc` file
+that will set your default man page viewer to MacVim. The following two
+files further define the behavior of MacVim in "man page" mode:
+
+* `.vimrc.pager`
+* `.gvimrc.pager`
+
+While viewing a man page in MacVim, you can use the typical man page
+navigation keys, e.g. <kbd>Space</kbd> for next page, <kbd>q</kbd>
+to quit, etc. You can also use all Vim commands, but none of the
+commands to change/insert text will work.
+
+#### Color Schemes
+
+Two color schemes are included, neither of which are my favorite:
+
+* `.vim/colors/kelly.vim`
+* `.vim/colors/kellys.vim`
 
 ### Homebrew
 
@@ -190,7 +212,7 @@ uses the `Brewfile` to specify formulae and casks to be installed.
 
 ## Scripts
 
-These scripts are all located in the `bin` directory.
+These scripts are all located in the `bin` directory:
 
 * `bing-wallpaper.sh` will download the latest
   [Bing Homepage image](http://www.bing.com/gallery/)
