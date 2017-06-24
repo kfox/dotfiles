@@ -1,6 +1,5 @@
 require 'irb/completion'
 require 'rubygems'
-# require 'wirble'
 require 'awesome_print'
 
 # Log to STDOUT if in Rails
@@ -17,6 +16,4 @@ class Object
 end
 
 ARGV.concat [ "--readline", "--prompt-mode", "simple" ]
-# Wirble.init
-# Wirble.colorize
 AwesomePrint.irb!
