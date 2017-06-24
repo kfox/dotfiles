@@ -11,7 +11,7 @@ your life on the command-line much easier.
 
 Follow these directions to set up: https://developer.atlassian.com/blog/2016/02/best-way-to-store-dotfiles-git-bare-repo/
 
-Afterward, then run the `setup.sh` script:
+Then run the setup script:
 ```bash
 $ setup.sh
 ```
