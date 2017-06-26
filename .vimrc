@@ -440,7 +440,7 @@ map <leader>t :Dispatch nosetests %<CR>
 
 command! -nargs=+ -complete=file -bar Pt silent! grep! <args>|cwindow|redraw!
 
-nnoremap <silent> ,g :<C-u>Unite grep:. -buffer-name=search-buffer<CR>
+nnoremap <silent> <leader>f :<C-u>Unite grep:. -buffer-name=search-buffer<CR>
 if executable('pt')
   let g:unite_source_grep_command = 'pt'
   let g:unite_source_grep_default_opts = '--nogroup --nocolor'
@@ -714,6 +714,7 @@ Plug 'pangloss/vim-javascript', { 'for': [ 'html', 'javascript' ] }
 Plug 'Raimondi/delimitMate'
 Plug 'sheerun/vim-polyglot'
 Plug 'Shougo/unite.vim'
+Plug 'Shougo/vimproc.vim', {'do' : 'make'}
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 Plug 'syngan/vim-vimlint', { 'for': 'vim' }
 Plug 'ternjs/tern_for_vim', { 'do': 'yarn', 'for': [ 'html', 'javascript', 'javascript.jsx' ] }
