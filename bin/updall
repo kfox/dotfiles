@@ -9,6 +9,7 @@ command -v brew >/dev/null && \
 
 # npm
 command -v npm >/dev/null && \
+  npm install -g npm && \
   npm update -g
 
 # vim
