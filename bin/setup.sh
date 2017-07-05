@@ -29,4 +29,12 @@ done
 # create the backup directory for Vim
 mkdir -p ~/.vim/backup
 
+for filename in ~/bin/*; do
+  chmod a+x `~/bin/${filename}`
+done
+
+updall
+
 popd >/dev/null 2>&1
+
+
