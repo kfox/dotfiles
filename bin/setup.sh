@@ -29,4 +29,11 @@ done
 # create the backup directory for Vim
 mkdir -p ~/.vim/backup
 
+# install vim-plug
+curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
+# install all vim plugins and exit vim
+/usr/local/bin/vim +PlugInstall +qall
+
 popd >/dev/null 2>&1
