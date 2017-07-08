@@ -708,6 +708,7 @@ Plug 'ludovicchabant/vim-gutentags'
 Plug 'majutsushi/tagbar'
 Plug 'mxw/vim-jsx', { 'for': 'javascript.jsx' }
 Plug 'nathanaelkane/vim-indent-guides'
+Plug 'nazo/pt.vim'
 Plug 'othree/html5.vim', { 'for': 'html' }
 Plug 'othree/nginx-contrib-vim', { 'for': 'nginx' }
 Plug 'pangloss/vim-javascript', { 'for': [ 'html', 'javascript' ] }
