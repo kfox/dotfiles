@@ -216,7 +216,7 @@ autocmd BufRead,BufNewFile {Brewfile,Gemfile,Guardfile,Rakefile,Thorfile,config.
 au BufNewFile,BufRead *.cson set ft=coffee
 
 " eslintrc (json)
-au BufNewFile,BufRead .eslintrc set ft=json
+au BufNewFile,BufRead .{eslintrc,babelrc} set ft=json
 
 " make javascript prettier
 " au FileType javascript set formatprg=prettier\ --stdin
