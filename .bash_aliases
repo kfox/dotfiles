@@ -3,6 +3,9 @@ alias ls='ls -aFG'
 alias ll='ls -l'
 alias c='clear'
 
+# ls replacement
+alias e='exa -bghl --git --color-scale --group-directories-first'
+
 # rails-specific aliases
 alias be='bundle exec'
 alias ber='bundle exec rails'
