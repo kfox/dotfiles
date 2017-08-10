@@ -202,7 +202,7 @@ test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shel
 if [ -x /usr/local/bin/virtualenvwrapper.sh ]; then
   export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python3
   export WORKON_HOME=$HOME/.virtualenvs
-  export PROJECT_HOME=$HOME/umbel
+  export PROJECT_HOME=$HOME/src
   source /usr/local/bin/virtualenvwrapper.sh
 fi
 
