@@ -14,10 +14,11 @@ echo "==> installing Ruby ${ruby_version}"
 rbenv install ${ruby_version}
 rbenv global ${ruby_version}
 
-echo "==> installing Node modules"
+echo "==> installing global Node modules"
 
 node_modules=(
   eslint
+  node-report
   nodemon
   npm-check-updates
   standard
