@@ -124,30 +124,31 @@ export PS1="$MAINPROMPT\n$ "
 export PS2='> '
 export PS4='+ '
 
-# other git prompt stuff
-source /usr/local/opt/bash-git-prompt/share/prompt-colors.sh
+if [ -f "/usr/local/opt/bash-git-prompt/share/gitprompt.sh" ]; then
+  __GIT_PROMPT_DIR="/usr/local/opt/bash-git-prompt/share"
+  source /usr/local/opt/bash-git-prompt/share/prompt-colors.sh
 
-GIT_PROMPT_ONLY_IN_REPO=1
-# GIT_PROMPT_SHOW_LAST_COMMAND_INDICATOR=1   # uncomment if you want to show
-                                             # the exit code of the last command
-                                             # in your prompt
-# GIT_PROMPT_FETCH_REMOTE_STATUS=0   # uncomment to avoid fetching remote status
-GIT_PROMPT_START=$MAINPROMPT
-GIT_PROMPT_END="\n$ "
+  GIT_PROMPT_ONLY_IN_REPO=1
+  # GIT_PROMPT_SHOW_LAST_COMMAND_INDICATOR=1  # uncomment if you want to show
+                                              # the exit code of the last command
+                                              # in your prompt
+  # GIT_PROMPT_FETCH_REMOTE_STATUS=0   # uncomment to avoid fetching remote status
+  GIT_PROMPT_START=$MAINPROMPT
+  GIT_PROMPT_END="\n$ "
 
-GIT_PROMPT_STAGED=" ${Yellow}●${DimWhite}·${ResetColor}"
-GIT_PROMPT_CHANGED=" ${Blue}Δ${DimWhite}·${ResetColor}"
-GIT_PROMPT_CONFLICTS=" ${Red}✖${DimWhite}·${ResetColor}"
-GIT_PROMPT_UNTRACKED=" ${BoldCyan}?${DimWhite}·${ResetColor}"
-GIT_PROMPT_STASHED=" ${BoldMagenta}⚑${DimWhite}·${ResetColor}"
-GIT_PROMPT_CLEAN=" ${Green}✔${ResetColor}"
-GIT_PROMPT_SEPARATOR=" ${DimWhite}»${ResetColor}"
-GIT_PROMPT_PREFIX="${DimWhite}git:{${ResetColor} "
-GIT_PROMPT_SUFFIX=" ${DimWhite}}${ResetColor}"
-GIT_PROMPT_SYMBOLS_NO_REMOTE_TRACKING="${BrightYellow}✭${ResetColor}"
+  GIT_PROMPT_STAGED=" ${Yellow}●${DimWhite}·${ResetColor}"
+  GIT_PROMPT_CHANGED=" ${Blue}Δ${DimWhite}·${ResetColor}"
+  GIT_PROMPT_CONFLICTS=" ${Red}✖${DimWhite}·${ResetColor}"
+  GIT_PROMPT_UNTRACKED=" ${BoldCyan}?${DimWhite}·${ResetColor}"
+  GIT_PROMPT_STASHED=" ${BoldMagenta}⚑${DimWhite}·${ResetColor}"
+  GIT_PROMPT_CLEAN=" ${Green}✔${ResetColor}"
+  GIT_PROMPT_SEPARATOR=" ${DimWhite}»${ResetColor}"
+  GIT_PROMPT_PREFIX="${DimWhite}git:{${ResetColor} "
+  GIT_PROMPT_SUFFIX=" ${DimWhite}}${ResetColor}"
+  GIT_PROMPT_SYMBOLS_NO_REMOTE_TRACKING="${BrightYellow}✭${ResetColor}"
 
-source /usr/local/opt/bash-git-prompt/share/gitprompt.sh
-
+  source /usr/local/opt/bash-git-prompt/share/gitprompt.sh
+fi
 
 ################################################################################
 #
