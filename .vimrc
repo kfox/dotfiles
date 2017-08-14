@@ -664,12 +664,15 @@ let g:indent_guides_start_level = 2
 let g:ale_sign_error = '❌'
 let g:ale_sign_warning = '💩'
 let g:ale_linters = {
-\  'javascript': ['babel-eslint', 'standard --parser babel-eslint'],
+\  'javascript': ['eslint', 'standard'],
 \  'jsx': ['stylelint', 'eslint']
 \}
 let g:ale_linter_aliases = { 'jsx': 'css' }
 let g:ale_statusline_format = ['❌ %d', '💩 %d', '👍']
 let g:ale_echo_msg_format = '[%linter%] %s'
+
+let g:ale_javascript_eslint_executable = 'babel-eslint'
+let g:ale_javascript_standard_options = '--parser babel-eslint'
 
 let g:ale_python_flake8_options = '--ignore=E266,E501'
 
