@@ -1,6 +1,9 @@
 set nocompatible
 
-color wombat256
+if (has('termguicolors'))
+  set termguicolors
+endif
+
 syntax on
 
 let mapleader = ','
@@ -740,8 +743,9 @@ Plug 'vim-scripts/indentpython.vim', { 'for': 'python' }
 Plug 'w0rp/ale'
 
 " colorschemes
-Plug 'altercation/vim-colors-solarized'
 Plug 'zanglg/nova.vim'
 Plug 'joshdick/onedark.vim'
 
 call plug#end()
+
+colorscheme onedark
