@@ -1,5 +1,5 @@
 set nocompatible
-color darkZ
+color zellner
 
 set cmdheight=1
 set display+=lastline

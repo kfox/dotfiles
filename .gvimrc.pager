@@ -7,4 +7,4 @@ set lines=70
 set columns=140
 set guioptions-=T guioptions-=L guioptions-=r
 set transparency=0
-set guifont=Bitstream\ Vera\ Sans\ Mono:h16
+set guifont=Liberation\ Mono:h16
