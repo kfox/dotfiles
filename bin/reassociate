@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# associates specific file extensions with MacVim
+
 command -v duti >/dev/null 2>&1 || { brew install duti; }
 
 extensions=(
@@ -9,6 +11,7 @@ extensions=(
   json
   jsx
   md
+  py
   rake
   rb
   rst
