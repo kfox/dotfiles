@@ -664,19 +664,38 @@ let g:indent_guides_start_level = 2
 
 """"""""""""""""" ale
 
-let g:ale_sign_error = '❌'
-let g:ale_sign_warning = '💩'
 let g:ale_linters = {
 \  'javascript': ['eslint', 'standard'],
 \  'jsx': ['stylelint', 'eslint']
 \}
 let g:ale_linter_aliases = { 'jsx': 'css' }
+
+let g:ale_fixers = {
+\  'javascript': [
+\    'standard',
+\    'eslint'
+\  ],
+\  'python': [
+\    'isort',
+\    'add_blank_lines_for_python_control_statements',
+\    'autopep8',
+\    'remove_trailing_lines'
+\  ]
+\}
+
+" Bind F8 to fixing problems with ALE
+nmap <F8> <Plug>(ale_fix)
+
+let g:ale_sign_error = '❌'
+let g:ale_sign_warning = '💩'
 let g:ale_statusline_format = ['❌ %d', '💩 %d', '👍']
 let g:ale_echo_msg_format = '[%linter%] %s'
 
+" javascript
 let g:ale_javascript_eslint_executable = 'babel-eslint'
 let g:ale_javascript_standard_options = '--parser babel-eslint'
 
+" python
 let g:ale_python_flake8_options = '--ignore=E266,E501'
 
 nmap <silent> <C-k> <Plug>(ale_previous_wrap)
@@ -698,21 +717,19 @@ Plug 'airblade/vim-gitgutter'
 Plug 'bogado/file-line'
 Plug 'cakebaker/scss-syntax.vim', { 'for': 'scss' }
 Plug 'ctrlpvim/ctrlp.vim' | Plug 'FelikZ/ctrlp-py-matcher'
-Plug 'ekalinin/Dockerfile.vim'
+Plug 'ekalinin/Dockerfile.vim', { 'for': [ 'docker-compose', 'Dockerfile' ] }
 Plug 'elzr/vim-json', { 'for': 'json' }
 Plug 'ervandew/supertab'
 Plug 'fatih/vim-go', { 'for': 'go' }
 Plug 'godlygeek/tabular'
 Plug 'hail2u/vim-css3-syntax', { 'for': [ 'css', 'html' ] }
-Plug 'isRuslan/vim-es6', { 'for': [ 'html', 'javascript', 'javascript.jsx' ]}
 Plug 'jmcantrell/vim-virtualenv'
 Plug 'JulesWang/css.vim', { 'for': [ 'css', 'html' ] }
 Plug 'junegunn/rainbow_parentheses.vim'
 Plug 'junegunn/vim-easy-align'
 Plug 'junegunn/vim-xmark', { 'do': 'make' }
 Plug 'kshenoy/vim-signature'
-Plug 'letientai299/vim-react-snippets', { 'for': 'javascript.jsx', 'branch': 'es6' }
-Plug 'lilydjwg/colorizer', { 'for': [ 'css', 'html', 'javascript', 'javascript.jsx', 'scss', 'vim' ]}
+Plug 'lilydjwg/colorizer', { 'for': [ 'css', 'html', 'scss', 'vim' ]}
 Plug 'ludovicchabant/vim-gutentags'
 Plug 'majutsushi/tagbar'
 Plug 'mxw/vim-jsx', { 'for': 'javascript.jsx' }
@@ -720,7 +737,7 @@ Plug 'nathanaelkane/vim-indent-guides'
 Plug 'nazo/pt.vim'
 Plug 'othree/html5.vim', { 'for': 'html' }
 Plug 'othree/nginx-contrib-vim', { 'for': 'nginx' }
-Plug 'pangloss/vim-javascript', { 'for': [ 'html', 'javascript' ] }
+Plug 'othree/yajs.vim', { 'for': [ 'html', 'javascript' ] } | Plug 'othree/es.next.syntax.vim'
 Plug 'Raimondi/delimitMate'
 Plug 'sheerun/vim-polyglot'
 Plug 'Shougo/unite.vim'
@@ -743,8 +760,9 @@ Plug 'vim-scripts/indentpython.vim', { 'for': 'python' }
 Plug 'w0rp/ale'
 
 " colorschemes
-Plug 'zanglg/nova.vim'
 Plug 'joshdick/onedark.vim'
+Plug 'zanglg/nova.vim'
+Plug 'bluz71/vim-moonfly-colors'
 
 call plug#end()
 
