@@ -4,22 +4,25 @@ pushd ~ >/dev/null 2>&1
 
 echo "==> installing Homebrew"
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-brew tap Homebrew/bundle
+/usr/local/bin/brew tap Homebrew/bundle
 
 echo "==> installing Homebrew formulae"
-brew bundle
+/usr/local/bin/brew bundle
 
 ruby_version=$(rbenv install -l | egrep '^\s+\d+\.\d+\.\d+$' | tail -1 | tr -d ' ')
 echo "==> installing Ruby ${ruby_version}"
-rbenv install ${ruby_version}
-rbenv global ${ruby_version}
+/usr/local/bin/rbenv install ${ruby_version}
+/usr/local/bin/rbenv global ${ruby_version}
+
+echo "==> installing crontab"
+/usr/bin/crontab ${HOME}/.crontab
 
 echo "==> installing global Node modules"
 
 node_modules=(
+  babel-eslint
   eslint
   node-report
-  nodemon
   npm-check-updates
   standard
   stylelint
@@ -29,7 +32,7 @@ node_modules=(
 for module in "${node_modules[@]}"
 do
   echo "==> installing Node module: ${module}"
-  npm install -g ${module}
+  /usr/local/bin/npm install -g ${module}
 done
 
 echo "==> setting up Python virtual environments"
@@ -43,10 +46,10 @@ source /usr/local/bin/virtualenvwrapper.sh
 echo "==> setting up Vim"
 
 # create the backup directory for Vim
-mkdir -p ~/.vim/backup
+/bin/mkdir -p ~/.vim/backup
 
 # install vim-plug
-curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+/usr/bin/curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 # install all vim plugins and exit vim
