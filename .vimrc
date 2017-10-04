@@ -675,6 +675,9 @@ let g:ale_fixers = {
 \    'standard',
 \    'eslint'
 \  ],
+\  'json': [
+\    'prettier'
+\  ],
 \  'python': [
 \    'isort',
 \    'add_blank_lines_for_python_control_statements',
@@ -763,6 +766,7 @@ Plug 'w0rp/ale'
 Plug 'joshdick/onedark.vim'
 Plug 'zanglg/nova.vim'
 Plug 'bluz71/vim-moonfly-colors'
+Plug 'rakr/vim-one'
 
 call plug#end()
 
