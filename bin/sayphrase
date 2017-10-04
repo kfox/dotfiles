@@ -9,8 +9,12 @@ fi
 voices=( $(/usr/bin/say -v '?' | /usr/bin/grep en_ | /usr/bin/awk '{ print $1 }') )
 
 if [ -z "${1}" ]; then
-  # no voice selected, pick a random voice from the list
+  # no voice selected
   voice=${voices[$RANDOM % ${#voices[@]}]}
+elif [ "${1}" = "random" ]; then
+  # use a random voice
+  voice=${voices[$RANDOM % ${#voices[@]}]}
+  shift 1
 else
   # use the voice given as the first command-line argument
   voice=${1}
@@ -43,7 +47,7 @@ echo "$voice says: '$phrase'"
 # reset the audio output device to the previous device
 
 /usr/local/bin/SwitchAudioSource -s 'Built-in Output' >/dev/null 2>&1 && \
-  /usr/bin/osascript -e 'set volume output volume 50' && \
+  /usr/bin/osascript -e 'set volume output volume 70' && \
   /usr/bin/say -v $voice $phrase && \
   /usr/bin/osascript -e "set volume output volume $volume" && \
   /usr/local/bin/SwitchAudioSource -s "$output_device" >/dev/null 2>&1
