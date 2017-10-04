@@ -15,6 +15,7 @@ extensions=(
   rake
   rb
   rst
+  scss
   sh
   sql
   vim
