@@ -1,3 +1,8 @@
 {
-  "extends": "/usr/local/lib/node_modules/stylelint-config-standard"
+  "processors": ["/usr/local/lib/node_modules/stylelint-processor-styled-components"],
+  "extends": [
+    "/usr/local/lib/node_modules/stylelint-config-standard",
+    "/usr/local/lib/node_modules/stylelint-config-styled-components"
+  ],
+  "syntax": "scss"
 }

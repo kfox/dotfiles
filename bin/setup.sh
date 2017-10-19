@@ -29,6 +29,8 @@ node_modules=(
   standard
   stylelint
   stylelint-config-standard
+  stylelint-config-styled-components
+  stylelint-processor-styled-components
   trevor
 )
 
