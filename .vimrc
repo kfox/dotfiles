@@ -665,18 +665,26 @@ let g:indent_guides_start_level = 2
 """"""""""""""""" ale
 
 let g:ale_linters = {
-\  'javascript': ['eslint', 'standard'],
-\  'jsx': ['stylelint', 'eslint']
+\  'javascript': [
+\    'standard'
+\  ],
+\  'jsx': [
+\    'standard',
+\    'stylelint'
+\  ]
 \}
 let g:ale_linter_aliases = { 'jsx': 'css' }
 
 let g:ale_fixers = {
 \  'javascript': [
-\    'standard',
-\    'eslint'
+\    'standard'
 \  ],
 \  'json': [
 \    'prettier'
+\  ],
+\  'jsx': [
+\    'standard',
+\    'stylelint'
 \  ],
 \  'python': [
 \    'isort',
@@ -771,3 +779,6 @@ Plug 'rakr/vim-one'
 call plug#end()
 
 colorscheme onedark
+
+" source a local vim configuration (if present)
+silent! so .vimlocal
