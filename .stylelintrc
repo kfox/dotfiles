@@ -1,8 +1,22 @@
 {
-  "processors": ["/usr/local/lib/node_modules/stylelint-processor-styled-components"],
+  "plugins": [
+    "/usr/local/lib/node_modules/stylelint-order",
+    "/usr/local/lib/node_modules/stylelint-scss"
+  ],
+  "processors": [
+    "/usr/local/lib/node_modules/stylelint-processor-styled-components"
+  ],
   "extends": [
     "/usr/local/lib/node_modules/stylelint-config-standard",
-    "/usr/local/lib/node_modules/stylelint-config-styled-components"
+    "/usr/local/lib/node_modules/stylelint-config-styled-components",
+    "/usr/local/lib/node_modules/stylelint-config-sass-guidelines"
   ],
+  "rules": {
+    "order/order": [
+      "custom-properties",
+      "declarations"
+    ],
+    "order/properties-alphabetical-order": true
+  },
   "syntax": "scss"
 }

@@ -28,9 +28,12 @@ node_modules=(
   prettier
   standard
   stylelint
+  stylelint-config-sass-guidelines
   stylelint-config-standard
   stylelint-config-styled-components
+  stylelint-order
   stylelint-processor-styled-components
+  stylelint-scss
   trevor
 )
 

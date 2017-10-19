@@ -218,8 +218,8 @@ autocmd BufRead,BufNewFile {Brewfile,Gemfile,Guardfile,Rakefile,Thorfile,config.
 " cson (coffeescript)
 au BufNewFile,BufRead *.cson set ft=coffee
 
-" eslintrc (json)
-au BufNewFile,BufRead .{eslintrc,babelrc} set ft=json
+" various rc files (json)
+au BufNewFile,BufRead .{babelrc,eslintrc,stylelintrc} set ft=json
 
 " make javascript prettier
 " au FileType javascript set formatprg=prettier\ --stdin
@@ -671,18 +671,26 @@ let g:ale_linters = {
 \  'jsx': [
 \    'standard',
 \    'stylelint'
+\  ],
+\  'scss': [
+\    'stylelint'
 \  ]
 \}
-let g:ale_linter_aliases = { 'jsx': 'css' }
+
+let g:ale_linter_aliases = {
+\  'jsx': 'css'
+\}
 
 let g:ale_fixers = {
 \  'javascript': [
+\    'prettier',
 \    'standard'
 \  ],
 \  'json': [
 \    'prettier'
 \  ],
 \  'jsx': [
+\    'prettier',
 \    'standard',
 \    'stylelint'
 \  ],
@@ -691,6 +699,10 @@ let g:ale_fixers = {
 \    'add_blank_lines_for_python_control_statements',
 \    'autopep8',
 \    'remove_trailing_lines'
+\  ],
+\  'scss': [
+\    'prettier',
+\    'stylelint'
 \  ]
 \}
 
