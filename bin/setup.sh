@@ -22,10 +22,13 @@ echo "==> installing global Node modules"
 node_modules=(
   babel-eslint
   eslint
+  json-diff
   node-report
   npm-check-updates
+  prettier
   standard
   stylelint
+  stylelint-config-standard
   trevor
 )
 
