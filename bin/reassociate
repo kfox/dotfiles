@@ -5,6 +5,7 @@
 command -v duti >/dev/null 2>&1 || { brew install duti; }
 
 extensions=(
+  coffee
   erb
   haml
   js
@@ -15,6 +16,7 @@ extensions=(
   rake
   rb
   rst
+  scala
   scss
   sh
   sql
