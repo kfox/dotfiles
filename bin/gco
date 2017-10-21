@@ -1,0 +1,15 @@
+#!/bin/bash
+
+usage() {
+  echo "usage: ${0} <branch>"
+  exit 1
+}
+
+[ -z "${1}" ] && usage || BRANCH=$1
+
+if [ "${BRANCH//[0-9]*}" = "" ]; then
+  : "${JIRA_PROJECT_KEY:?Need to set JIRA_PROJECT_KEY}"
+  BRANCH="$JIRA_PROJECT_KEY-$BRANCH"
+fi
+
+git checkout ${BRANCH}
