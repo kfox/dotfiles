@@ -4,8 +4,6 @@ usage() {
   echo "usage: ${0} <old_branch> <new_branch>"
 }
 
-: "${JIRA_PROJECT_KEY:?Need to set JIRA_PROJECT_KEY}"
-
 if [ -z "${1}" -o -z "${2}" ]; then
   usage
   exit 1
@@ -15,10 +13,12 @@ else
 fi
 
 if [ "${OLDBRANCH//[0-9]*}" = "" ]; then
+  : "${JIRA_PROJECT_KEY:?Need to set JIRA_PROJECT_KEY}"
   OLDBRANCH="$JIRA_PROJECT_KEY-$OLDBRANCH"
 fi
 
 if [ "${NEWBRANCH//[0-9]*}" = "" ]; then
+  : "${JIRA_PROJECT_KEY:?Need to set JIRA_PROJECT_KEY}"
   NEWBRANCH="$JIRA_PROJECT_KEY-$NEWBRANCH"
 fi
 
