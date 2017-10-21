@@ -166,7 +166,7 @@ export MANPAGER='col -bx | \
   -U ~/.gvimrc.pager - >/dev/null 2>&1'
 
 # set up the path
-export PATH="/usr/local/share/npm/bin:/usr/local/opt/go/libexec/bin:/usr/local/bin:/usr/local/sbin:$HOME/bin:$PATH"
+export PATH="/usr/local/share/npm/bin:/usr/local/opt/go/libexec/bin:$HOME/.cargo/bin:/usr/local/bin:$HOME/bin:$PATH"
 
 export CDPATH=.
 
