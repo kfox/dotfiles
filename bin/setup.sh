@@ -43,7 +43,20 @@ do
   /usr/local/bin/npm install -g ${module}
 done
 
+echo "==> installing global Cargo packages"
+
+cargo_packages=(
+  rustfmt
+)
+
+for package in "${cargo_packages[@]}"
+do
+  echo "==> installing Cargo package: ${package}"
+  /usr/local/bin/cargo install ${package}
+done
+
 echo "==> setting up Python virtual environments"
+
 /usr/local/bin/pip3 install virtualenvwrapper
 export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python3
 export PROJECT_HOME=$HOME/src
