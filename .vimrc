@@ -672,6 +672,10 @@ let g:ale_linters = {
 \    'standard',
 \    'stylelint'
 \  ],
+\  'rust': [
+\    'cargo',
+\    'rustc'
+\  ],
 \  'scss': [
 \    'stylelint'
 \  ]
@@ -762,6 +766,7 @@ Plug 'othree/html5.vim', { 'for': 'html' }
 Plug 'othree/nginx-contrib-vim', { 'for': 'nginx' }
 Plug 'othree/yajs.vim', { 'for': [ 'html', 'javascript' ] } | Plug 'othree/es.next.syntax.vim'
 Plug 'Raimondi/delimitMate'
+Plug 'rust-lang/rust.vim', { 'for': 'rust' }
 Plug 'sheerun/vim-polyglot'
 Plug 'Shougo/unite.vim'
 Plug 'Shougo/vimproc.vim', {'do' : 'make'}
