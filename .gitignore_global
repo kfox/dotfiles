@@ -1,5 +1,6 @@
 .DS_Store
 .env
+.envrc
 Session.vim
 *.log
 tags
@@ -8,3 +9,4 @@ tags.temp
 cscope.out
 .ruby-version
 .vimlocal
+.vscode

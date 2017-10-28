@@ -214,3 +214,6 @@ fi
 # use z to track most-used directories and jump around more easily than
 # with cd
 source `brew --prefix`/etc/profile.d/z.sh
+
+# enable direnv
+eval "$(direnv hook bash)"
