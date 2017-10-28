@@ -4,7 +4,7 @@ set background=dark
 
 set guitablabel=%M%t
 set lines=60
-set columns=120
+set columns=160
 set textwidth=80
 set guioptions-=T guioptions-=L guioptions-=r
 set transparency=0

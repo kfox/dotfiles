@@ -612,7 +612,6 @@ nmap ga <Plug>(EasyAlign)
 packadd! matchit
 
 """"""""""""""""" netrw
-
 " disable netrw
 let g:loaded_netrwPlugin = 1
 
@@ -622,11 +621,36 @@ let g:netrw_browse_split = 4
 let g:netrw_liststyle = 3
 let g:netrw_preview = 1
 let g:netrw_sort_options = 'i'
-let g:netrw_winsize = 25
+let g:netrw_winsize = -30
+
 " augroup ProjectDrawer
 "   autocmd!
 "   autocmd VimEnter * :Vexplore
 " augroup END
+
+""""""""""""""""" dirvish
+
+let g:dirvish_mode = ':sort ,^.*[\/],'
+
+augroup dirvish_events
+  autocmd!
+
+  " Map `t` to open in new tab.
+  autocmd FileType dirvish
+    \  nnoremap <silent><buffer> t :call dirvish#open('tabedit', 0)<CR>
+    \ |xnoremap <silent><buffer> t :call dirvish#open('tabedit', 0)<CR>
+
+  " Enable fugitive.vim in Dirvish buffers.
+  autocmd FileType dirvish call fugitive#detect(@%)
+
+  " Map `gr` to reload.
+  autocmd FileType dirvish nnoremap <silent><buffer>
+    \ gr :<C-U>Dirvish %<CR>
+
+  " Map `gh` to hide dot-prefixed files.  Press `R` to 'toggle' (reload).
+  autocmd FileType dirvish nnoremap <silent><buffer>
+    \ gh :silent keeppatterns g@\v/\.[^\/]+/?$@d _<cr>
+augroup END
 
 """"""""""""""""" delimitMate
 
@@ -639,13 +663,6 @@ au FileType html,javascript let g:delimitMate_eol_marker = ';'
 
 " need this for Polymer
 let html_wrong_comments = 1
-
-""""""""""""""""" vim-startify
-
-let g:startify_update_oldfiles = 1
-let g:startify_session_autoload = 1
-let g:startify_session_persistence = 1
-let g:startify_relative_path = 1
 
 """"""""""""""""" vim-javascript
 
@@ -750,11 +767,13 @@ Plug 'ervandew/supertab'
 Plug 'fatih/vim-go', { 'for': 'go' }
 Plug 'godlygeek/tabular'
 Plug 'hail2u/vim-css3-syntax', { 'for': [ 'css', 'html' ] }
+Plug 'jelera/vim-javascript-syntax', { 'for': [ 'html', 'javascript', 'javascript.jsx' ] }
 Plug 'jmcantrell/vim-virtualenv'
 Plug 'JulesWang/css.vim', { 'for': [ 'css', 'html' ] }
 Plug 'junegunn/rainbow_parentheses.vim'
 Plug 'junegunn/vim-easy-align'
 Plug 'junegunn/vim-xmark', { 'do': 'make' }
+Plug 'justinmk/vim-dirvish'
 Plug 'kshenoy/vim-signature'
 Plug 'lilydjwg/colorizer', { 'for': [ 'css', 'html', 'scss', 'vim' ]}
 Plug 'ludovicchabant/vim-gutentags'
@@ -764,7 +783,7 @@ Plug 'nathanaelkane/vim-indent-guides'
 Plug 'nazo/pt.vim'
 Plug 'othree/html5.vim', { 'for': 'html' }
 Plug 'othree/nginx-contrib-vim', { 'for': 'nginx' }
-Plug 'othree/yajs.vim', { 'for': [ 'html', 'javascript' ] } | Plug 'othree/es.next.syntax.vim'
+" Plug 'othree/yajs.vim', { 'for': [ 'html', 'javascript' ] } | Plug 'othree/es.next.syntax.vim'
 Plug 'Raimondi/delimitMate'
 Plug 'rust-lang/rust.vim', { 'for': 'rust' }
 Plug 'sheerun/vim-polyglot'
@@ -782,20 +801,21 @@ Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-obsession'
 Plug 'tpope/vim-surround'
+Plug 'tpope/vim-vinegar'
 Plug 'vim-airline/vim-airline' | Plug 'vim-airline/vim-airline-themes'
 Plug 'vim-ruby/vim-ruby', { 'for': [ 'eruby', 'ruby' ] }
 Plug 'vim-scripts/indentpython.vim', { 'for': 'python' }
 Plug 'w0rp/ale'
 
 " colorschemes
-Plug 'joshdick/onedark.vim'
+Plug 'arcticicestudio/nord-vim'
 Plug 'zanglg/nova.vim'
 Plug 'bluz71/vim-moonfly-colors'
 Plug 'rakr/vim-one'
 
 call plug#end()
 
-colorscheme onedark
+colorscheme one
 
 " source a local vim configuration (if present)
 silent! so .vimlocal
