@@ -213,13 +213,14 @@ au BufRead,BufNewFile *.txt,*.md call s:setupWrapping()
 """"""""""""""""" file formatting
 
 " These files are Ruby
-autocmd BufRead,BufNewFile {Brewfile,Gemfile,Guardfile,Rakefile,Thorfile,config.ru} set filetype=ruby
+autocmd BufRead,BufNewFile config.ru,{Brew,Gem,Guard,Rake,Thor}file set filetype=ruby
 
 " cson (coffeescript)
-au BufNewFile,BufRead *.cson set ft=coffee
+au BufNewFile,BufRead *.cson set filetype=coffee
 
 " various rc files (json)
-au BufNewFile,BufRead .{babelrc,eslintrc,stylelintrc} set ft=json
+au BufNewFile,BufRead .{babel,eslint,stylelint}rc set filetype=json
+au BufNewFile,BufRead .{direnv}rc set filetype=sh
 
 " make javascript prettier
 " au FileType javascript set formatprg=prettier\ --stdin
@@ -670,9 +671,7 @@ let g:javascript_plugin_jsdoc = 1
 
 """"""""""""""""" nginx
 
-au BufRead,BufNewFile *.nginx set ft=nginx
-au BufRead,BufNewFile nginx.conf set ft=nginx
-au BufRead,BufNewFile default.conf set ft=nginx
+au BufRead,BufNewFile *.nginx,{nginx,default}.conf set filetype=nginx
 
 """"""""""""""""" vim-indent-guides
 
