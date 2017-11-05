@@ -220,7 +220,7 @@ au BufNewFile,BufRead *.cson set filetype=coffee
 
 " various rc files (json)
 au BufNewFile,BufRead .{babel,eslint,stylelint}rc set filetype=json
-au BufNewFile,BufRead .{direnv}rc set filetype=sh
+au BufNewFile,BufRead .{direnv,env}rc set filetype=sh
 
 " make javascript prettier
 " au FileType javascript set formatprg=prettier\ --stdin
