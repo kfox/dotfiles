@@ -8,9 +8,12 @@ command -v brew >/dev/null && \
   brew prune
 
 # npm
-command -v npm >/dev/null && \
-  npm install -g npm@next && \
-  npm update -g
+if [ -n "$(command -v npm)" ]; then
+  current_npm_version="$(npm -v | tr -d '\n')"
+  latest_npm_version="$(npm v npm version | tr -d '\n')"
+  [ $current_npm_version != $latest_npm_version ] && npm install -g npm@next
+  npm update -g && ncu -g
+fi
 
 # vim
 command -v vim >/dev/null && \
