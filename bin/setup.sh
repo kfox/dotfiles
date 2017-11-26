@@ -21,10 +21,12 @@ echo "==> installing global Node modules"
 
 node_modules=(
   babel-eslint
+  caniuse-cmd
   eslint
+  jscodeshift
   json-diff
-  node-report
   npm-check-updates
+  postcss-sass
   prettier
   standard
   stylelint
@@ -34,7 +36,7 @@ node_modules=(
   stylelint-order
   stylelint-processor-styled-components
   stylelint-scss
-  trevor
+  typescript
 )
 
 for module in "${node_modules[@]}"
