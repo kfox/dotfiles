@@ -16,7 +16,7 @@ alias vt='mvim --remote-tab'
 # git-related aliases
 alias gd='git diff'
 alias gdf='git diff --follow'
-alias gp='git pull'
+alias gp='git fetch -p && git rm-merged && git pull'
 alias gs='git status --ignore-submodules=dirty'
 
 # dotfile management
