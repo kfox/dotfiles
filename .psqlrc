@@ -1,0 +1,56 @@
+\set QUIET 1
+
+-- Customize the prompts
+
+\set PROMPT1 '%n@%/%R%#%x '
+\set PROMPT2 '[more] %R > '
+
+-- By default, NULL displays as an empty space. Is it actually an empty
+-- string, or is it null? This makes that distinction visible.
+
+\pset null '[NULL]'
+
+-- Autocomplete keywords (like SELECT) in upper-case, even if you started
+-- typing them in lower case.
+
+\set COMP_KEYWORD_CASE upper
+
+-- Display query times for all queries
+
+\timing
+
+-- Save previous SQL commands
+
+\set HISTSIZE 2000
+
+-- If a command is run more than once in a row,
+-- only store it once in the history.
+
+\set HISTCONTROL ignoredups
+
+-- Use a separate history file per-database.
+
+\set HISTFILE ~/.psql_history- :DBNAME
+
+-- Use table format (with headers across the top) by default, but switch to
+-- expanded table format when there's a lot of data, which makes it much
+-- easier to read.
+
+\x auto
+
+-- Increase verbosity of error reports
+
+\set VERBOSITY verbose
+
+\set QUIET 0
+
+-- Aliases
+
+\set version 'SELECT version();'
+\set extensions 'select * from pg_available_extensions;'
+
+-- Startup text
+
+\echo 'Type :version to see the PostgreSQL version.'
+\echo 'Type :extensions to see the available extensions.'
+\echo 'Type \\q to exit.\n'
