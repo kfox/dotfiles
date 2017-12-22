@@ -1,6 +1,9 @@
 #!/bin/bash
 
-# associates specific file extensions with MacVim
+# usage: reassociate [application]
+#
+#   Associates common programming source file extensions
+#   with a given code editor (VS Code by default).
 
 command -v duti >/dev/null 2>&1 || { brew install duti; }
 
@@ -20,12 +23,11 @@ extensions=(
   scss
   sh
   sql
-  vim
   yaml
   yml
 )
 
-[ -z "$1" ] && application='org.vim.MacVim' || application=$1
+[ -z "$1" ] && application='com.microsoft.VSCode' || application=$1
 
 duti -s ${application} public.plain-text all
 
