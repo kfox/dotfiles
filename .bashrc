@@ -191,10 +191,9 @@ export HISTSIZE=10000
 export HISTFILESIZE=10000
 export HISTCONTROL=ignoreboth
 
-# go stuff, e.g. for using "go get <blah>"
-export PATH=$PATH:/usr/local/opt/go/libexec/bin
-export GOPATH=$HOME/Development/go
-export PATH=$PATH:$GOPATH/bin
+# Golang stuff
+export GOPATH=$HOME/go
+export PATH=$PATH:/usr/local/opt/go/libexec/bin:$HOME/go/bin
 
 # rbenv setup
 export PATH="$HOME/.rbenv/bin:$PATH"

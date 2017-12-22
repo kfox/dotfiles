@@ -57,6 +57,9 @@ do
   /usr/local/bin/cargo install ${package}
 done
 
+echo "==> setting up Go environment"
+mkdir ~/go
+
 echo "==> setting up Python virtual environments"
 
 /usr/local/bin/pip3 install virtualenvwrapper
