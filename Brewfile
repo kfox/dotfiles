@@ -82,6 +82,7 @@ cask "google-chrome"
 cask "otx"
 cask "skyfonts"
 cask "sourcetree"
+cask "visual-studio-code"
 cask "wireshark"
 mas "Airmail 3", id: 918858936
 mas "Bear", id: 1091189122
