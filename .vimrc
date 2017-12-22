@@ -215,6 +215,9 @@ au BufRead,BufNewFile *.txt,*.md call s:setupWrapping()
 " These files are Ruby
 autocmd BufRead,BufNewFile config.ru,{Brew,Gem,Guard,Rake,Thor}file set filetype=ruby
 
+" PostgreSQL config
+autocmd BufRead,BufNewFile .psqlrc set filetype=sql
+
 " cson (coffeescript)
 au BufNewFile,BufRead *.cson set filetype=coffee
 
