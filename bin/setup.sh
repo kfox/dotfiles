@@ -69,6 +69,9 @@ export WORKON_HOME=$HOME/.virtualenvs
 mkdir -p ${WORKON_HOME}
 source /usr/local/bin/virtualenvwrapper.sh
 
+echo "==> setting up Apex"
+/usr/bin/curl https://raw.githubusercontent.com/apex/apex/master/install.sh | sh
+
 echo "==> setting up Vim"
 
 # create the backup directory for Vim

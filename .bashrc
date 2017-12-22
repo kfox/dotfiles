@@ -202,6 +202,17 @@ command -v rbenv >/dev/null 2>&1 && eval "$(rbenv init -)"
 # bash shell command completion
 [ -f $(brew --prefix)/etc/bash_completion ] && . $(brew --prefix)/etc/bash_completion
 
+# apex autocomplete
+_apex()  {
+  COMPREPLY=()
+  local cur="${COMP_WORDS[COMP_CWORD]}"
+  local opts="$(apex autocomplete -- ${COMP_WORDS[@]:1})"
+  COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
+  return 0
+}
+
+complete -F _apex apex
+
 # python virtualenv setup
 if [ -x /usr/local/bin/virtualenvwrapper.sh ]; then
   export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python3
