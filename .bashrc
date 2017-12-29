@@ -83,8 +83,9 @@ function gh {
 #
 
 function gpr {
-  repo=$(git ls-remote --get-url 2>/dev/null)
-  branch=$(git branch --no-color --contains HEAD 2>/dev/null | awk '{ print $2 }')
+  local repo=$(git ls-remote --get-url 2>/dev/null)
+  local branch=$(git branch --no-color --contains HEAD 2>/dev/null | awk '{ print $2 }')
+  local title=$(git log -1 --pretty=%B | tr -d '\n')
 
   if [[ $repo == *"git@github.com"* ]]; then
     repo=${repo/git@github.com:/https:\/\/github.com/}
@@ -92,9 +93,9 @@ function gpr {
   fi
 
   if [ -n "${repo}" -a -n "${branch}" ]; then
-    url="${repo}/compare/${branch}?expand=1"
-    echo $url | pbcopy
-    open $url
+    local url="${repo}/compare/${branch}?expand=1&title=${title}"
+    echo "${url}" | pbcopy
+    open "${url}"
   else
     echo "Not in a git repository."
   fi
