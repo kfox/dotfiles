@@ -5,7 +5,9 @@ command -v brew >/dev/null && \
   brew update && sleep 1s && \
   brew upgrade && sleep 1s && \
   brew cleanup --force && sleep 1s && \
-  brew prune
+  brew prune && sleep 1s && \
+  brew cask upgrade && sleep 1s && \
+  brew cask cleanup
 
 # npm
 if [ -n "$(command -v npm)" ]; then
