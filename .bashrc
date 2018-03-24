@@ -141,15 +141,6 @@ fi
 #
 ################################################################################
 
-# set the default pager to Vim
-# NOTE: tweak the .vimrc.pager and .gvimrc.pager files if desired
-export MANPAGER='col -bx | \
-  mvim -RMm --noplugin \
-  -c "set ft=man lines=70 columns=140" \
-  -c "file MANPAGE" \
-  -u ~/.vimrc.pager \
-  -U ~/.gvimrc.pager - >/dev/null 2>&1'
-
 # set up the path
 export PATH="/usr/local/share/npm/bin:/usr/local/opt/go/libexec/bin:$HOME/.cargo/bin:/usr/local/bin:$HOME/bin:$PATH"
 
