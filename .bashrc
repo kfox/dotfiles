@@ -63,7 +63,7 @@ function gh {
     fi
   elif [[ $repo != *\/* ]]; then
     # arg format: vim-vinegar
-    repo=$(curl -s -X GET "https://api.github.com/search/repositories?q=$repo&fork=false&in=html_url&order=desc" | python -c 'import sys,json;data=json.loads(sys.stdin.read()); print data["items"][0]["html_url"]')
+    repo=$(curl -s -X GET "https://api.github.com/search/repositories?q=$repo&fork=false&in=html_url&order=desc" | python -c 'import sys,json;data=json.loads(sys.stdin.read()); print(data["items"][0]["html_url"])')
   else
     # arg format: tpope/vim-vinegar
     repo="https://github.com/$repo"
