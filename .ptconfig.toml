@@ -1,2 +1,11 @@
-ignore = ["*.min.js", "*.min.css", "tags", "*.svg", "react-codemod", "node_modules"]
+ignore = [
+  "*.min.css",
+  "*.min.js",
+  "*.svg",
+  "node_modules",
+  "react-codemod",
+  "tags",
+  "yarn-error.log",
+  "yarn.lock"
+]
 smart-case = true
