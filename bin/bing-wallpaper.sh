@@ -14,6 +14,8 @@ for p in ${urls[@]}; do
   fullpath=$PICTURE_DIR/$filename
   if [ ! -f "${fullpath}" ]; then
     curl -s -Lo "$fullpath" $p
-    /usr/bin/osascript -e "tell application \"Finder\" to set desktop picture to POSIX file \"$fullpath\""
+    /usr/bin/osascript -e \
+      "tell application \"Finder\" to set desktop picture to POSIX file \"$fullpath\"" \
+      >/dev/null 2>&1
   fi
 done
