@@ -252,13 +252,13 @@ let g:pyindent_open_paren = 'shiftwidth()'
 let python_highlight_all = 1
 
 " -- virtualenv support
-python3 << EOF
-import os
-if 'VIRTUAL_ENV' in os.environ:
-    project_base_dir = os.environ['VIRTUAL_ENV']
-    activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
-    exec(compile(open(activate_this).read(), activate_this, 'exec'), dict(__file__=activate_this))
-EOF
+" python << EOF
+" import os
+" if 'VIRTUAL_ENV' in os.environ:
+"    project_base_dir = os.environ['VIRTUAL_ENV']
+"    activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
+"    exec(compile(open(activate_this).read(), activate_this, 'exec'), dict(__file__=activate_this))
+" EOF
 
 """"""""""""""""" cscope
 
