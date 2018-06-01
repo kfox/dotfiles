@@ -21,3 +21,6 @@ alias gs='git status --ignore-submodules=dirty'
 
 # dotfile management
 alias config='git --git-dir=$HOME/.managed-config --work-tree=$HOME'
+
+# terraform
+alias tf='terraform'
