@@ -108,7 +108,7 @@ function gpr {
 #
 
 function iterm2_print_user_vars() {
-  iterm2_set_user_var gitRepo $(git remote -v 2>/dev/null | grep fetch | sed -E -e 's#^.*/(.*)$#\1#' -e 's/.git .*$//')
+  iterm2_set_user_var gitRepo $(git remote -v 2>/dev/null | grep fetch | sed -E -e 's#^.*/(.*)$#\1#' -e 's/.git .*$//' 2>/dev/null)
   iterm2_set_user_var gitBranch $(git branch --no-color --contains HEAD 2>/dev/null | grep '^\*' | awk '$2=="(HEAD" { print $5 } $2!="(HEAD" { print $2 }' | tr -d ')')
 }
 
