@@ -1,10 +1,6 @@
-TAB: menu-complete
-"\e[Z": menu-complete-backward
-Control-y: complete
-"\C-x\C-r": re-read-init-file
 set completion-ignore-case on
 set bell-style none
 set editing-mode vi
 set visible-stats on
-set show-all-if-ambiguous off
+set show-all-if-ambiguous on
 set keymap vi
