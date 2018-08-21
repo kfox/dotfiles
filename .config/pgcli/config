@@ -7,7 +7,7 @@ smart_completion = True
 
 # Display the completions in several columns. (More completions will be
 # visible.)
-wider_completion_menu = False
+wider_completion_menu = True
 
 # Multi-line mode allows breaking up the sql statements into multiple lines. If
 # this is set to True, then the end of the statements must have a semi-colon.
@@ -85,7 +85,7 @@ timing = True
 # ascii, double, github, orgtbl, rst, mediawiki, html, latex, latex_booktabs,
 # textile, moinmoin, jira, vertical, tsv, csv.
 # Recommended: psql, fancy_grid and grid.
-table_format = fancy_grid
+table_format = psql
 
 # Syntax Style. Possible values: manni, igor, xcode, vim, autumn, vs, rrt,
 # native, perldoc, borland, tango, emacs, friendly, monokai, paraiso-dark,
@@ -105,7 +105,7 @@ vi = True
 on_error = STOP
 
 # Set threshold for row limit prompt. Use 0 to disable prompt.
-row_limit = 1000
+row_limit = 2500
 
 # Skip intro on startup and goodbye on exit
 less_chatty = True
@@ -123,7 +123,7 @@ less_chatty = True
 prompt = '\u@\h:\d> '
 
 # Number of lines to reserve for the suggestion menu
-min_num_menu_lines = 4
+min_num_menu_lines = 3
 
 # Character used to left pad multi-line queries to match the prompt size.
 multiline_continuation_char = ''
