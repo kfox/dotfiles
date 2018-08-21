@@ -3,11 +3,9 @@
 # homebrew
 command -v brew >/dev/null && \
   brew update && sleep 1s && \
-  brew upgrade && sleep 1s && \
-  brew cleanup --force -s && sleep 1s && \
-  brew prune && sleep 1s && \
   brew cask upgrade && sleep 1s && \
-  brew cask cleanup
+  brew upgrade --cleanup --ignore-pinned --display-times && sleep 1s && \
+  brew prune
 
 # npm
 if [ -n "$(command -v npm)" ]; then
