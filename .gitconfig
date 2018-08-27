@@ -33,7 +33,7 @@
   lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
   new = checkout -b
   pf = push --force-with-lease
-  rm-merged = !git fetch -p && git branch --no-color --merged master | grep -v '\\* master' | xargs -n 1 git branch -d
+  rm-merged = !git fetch -p && git branch --no-color --merged master | grep -v '. master' | xargs -n 1 git branch -d
   st = status
   undo-commit = reset --soft HEAD~1
   whatis = show -s --pretty='tformat:%h (%s, %ad)' --date=short
