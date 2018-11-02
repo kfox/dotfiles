@@ -126,11 +126,11 @@ export PS2='> '
 export PS4='+ '
 
 if [ -f "/usr/local/opt/bash-git-prompt/share/gitprompt.sh" ]; then
-  GIT_PROMPT_ONLY_IN_REPO=1
-  # GIT_PROMPT_SHOW_UPSTREAM=1
+  export GIT_PROMPT_ONLY_IN_REPO=1
+  # export GIT_PROMPT_SHOW_UPSTREAM=1
 
-  GIT_PROMPT_THEME=Custom
-  GIT_PROMPT_THEME_FILE=~/.git-prompt-colors.sh
+  export GIT_PROMPT_THEME=Custom
+  export GIT_PROMPT_THEME_FILE=~/.git-prompt-colors.sh
 
   source /usr/local/opt/bash-git-prompt/share/gitprompt.sh
 fi
@@ -142,7 +142,7 @@ fi
 ################################################################################
 
 # set up the path
-export PATH="/usr/local/share/npm/bin:/usr/local/opt/go/libexec/bin:$HOME/.cargo/bin:/usr/local/bin:$HOME/bin:$PATH"
+export PATH="/usr/local/share/npm/bin:/usr/local/opt/go/libexec/bin:$HOME/go/bin:$HOME/.cargo/bin:/usr/local/sbin:/usr/local/bin:$HOME/bin:$PATH"
 
 export CDPATH=.
 
@@ -169,14 +169,13 @@ export HISTCONTROL=ignoreboth
 
 # Golang stuff
 export GOPATH=$HOME/go
-export PATH=$PATH:/usr/local/opt/go/libexec/bin:$HOME/go/bin
 
 # rbenv setup
 export PATH="$HOME/.rbenv/bin:$PATH"
 command -v rbenv >/dev/null 2>&1 && eval "$(rbenv init -)"
 
 # bash shell command completion
-[ -f $(brew --prefix)/etc/bash_completion ] && . $(brew --prefix)/etc/bash_completion
+[ -f "$(brew --prefix)/etc/bash_completion" ] && . "$(brew --prefix)/etc/bash_completion"
 
 # apex autocomplete
 _apex()  {
@@ -199,7 +198,7 @@ fi
 
 # use z to track most-used directories and jump around more easily than
 # with cd
-source `brew --prefix`/etc/profile.d/z.sh
+source "$(brew --prefix)/etc/profile.d/z.sh"
 
 # enable direnv
 eval "$(direnv hook bash)"
