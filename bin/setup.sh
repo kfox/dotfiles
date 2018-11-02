@@ -45,18 +45,6 @@ do
   /usr/local/bin/npm install -g ${module}
 done
 
-echo "==> installing global Cargo packages"
-
-cargo_packages=(
-  rustfmt
-)
-
-for package in "${cargo_packages[@]}"
-do
-  echo "==> installing Cargo package: ${package}"
-  /usr/local/bin/cargo install ${package}
-done
-
 echo "==> setting up Go environment"
 mkdir ~/go
 
@@ -68,20 +56,5 @@ export PROJECT_HOME=$HOME/src
 export WORKON_HOME=$HOME/.virtualenvs
 mkdir -p ${WORKON_HOME}
 source /usr/local/bin/virtualenvwrapper.sh
-
-echo "==> setting up Apex"
-/usr/bin/curl https://raw.githubusercontent.com/apex/apex/master/install.sh | sh
-
-echo "==> setting up Vim"
-
-# create the backup directory for Vim
-/bin/mkdir -p ~/.vim/backup
-
-# install vim-plug
-/usr/bin/curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
-    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-
-# install all vim plugins and exit vim
-/usr/local/bin/vim +PlugInstall +qall
 
 popd >/dev/null 2>&1
