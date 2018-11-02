@@ -3,9 +3,10 @@
 These are the files I use to make the terminal a happy place to live.
 :heart:
 
-**NOTE:** I highly encourage the use of [iTerm2](https://www.iterm2.com/)
+**NOTE:** I am a big fan of [iTerm2](https://www.iterm2.com/)
 instead of the basic Terminal.app that comes with macOS. This will make
-your life on the command-line much easier.
+your life on the command-line much easier. I also recommend supporting the
+author's work on [Patreon](https://www.patreon.com/gnachman).
 
 ## Installation and Setup
 
@@ -16,7 +17,7 @@ Then run the setup script:
 $ setup.sh
 ```
 
-## What do we have here?
+## Contents
 
 ### Bash configuration files
 
@@ -35,9 +36,6 @@ The guts of my Bash setup. Here's what it does for you:
   [port]`. The `documentroot` defaults to the current directory and the
   port defaults to `8080`.
 
-* `st` launches [SourceTree](https://www.sourcetreeapp.com/) using your
-  current repository, regardless of your current directory depth.
-
 * `gh` is a handy way to open the appropriate respository home page for
   projects on github.com via the command line. It works in three different
   modes:
@@ -51,12 +49,10 @@ The guts of my Bash setup. Here's what it does for you:
   3. With an argument like username/repo, e.g. `tpope/vim-vinegar`, it
      will just open that repo
 
-* `gpr` will compare the current branch to another branch on github.com,
-  assuming you're in a repo
+* `gpr` will open a pull request on github.com for the current branch
+  if your current working directory is part of a local git repository.
 
 ##### Environment
-
-Lots of environment variables are set to do many things.
 
 * The main thing here is the git-repo-friendly prompt courtesy of
   [bash-git-prompt](https://github.com/magicmonty/bash-git-prompt). You
@@ -79,8 +75,6 @@ Lots of environment variables are set to do many things.
 
 #### `.bash_aliases`
 
-Nothing overwhelming here.
-
 * Make `ls` output more useful. Show all directories and use some color
   while doing it.
 
@@ -88,8 +82,6 @@ Nothing overwhelming here.
   systems
 
 * "Clear the screen" just by typing `c`
-
-* Open a file in a new tab of an existing MacVim window using `vt`
 
 * Add a couple of Rails and git aliases. The keystrokes you save may be
   your own.
@@ -105,7 +97,7 @@ Nothing overwhelming here.
 
 * Disables the terminal bell
 
-* Sets the default command-line editing mode to use vim keybinds
+* Sets the default command-line editing mode to use vi keybinds
   instead of emacs, e.g. hit <kbd>Esc</kbd>-<kbd>K</kbd> to enter
   edit mode, then <kbd>K</kbd> again to move back through your
   command history or other `vi` command-mode commands to move and
@@ -128,11 +120,9 @@ Nothing overwhelming here.
 The `.gitignore_global` file specifies filename patterns to ignore
 globally, and is specified in the `.gitconfig` file.
 
-In addition to setting up MacVim to be used as your difftool, the
-`.gitconfig` file also defines several handy aliases:
+The `.gitconfig` file defines several handy aliases:
 
-* `alias` will add a new alias, e.g. `git alias <alias> <original
-  command>`
+* `alias` will add a new alias, e.g. `git alias <alias> <original command>`
 
 * `aliases` will list all defined aliases
 
@@ -180,37 +170,6 @@ In addition to setting up MacVim to be used as your difftool, the
 * `whois` gives you the full name and email address of a user if you
   provide a username
 
-### Vim configuration files
-
-#### Vim
-
-* `.vimrc`
-
-#### MacVim
-
-* `.gvimrc`
-
-#### Man Page Viewer
-
-There's a `MANPAGER` variable setting exported in the `.bashrc` file
-that will set your default man page viewer to MacVim. The following two
-files further define the behavior of MacVim in "man page" mode:
-
-* `.vimrc.pager`
-* `.gvimrc.pager`
-
-While viewing a man page in MacVim, you can use the typical man page
-navigation keys, e.g. <kbd>Space</kbd> for next page, <kbd>q</kbd>
-to quit, etc. You can also use all Vim commands, but none of the
-commands to change/insert text will work.
-
-#### Color Schemes
-
-Two color schemes are included, neither of which are my favorite:
-
-* `.vim/colors/kelly.vim`
-* `.vim/colors/kellys.vim`
-
 ### Homebrew
 
 My [Homebrew](https://brew.sh/) environment is preserved by way of
@@ -250,8 +209,8 @@ These scripts are all located in the `bin` directory:
   the command line
 
 * `reassociate` will associate source code file extensions with
-  MacVim so you can <kbd>Command</kbd>-click a filename in iTerm2 and
-  have it open up in MacVIm
+  VS Code so you can <kbd>Command</kbd>-click a filename in iTerm2
+  (or double-click the file in Finder) and have it open in VS Code
 
 * `rmbr` deletes a git branch, locally and remotely
 
@@ -263,16 +222,9 @@ These scripts are all located in the `bin` directory:
 * `svg-to-data-uri.sh` will take an SVG and URL-encode it for use in a
   data: URI. Full base64 encoding isn't necessary.
 
-* `svim` launches MacVim with the session saved in `Session.vim`
-
-* `updall` updates homebrew, npm global installs, and MacVim plugins
+* `updall` updates Homebrew formulae/casks and global npm packages
 
 ### Miscellaneous configuration files
-
-#### `.eslintrc`
-
-Some defaults for [ESLint](https://github.com/eslint/eslint). Probably
-will be changing this a lot.
 
 #### `.ptconfig.toml`
 
