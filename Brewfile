@@ -48,7 +48,6 @@ brew "libav"
 brew "libyaml"
 brew "lua"
 brew "luajit"
-brew "macvim", args: ["with-lua", "with-luajit", "with-override-system-vim", "with-python3", "without-python"]
 brew "mas"
 brew "nasm"
 brew "node"
@@ -76,28 +75,21 @@ brew "yarn"
 brew "yasm"
 brew "youtube-dl"
 brew "z"
-cask "font-bitstreamverasansmono-nerd-font-mono"
 cask "font-fira-code"
 cask "font-liberation-sans"
 cask "google-chrome"
 cask "otx"
-cask "skyfonts"
 cask "sourcetree"
 cask "visual-studio-code"
-cask "wireshark"
 mas "Airmail 3", id: 918858936
-mas "Bear", id: 1091189122
 mas "CCMenu", id: 603117688
 mas "Fantastical 2", id: 975937182
-mas "GarageBand", id: 682658836
-mas "iMovie", id: 408981434
 mas "Keynote", id: 409183694
 mas "Logic Pro X", id: 634148309
 mas "Numbers", id: 409203825
 mas "Pages", id: 409201541
 mas "Pixelmator", id: 407963104
 mas "Slack", id: 803453959
-mas "SoundCloud", id: 412754595
 mas "Things3", id: 904280696
 mas "Tweetbot", id: 557168941
 mas "Xcode", id: 497799835
