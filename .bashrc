@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 ################################################################################
 #
 # FUNCTIONS
@@ -13,27 +14,12 @@
 function serve {
   dir="${1:-.}"
   port="${2:-8080}"
-  if [ -n "$(which http-server)" ]; then
+  if [ -n "$(command -v http-server)" ]; then
     # to make this work: brew install http-server
-    http-server -r -c-1 --cors $dir -p $port
+    http-server -r -c-1 --cors "$dir" -p "$port"
   else
-    ruby -run -e httpd $dir -p $port
+    ruby -run -e httpd "$dir" -p "$port"
   fi
-}
-
-#
-# open SourceTree
-#
-
-function st {
-  dir=$(git rev-parse --show-toplevel 2>/dev/null)
-
-  [ $? -ne 0 ] && { echo "Not in a git repo."; return; }
-
-  command -v stree >/dev/null 2>&1 && stree $dir || {
-    echo "Please install SourceTree first!"
-    open https://www.sourcetreeapp.com/
-  }
 }
 
 #
@@ -61,7 +47,7 @@ function gh {
       repo=${repo/git@github.com:/https:\/\/github.com/}
       repo=${repo/.git//}
     fi
-  elif [[ $repo != *\/* ]]; then
+  elif [[ $repo != *\\/* ]]; then
     # arg format: vim-vinegar
     repo=$(curl -s -X GET "https://api.github.com/search/repositories?q=$repo&fork=false&in=html_url&order=desc" | python -c 'import sys,json;data=json.loads(sys.stdin.read()); print(data["items"][0]["html_url"])')
   else
@@ -83,16 +69,20 @@ function gh {
 #
 
 function gpr {
-  local repo=$(git ls-remote --get-url 2>/dev/null)
-  local branch=$(git branch --no-color --contains HEAD 2>/dev/null | awk '{ print $2 }')
-  local title=$(git log -1 --pretty=%B | tr -d '\n')
+  local repo
+  local branch
+  local title
+
+  repo=$(git ls-remote --get-url 2>/dev/null)
+  branch=$(git branch --no-color --contains HEAD 2>/dev/null | awk '{ print $2 }')
+  title=$(git log -1 --pretty=%B | tr -d '\n')
 
   if [[ $repo == *"git@github.com"* ]]; then
     repo=${repo/git@github.com:/https:\/\/github.com/}
     repo=${repo/.git/}
   fi
 
-  if [ -n "${repo}" -a -n "${branch}" ]; then
+  if [ -n "${repo}" ] && [ -n "${branch}" ]; then
     local url="${repo}/compare/${branch}?expand=1&title=${title}"
     echo "${url}" | pbcopy
     open "${url}"
@@ -177,7 +167,7 @@ command -v rbenv >/dev/null 2>&1 && eval "$(rbenv init -)"
 # bash shell command completion
 [ -f "$(brew --prefix)/etc/bash_completion" ] && . "$(brew --prefix)/etc/bash_completion"
 
-# apex autocomplete
+apex autocomplete
 _apex()  {
   COMPREPLY=()
   local cur="${COMP_WORDS[COMP_CWORD]}"
@@ -202,3 +192,10 @@ source "$(brew --prefix)/etc/profile.d/z.sh"
 
 # enable direnv
 eval "$(direnv hook bash)"
+
+# tabtab source for serverless package
+# uninstall by removing these lines or running `tabtab uninstall serverless`
+[ -f /Users/kfox/welcome/chatbar/tools/deployment-console/serverless/node_modules/tabtab/.completions/serverless.bash ] && . /Users/kfox/welcome/chatbar/tools/deployment-console/serverless/node_modules/tabtab/.completions/serverless.bash
+# tabtab source for sls package
+# uninstall by removing these lines or running `tabtab uninstall sls`
+[ -f /Users/kfox/welcome/chatbar/tools/deployment-console/serverless/node_modules/tabtab/.completions/sls.bash ] && . /Users/kfox/welcome/chatbar/tools/deployment-console/serverless/node_modules/tabtab/.completions/sls.bash
