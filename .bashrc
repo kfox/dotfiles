@@ -167,7 +167,7 @@ command -v rbenv >/dev/null 2>&1 && eval "$(rbenv init -)"
 # bash shell command completion
 [ -f "$(brew --prefix)/etc/bash_completion" ] && . "$(brew --prefix)/etc/bash_completion"
 
-apex autocomplete
+# apex autocomplete
 _apex()  {
   COMPREPLY=()
   local cur="${COMP_WORDS[COMP_CWORD]}"
