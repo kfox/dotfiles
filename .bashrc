@@ -110,7 +110,7 @@ function iterm2_print_user_vars() {
 ################################################################################
 
 # use a colorized prompt and put some info in the title/tab bar
-export MAINPROMPT='\e]0;$(basename $PWD)\007\e[33;01m\u\e[37;02m:\e[0m\e[31;01m\w\e[0m'
+export MAINPROMPT='\e]0;\W\007\e[33;01m\u\e[37;02m:\e[0m\e[31;01m\w\e[0m'
 export PS1="$MAINPROMPT\n$ "
 export PS2='> '
 export PS4='+ '
