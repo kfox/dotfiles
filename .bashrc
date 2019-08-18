@@ -139,7 +139,6 @@ export CDPATH=.
 # customize the directory listing colors
 export LSCOLORS=GxFxCxDxBxegedabagacad
 
-export NODE_PATH=/usr/local/lib/node:/usr/local/lib/node_modules
 # node >= 8.2
 export NODE_OPTIONS="--abort-on-uncaught-exception"
 
