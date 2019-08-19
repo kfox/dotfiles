@@ -59,7 +59,7 @@ function gh {
   # xdg-open $repo (or possibly gnome-open $repo)
 
   # open the URL in your default browser (macOS)
-  open $repo
+  open "$repo"
 }
 
 #
