@@ -157,6 +157,9 @@ export HISTSIZE=10000
 export HISTFILESIZE=10000
 export HISTCONTROL=ignoreboth
 
+# trim the number of directories shown in a prompt
+export PROMPT_DIRTRIM=3
+
 # Golang stuff
 export GOPATH=$HOME/go
 
