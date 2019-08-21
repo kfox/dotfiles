@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+usage() {
+  echo "usage: ${0} <commitmsg>"
+  exit 1
+}
+
+[ -z "${1}" ] && usage || COMMITMSG=$*
+
+BRANCH=$(git branch --no-color --contains HEAD 2>/dev/null | \
+  grep '^\*' | \
+  awk '$2=="(HEAD" { print $5 } $2!="(HEAD" { print $2 }' | \
+  tr -d ')')
+
+[ -n "${BRANCH}" -a "${BRANCH}" != "master" ] && COMMITMSG="${BRANCH}: ${COMMITMSG}"
+
+git commit -m "${COMMITMSG}"
