@@ -101,6 +101,7 @@ function iterm2_print_user_vars() {
   iterm2_set_user_var gitRepo "$(git remote -v 2>/dev/null | grep fetch | sed -E -e 's#^.*/(.*)$#\1#' -e 's/.git .*$//' 2>/dev/null)"
   iterm2_set_user_var gitBranch "$(git branch --no-color --contains HEAD 2>/dev/null | grep '^\*' | awk '$2=="(HEAD" { print $5 } $2!="(HEAD" { print $2 }' | tr -d ')')"
   iterm2_set_user_var nodeVersion "$(node -v)"
+  iterm2_set_user_var rubyVersion "$($HOME/.rbenv/shims/ruby -v | awk '{ print $2 }')"
 }
 
 
@@ -165,7 +166,7 @@ export GOPATH=$HOME/go
 
 # rbenv setup
 export PATH="$HOME/.rbenv/bin:$PATH"
-command -v rbenv >/dev/null 2>&1 && eval "$(rbenv init -)"
+hash rbenv 2>/dev/null && eval "$(rbenv init -)" >/dev/null
 
 # bash shell command completion
 [ -f "$(brew --prefix)/etc/bash_completion" ] && . "$(brew --prefix)/etc/bash_completion"
