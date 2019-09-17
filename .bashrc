@@ -98,12 +98,11 @@ function gpr {
 #
 
 function iterm2_print_user_vars() {
-  iterm2_set_user_var gitRepo "$(git remote -v 2>/dev/null | grep fetch | sed -E -e 's#^.*/(.*)$#\1#' -e 's/.git .*$//' 2>/dev/null)"
-  iterm2_set_user_var gitBranch "$(git branch --no-color --contains HEAD 2>/dev/null | grep '^\*' | awk '$2=="(HEAD" { print $5 } $2!="(HEAD" { print $2 }' | tr -d ')')"
+  iterm2_set_user_var gitRepo "$(git config --get remote.origin.url | xargs basename -s .git)"
+  iterm2_set_user_var gitBranch "$(git rev-parse --abbrev-ref HEAD 2>/dev/null | xargs)"
   iterm2_set_user_var nodeVersion "$(node -v)"
-  iterm2_set_user_var rubyVersion "$($HOME/.rbenv/shims/ruby -v | awk '{ print $2 }')"
+  iterm2_set_user_var rubyVersion "$(rbenv version | cut -d ' ' -f1)"
 }
-
 
 ################################################################################
 #
@@ -112,8 +111,9 @@ function iterm2_print_user_vars() {
 ################################################################################
 
 # use a colorized prompt and put some info in the title/tab bar
-export MAINPROMPT='\e]0;\W\007\e[33;01m\u\e[37;02m:\e[0m\e[31;01m\w\e[0m'
-export PS1="$MAINPROMPT\n$ "
+export STARTPROMPT='\e]0;\W\007\e[31;01m \w\e[0m'
+export ENDPROMPT='\n\e[32;01m⮑\e[0m  '
+export PS1="${STARTPROMPT}${ENDPROMPT}"
 export PS2='> '
 export PS4='+ '
 
@@ -170,17 +170,6 @@ hash rbenv 2>/dev/null && eval "$(rbenv init -)" >/dev/null
 
 # bash shell command completion
 [ -f "$(brew --prefix)/etc/bash_completion" ] && . "$(brew --prefix)/etc/bash_completion"
-
-# apex autocomplete
-_apex()  {
-  COMPREPLY=()
-  local cur="${COMP_WORDS[COMP_CWORD]}"
-  local opts="$(apex autocomplete -- ${COMP_WORDS[@]:1})"
-  COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
-  return 0
-}
-
-complete -F _apex apex
 
 # python virtualenv setup
 if [ -x /usr/local/bin/virtualenvwrapper.sh ]; then
