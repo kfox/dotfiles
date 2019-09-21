@@ -112,7 +112,7 @@ function iterm2_print_user_vars() {
 
 # use a colorized prompt and put some info in the title/tab bar
 export STARTPROMPT='\e]0;\W\007\e[31;01m \w\e[0m'
-export ENDPROMPT='\n\e[32;01m⮑\e[0m  '
+export ENDPROMPT='\n\[\e[32;01m\]⮑\[\e[0m\]  '
 export PS1="${STARTPROMPT}${ENDPROMPT}"
 export PS2='> '
 export PS4='+ '
