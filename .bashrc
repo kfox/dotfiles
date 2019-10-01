@@ -134,7 +134,7 @@ fi
 ################################################################################
 
 # set up the path
-export PATH="/usr/local/share/npm/bin:/usr/local/opt/go/libexec/bin:$HOME/go/bin:$HOME/.cargo/bin:/usr/local/sbin:/usr/local/bin:$HOME/bin:$PATH"
+export PATH="/usr/local/share/npm/bin:/usr/local/opt/go/libexec/bin:$HOME/go/bin:$HOME/.cargo/bin:/usr/local/sbin:$HOME/bin:$PATH"
 
 export CDPATH=.
 
