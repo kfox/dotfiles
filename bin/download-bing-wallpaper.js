@@ -11,6 +11,8 @@ const { HOME } = process.env
 const WALLPAPERS_DIR = `${HOME}/Google Drive/Pictures/Bing`
 const DAYS_TO_RETAIN_WALLPAPERS = 365
 
+process.on('unhandledRejection', console.error)
+
 mkdirSync(WALLPAPERS_DIR, { recursive: true })
 
 const getBingIndexPage = url => {
@@ -79,14 +81,22 @@ const removeOldFiles = async () => {
 }
 
 const getWallpaperUrl = async url => {
+  let data
+  let regex
+
   try {
-    const data = await getBingIndexPage(url)
-    const regex = /url:'(.*?)'/
+    data = await getBingIndexPage(url)
+    regex = /"Url":"(.+?.jpg)/
     const path = regex.exec(data)[1]
     const downloadUrl = urlParser(path.replace(/^.*\//, url))
 
     return downloadUrl
   } catch (error) {
+    console.log('DATA:')
+    console.dir(data)
+    console.log('AFTER REGEX:')
+    console.dir(regex.exec(data))
+    console.log('ERROR:')
     console.error(error)
   }
 }
