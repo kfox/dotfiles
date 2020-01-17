@@ -14,7 +14,7 @@ override_git_prompt_colors() {
   GIT_PROMPT_STASHED=" ${BoldMagenta}⚑${DimWhite}·${ResetColor}"
   GIT_PROMPT_CLEAN=" ${Green}✔${ResetColor}"
   GIT_PROMPT_SEPARATOR=" ${DimWhite}»${ResetColor}"
-  GIT_PROMPT_PREFIX="${DimWhite}on ${ResetColor} "
+  GIT_PROMPT_PREFIX="${DimWhite}${ResetColor} "
   GIT_PROMPT_SUFFIX=""
   GIT_PROMPT_SYMBOLS_NO_REMOTE_TRACKING="${BrightYellow}✭${ResetColor}"
 }
