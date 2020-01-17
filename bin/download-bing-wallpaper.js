@@ -86,7 +86,7 @@ const getWallpaperUrl = async url => {
 
   try {
     data = await getBingIndexPage(url)
-    regex = /"Url":"(.+?.jpg)/
+    regex = /url:['"](.+?.jpg)/i
     const path = regex.exec(data)[1]
     const downloadUrl = urlParser(path.replace(/^.*\//, url))
 
