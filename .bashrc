@@ -100,8 +100,8 @@ function gpr {
 function iterm2_print_user_vars() {
   iterm2_set_user_var gitRepo "$(git config --get remote.origin.url | xargs basename -s .git)"
   iterm2_set_user_var gitBranch "$(git rev-parse --abbrev-ref HEAD 2>/dev/null | xargs)"
-  iterm2_set_user_var nodeVersion "$(node -v)"
-  iterm2_set_user_var rubyVersion "$(rbenv version | cut -d ' ' -f1)"
+  iterm2_set_user_var nodeVersion "$(if command -v node >/dev/null 2>&1; then node -v; else echo -n 'Not installed'; fi)"
+  iterm2_set_user_var rubyVersion "$(if command -v rbenv >/dev/null 2>&1; then (rbenv version | cut -d ' ' -f1); else ruby -v; fi)"
 }
 
 ################################################################################
@@ -140,9 +140,6 @@ export CDPATH=.
 
 # customize the directory listing colors
 export LSCOLORS=GxFxCxDxBxegedabagacad
-
-# node >= 8.2
-export NODE_OPTIONS="--abort-on-uncaught-exception"
 
 # Correct minor typos in a cd command
 shopt -s cdspell
@@ -185,10 +182,3 @@ source "$(brew --prefix)/etc/profile.d/z.sh"
 
 # enable direnv
 eval "$(direnv hook bash)"
-
-# tabtab source for serverless package
-# uninstall by removing these lines or running `tabtab uninstall serverless`
-[ -f /Users/kfox/welcome/chatbar/tools/deployment-console/serverless/node_modules/tabtab/.completions/serverless.bash ] && . /Users/kfox/welcome/chatbar/tools/deployment-console/serverless/node_modules/tabtab/.completions/serverless.bash
-# tabtab source for sls package
-# uninstall by removing these lines or running `tabtab uninstall sls`
-[ -f /Users/kfox/welcome/chatbar/tools/deployment-console/serverless/node_modules/tabtab/.completions/sls.bash ] && . /Users/kfox/welcome/chatbar/tools/deployment-console/serverless/node_modules/tabtab/.completions/sls.bash
