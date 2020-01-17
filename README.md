@@ -1,9 +1,9 @@
 # Kelly Fox's dotfiles
 
-These are the files I use to make the terminal a happy place to live.
+These are the files I use to make the terminal a better place to live and work.
 :heart:
 
-**NOTE:** I am a big fan of [iTerm2](https://www.iterm2.com/)
+**NOTE:** I suggest using [iTerm2](https://www.iterm2.com/)
 instead of the basic Terminal.app that comes with macOS. This will make
 your life on the command-line much easier. I also recommend supporting the
 author's work on [Patreon](https://www.patreon.com/gnachman).
@@ -180,11 +180,11 @@ uses the `Brewfile` to specify formulae and casks to be installed.
 
 These scripts are all located in the `bin` directory:
 
-* `bing-wallpaper.sh` will download the latest
+* `download-bing-wallpaper.js` will download the latest
   [Bing Homepage image](http://www.bing.com/gallery/)
-  to your `~/Pictures/Bing` directory and sets your primary desktop
+  to your `~/Google Drive/Pictures/Bing` directory and sets your primary desktop
   background to that image. Add it to a cron job for a fresh picture
-  every day.
+  every day. Only the last 365 days of images are retained.
 
 * `colors` shows a color palette so you can tweak your terminal colors
 
@@ -192,6 +192,8 @@ These scripts are all located in the `bin` directory:
   ```bash
   $ git commit -m "$(excuse)"
   ```
+
+* `gci`, `gco`, `gsq` — git commit, checkout, and squash shortcuts
 
 * `logicprefs` makes backups of your
   [Logic Pro X](https://www.apple.com/logic-pro/) preferences, and lets
