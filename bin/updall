@@ -6,12 +6,3 @@ env HOMEBREW_INSTALL_CLEANUP=1 HOMEBREW_UPGRADE_CLEANUP=1 \
   brew update && sleep 1s && \
   brew cask upgrade && sleep 1s && \
   brew upgrade --ignore-pinned --display-times
-
-# npm
-if [ -n "$(command -v npm)" ]; then
-  current_npm_version="$(npm -v | tr -d '\n')"
-  latest_npm_version="$(npm v npm@latest version | tr -d '\n')"
-  [ $current_npm_version != $latest_npm_version ] && npm install -g npm@latest
-  npm update -g
-  npm outdated -g
-fi
