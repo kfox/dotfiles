@@ -187,3 +187,6 @@ source "$(brew --prefix)/etc/profile.d/z.sh"
 
 # enable direnv
 eval "$(direnv hook bash)"
+
+# kubernetes-cli completion
+source <(kubectl completion bash)
