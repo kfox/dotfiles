@@ -20,23 +20,21 @@ echo "==> installing crontab"
 echo "==> installing global Node modules"
 
 node_modules=(
-  babel-eslint
   caniuse-cmd
-  eslint
-  jscodeshift
+  deps-report
+  generator-code
+  http-server
+  jsinspect
   json-diff
+  js-yaml
   npm-check-updates
-  postcss-sass
   prettier
-  standard
+  react-native-cli
   stylelint
-  stylelint-config-sass-guidelines
-  stylelint-config-standard
-  stylelint-config-styled-components
-  stylelint-order
-  stylelint-processor-styled-components
-  stylelint-scss
   typescript
+  typescript-language-server
+  uglify-js
+  xml-json
 )
 
 for module in "${node_modules[@]}"
