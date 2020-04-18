@@ -166,6 +166,11 @@ export GOPATH=$HOME/go
 export PATH="$HOME/.rbenv/bin:$PATH"
 hash rbenv 2>/dev/null && eval "$(rbenv init -)" >/dev/null
 
+# NOTE: ruby-build installs a non-Homebrew OpenSSL for each Ruby version
+# installed, and these are never upgraded. The following environment variable
+# links Rubies to Homebrew's OpenSSL 1.1 (which does get upgraded).
+export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
+
 # bash shell command completion
 [ -f "$(brew --prefix)/etc/bash_completion" ] && . "$(brew --prefix)/etc/bash_completion"
 
@@ -183,3 +188,6 @@ source "$(brew --prefix)/etc/profile.d/z.sh"
 
 # enable direnv
 eval "$(direnv hook bash)"
+
+# kubernetes-cli completion
+source <(kubectl completion bash)
