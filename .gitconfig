@@ -7,8 +7,9 @@
 [difftool "vscode"]
   cmd = code --diff \"$LOCAL" \"$REMOTE"
 [user]
-  name  = Kelly Fox
-  email = kelly@bumfuddled.com
+  # see ~/.gitconfig_local
+[include]
+  path = ~/.gitconfig_local
 [push]
   default = simple
 [color]
@@ -40,8 +41,6 @@
   whatsnew = !sh -c 'git log $1@{1}..$1@{0} "$@"'
   who = shortlog -sn --
   whois = "!sh -c 'git log -i -1 --pretty=\"format:%an <%ae>\n\" --author=\"$1\"' -"
-[github]
-  user  = kfox
 [filter "hawser"]
   clean = git hawser clean %f
   smudge = git hawser smudge %f
