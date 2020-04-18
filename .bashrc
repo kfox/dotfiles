@@ -102,6 +102,7 @@ function iterm2_print_user_vars() {
   iterm2_set_user_var gitBranch "$(git rev-parse --abbrev-ref HEAD 2>/dev/null | xargs)"
   iterm2_set_user_var nodeVersion "$(if command -v node >/dev/null 2>&1; then node -v; else echo -n 'Not installed'; fi)"
   iterm2_set_user_var rubyVersion "$(if command -v rbenv >/dev/null 2>&1; then (rbenv version | cut -d ' ' -f1); else ruby -v; fi)"
+  iterm2_set_user_var pythonVersion "$(python --version 2>&1 | cut -d ' ' -f2)"
 }
 
 ################################################################################
