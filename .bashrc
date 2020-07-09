@@ -41,6 +41,7 @@ function gh {
     # if no argument provided, then get the
     # URL of the repo in your current working directory
     repo=$(git ls-remote --get-url 2>/dev/null)
+    # shellcheck disable=SC2181
     [ $? -ne 0 ] && { echo "Not in a git repo."; return; }
 
     if [[ $repo == *"git@github.com"* ]]; then
@@ -100,9 +101,11 @@ function gpr {
 function iterm2_print_user_vars() {
   iterm2_set_user_var gitRepo "$(git config --get remote.origin.url | xargs basename -s .git)"
   iterm2_set_user_var gitBranch "$(git rev-parse --abbrev-ref HEAD 2>/dev/null | xargs)"
-  iterm2_set_user_var nodeVersion "$(if command -v node >/dev/null 2>&1; then node -v; else echo -n 'Not installed'; fi)"
-  iterm2_set_user_var rubyVersion "$(if command -v rbenv >/dev/null 2>&1; then (rbenv version | cut -d ' ' -f1); else ruby -v; fi)"
-  iterm2_set_user_var pythonVersion "$(python --version 2>&1 | cut -d ' ' -f2)"
+  # shellcheck disable=SC2086
+  iterm2_set_user_var nodeVersion "$(v=$(node -v 2>/dev/null); echo -n ${v/v/} || echo -n 'N/A')"
+  iterm2_set_user_var rubyVersion "$(rbenv version 2>/dev/null | cut -d ' ' -f1 || ruby -v)"
+  # shellcheck disable=SC2086
+  iterm2_set_user_var pythonVersion "$(v=$(python --version 2>&1); echo -n ${v/Python /})"
 }
 
 ################################################################################
@@ -120,11 +123,12 @@ export PS4='+ '
 
 if [ -f "/usr/local/opt/bash-git-prompt/share/gitprompt.sh" ]; then
   export GIT_PROMPT_ONLY_IN_REPO=1
-  # export GIT_PROMPT_SHOW_UPSTREAM=1
+  export GIT_PROMPT_SHOW_UPSTREAM=1
 
   export GIT_PROMPT_THEME=Custom
   export GIT_PROMPT_THEME_FILE=~/.git-prompt-colors.sh
 
+  # shellcheck disable=SC1091
   source /usr/local/opt/bash-git-prompt/share/gitprompt.sh
 fi
 
@@ -169,25 +173,34 @@ hash rbenv 2>/dev/null && eval "$(rbenv init -)" >/dev/null
 # NOTE: ruby-build installs a non-Homebrew OpenSSL for each Ruby version
 # installed, and these are never upgraded. The following environment variable
 # links Rubies to Homebrew's OpenSSL 1.1 (which does get upgraded).
+# shellcheck disable=SC2155
 export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
 
 # bash shell command completion
-[ -f "$(brew --prefix)/etc/bash_completion" ] && . "$(brew --prefix)/etc/bash_completion"
-
-# python virtualenv setup
-if [ -x /usr/local/bin/virtualenvwrapper.sh ]; then
-  export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python3
-  export WORKON_HOME=$HOME/.virtualenvs
-  export PROJECT_HOME=$HOME/src
-  source /usr/local/bin/virtualenvwrapper.sh
+# shellcheck disable=SC1090
+if type brew &>/dev/null; then
+  HOMEBREW_PREFIX="$(brew --prefix)"
+  if [[ -r "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh" ]]; then
+    source "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh"
+  else
+    for COMPLETION in "${HOMEBREW_PREFIX}/etc/bash_completion.d/"*; do
+      [[ -r "$COMPLETION" ]] && source "$COMPLETION"
+    done
+  fi
 fi
 
 # use z to track most-used directories and jump around more easily than
 # with cd
+# shellcheck disable=SC1090
 source "$(brew --prefix)/etc/profile.d/z.sh"
 
 # enable direnv
 eval "$(direnv hook bash)"
 
+# enable asdf
+export PATH="$HOME/.asdf/bin:$PATH"
+eval "$(asdf exec direnv hook bash)"
+
 # kubernetes-cli completion
+# shellcheck disable=SC1090
 source <(kubectl completion bash)
