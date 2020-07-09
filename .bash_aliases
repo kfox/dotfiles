@@ -19,7 +19,7 @@ alias gdf='git diff --follow'
 alias gp='git rm-merged && git pull'
 alias gs='git status --ignore-submodules=dirty'
 
-# dotfile management
+# location of the git files for the bare dotfiles repo
 alias config='git --git-dir=$HOME/.repo --work-tree=$HOME'
 
 alias tf='terraform'
