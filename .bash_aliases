@@ -20,7 +20,7 @@ alias gp='git rm-merged && git pull'
 alias gs='git status --ignore-submodules=dirty'
 
 # dotfile management
-alias config='git --git-dir=$HOME/.managed-config --work-tree=$HOME'
+alias config='git --git-dir=$HOME/.repo --work-tree=$HOME'
 
 alias tf='terraform'
 alias k='kubectl'
