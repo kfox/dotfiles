@@ -123,7 +123,7 @@ export PS4='+ '
 
 if [ -f "/usr/local/opt/bash-git-prompt/share/gitprompt.sh" ]; then
   export GIT_PROMPT_ONLY_IN_REPO=1
-  export GIT_PROMPT_SHOW_UPSTREAM=1
+  # export GIT_PROMPT_SHOW_UPSTREAM=1
 
   export GIT_PROMPT_THEME=Custom
   export GIT_PROMPT_THEME_FILE=~/.git-prompt-colors.sh
