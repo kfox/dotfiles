@@ -1,54 +1,57 @@
 [core]
-  excludesfile = ~/.gitignore_global
-  editor = code --wait --new-window
+	excludesfile = ~/.gitignore_global
+	editor = code --wait --new-window
 	pager = diff-so-fancy | less --tabs=4 -RFX
 [diff]
-  tool = vscode
+	tool = vscode
 [difftool "vscode"]
-  cmd = code --diff \"$LOCAL" \"$REMOTE"
+	cmd = code --diff \"$LOCAL" \"$REMOTE"
 [user]
-  # see ~/.gitconfig_local
+	# see ~/.gitconfig_local
 [include]
-  path = ~/.gitconfig_local
+	path = ~/.gitconfig_local
 [push]
-  default = simple
+	default = simple
 [color]
-  ui = true
-  diff   = auto
-  status = auto
-  branch = auto
+	ui = true
+	diff   = auto
+	status = auto
+	branch = auto
 [alias]
-  alias = "!sh -c '[ $# = 2 ] && git config --global alias.\"$1\" \"$2\" && exit 0 || echo \"usage: git alias <new alias> <original command>\" >&2 && exit 1' -"
-  aliases = !git config --get-regexp 'alias.*' | colrm 1 6 | sed 's/[ ]/ = /'
-  br = branch
-  changes = diff --name-status -r
-  ci = commit
-  co = checkout
-  csm = rev-list --no-merges --count HEAD ^master
-  dc = diff --cached
-  df = diff
-  diffstat = diff --stat -r
-  history = log --follow -p --
-  laststash = diff stash@{0}^!
-  lc = log ORIG_HEAD.. --stat --no-merges
-  lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
-  new = checkout -b
-  pf = push --force-with-lease
-  rm-merged = !git fetch -p && git branch --no-color --merged master | grep -v '. master' | xargs -n 1 git branch -d
-  st = status
-  undo-commit = reset --soft HEAD~1
-  whatis = show -s --pretty='tformat:%h (%s, %ad)' --date=short
-  whatsnew = !sh -c 'git log $1@{1}..$1@{0} "$@"'
-  who = shortlog -sn --
-  whois = "!sh -c 'git log -i -1 --pretty=\"format:%an <%ae>\n\" --author=\"$1\"' -"
+	alias = "!sh -c '[ $# = 2 ] && git config --global alias.\"$1\" \"$2\" && exit 0 || echo \"usage: git alias <new alias> <original command>\" >&2 && exit 1' -"
+	aliases = !git config --get-regexp 'alias.*' | colrm 1 6 | sed 's/[ ]/ = /'
+	br = branch
+	changes = diff --name-status -r
+	ci = commit
+	co = checkout
+	csm = rev-list --no-merges --count HEAD ^master
+	dc = diff --cached
+	df = diff
+	diffstat = diff --stat -r
+	history = log --follow -p --
+	laststash = diff stash@{0}^!
+	lc = log ORIG_HEAD.. --stat --no-merges
+	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+	new = checkout -b
+	pf = push --force-with-lease
+	rm-merged = !git fetch -p && git branch --no-color --merged master | grep -v '. master' | xargs -n 1 git branch -d
+	skip = update-index --skip-worktree
+	skipped = !git ls-files -v | grep '^S' | cut -d' ' -f2
+	st = status
+	undo-commit = reset --soft HEAD~1
+	unskip = update-index --no-skip-worktree
+	whatis = show -s --pretty='tformat:%h (%s, %ad)' --date=short
+	whatsnew = !sh -c 'git log $1@{1}..$1@{0} "$@"'
+	who = shortlog -sn --
+	whois = "!sh -c 'git log -i -1 --pretty=\"format:%an <%ae>\n\" --author=\"$1\"' -"
 [filter "hawser"]
-  clean = git hawser clean %f
-  smudge = git hawser smudge %f
-  required = true
+	clean = git hawser clean %f
+	smudge = git hawser smudge %f
+	required = true
 [credential]
-  helper = osxkeychain
+	helper = osxkeychain
 [mailmap]
-  file = ~/.mailmap
+	file = ~/.mailmap
 [color "diff-highlight"]
 	oldNormal = red bold
 	oldHighlight = red bold 52
