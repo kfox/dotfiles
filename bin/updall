@@ -4,5 +4,5 @@
 env HOMEBREW_INSTALL_CLEANUP=1 HOMEBREW_UPGRADE_CLEANUP=1 \
   command -v brew >/dev/null && \
   brew update && sleep 1s && \
-  brew cask upgrade && sleep 1s && \
+  brew upgrade --cask && sleep 1s && \
   brew upgrade --ignore-pinned --display-times
