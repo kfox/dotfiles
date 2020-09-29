@@ -25,7 +25,7 @@ function serve {
 #
 # open the appropriate GitHub repository home page
 #
-# usage: gh [repo]
+# usage: gogh [repo]
 #
 #  - in a repo directory with no arguments, goes to the repo home page
 #  - if repo argument is given and doesn't have a slash, use the first
@@ -34,7 +34,7 @@ function serve {
 #    directly to that repo
 #
 
-function gh {
+function gogh {
   repo="$1"
 
   if [ -z "$repo" ]; then
