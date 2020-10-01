@@ -19,12 +19,12 @@
 	branch = auto
 [alias]
 	alias = "!sh -c '[ $# = 2 ] && git config --global alias.\"$1\" \"$2\" && exit 0 || echo \"usage: git alias <new alias> <original command>\" >&2 && exit 1' -"
-	aliases = !git config --get-regexp 'alias.*' | colrm 1 6 | sed 's/[ ]/ = /'
+	aliases = !git config --get-regexp 'alias.*' | sed -e 's/^alias.//' -e 's/ / = /'
 	br = branch
 	changes = diff --name-status -r
 	ci = commit
 	co = checkout
-	csm = rev-list --no-merges --count HEAD ^master
+	csm = rev-list --no-merges --count HEAD ^HEAD
 	dc = diff --cached
 	df = diff
 	diffstat = diff --stat -r
@@ -34,7 +34,7 @@
 	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
 	new = checkout -b
 	pf = push --force-with-lease
-	rm-merged = !git fetch -p && git branch --no-color --merged master | grep -v '. master' | xargs -n 1 git branch -d
+	rm-merged = !git fetch -p && git branch --no-contains HEAD --merged HEAD | xargs -n 1 git branch -d
 	skip = update-index --skip-worktree
 	skipped = !git ls-files -v | grep '^S' | cut -d' ' -f2
 	st = status
@@ -66,3 +66,5 @@
 	whitespace = red reverse
 [pull]
 	rebase = false
+[init]
+	defaultBranch = main
