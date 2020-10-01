@@ -12,6 +12,8 @@ BRANCH=$(git branch --no-color --contains HEAD 2>/dev/null | \
   awk '$2=="(HEAD" { print $5 } $2!="(HEAD" { print $2 }' | \
   tr -d ')')
 
-[ -n "${BRANCH}" -a "${BRANCH}" != "master" ] && COMMITMSG="${BRANCH}: ${COMMITMSG}"
+DEFAULT=$(git rev-parse --abbrev-ref origin/HEAD | sed 's/^origin\///')
+
+[ -n "${BRANCH}" ] && [ "${BRANCH}" != "${DEFAULT}" ] && COMMITMSG="${BRANCH}: ${COMMITMSG}"
 
 git commit -m "${COMMITMSG}"
