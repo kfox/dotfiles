@@ -201,6 +201,9 @@ eval "$(direnv hook bash)"
 export PATH="$HOME/.asdf/bin:$PATH"
 eval "$(asdf exec direnv hook bash)"
 
+# A shortcut for asdf-managed direnv
+direnv() { asdf exec direnv "$@"; }
+
 # kubernetes-cli completion
 # shellcheck disable=SC1090
 source <(kubectl completion bash)
