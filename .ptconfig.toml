@@ -3,6 +3,7 @@ ignore = [
   "*.min.js",
   "*.svg",
   "node_modules",
+  "package-lock.json",
   "react-codemod",
   "tags",
   "yarn-error.log",
