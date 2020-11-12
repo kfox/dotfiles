@@ -1,0 +1,6 @@
+--hidden
+--max-columns=150
+--max-columns-preview
+--smart-case
+--type-add
+web:*.{html,css,js}*

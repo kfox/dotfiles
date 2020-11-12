@@ -197,6 +197,9 @@ source "$(brew --prefix)/etc/profile.d/z.sh"
 # enable direnv
 eval "$(direnv hook bash)"
 
+# set config path for ripgrep
+export RIPGREP_CONFIG_PATH="$HOME/.config/ripgrep/ripgreprc"
+
 # enable asdf
 export PATH="$HOME/.asdf/bin:$PATH"
 eval "$(asdf exec direnv hook bash)"
