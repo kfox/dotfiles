@@ -6,13 +6,22 @@ const { get } = require('https')
 const { join } = require('path')
 const { parse: queryParser } = require('querystring')
 const { parse: urlParser } = require('url')
+const { debuglog } = require('util')
+
+const log = debuglog('wallpaper')
+
+// for additional debugging output:
+//   NODE_APP=wallpaper download-bing-wallpaper.js
 
 const { HOME } = process.env
 const WALLPAPERS_DIR = `${HOME}/Google Drive/Pictures/Bing`
 const DAYS_TO_RETAIN_WALLPAPERS = 365
 
+log('retaining wallpapers for %d days', DAYS_TO_RETAIN_WALLPAPERS)
+
 process.on('unhandledRejection', console.error)
 
+log('creating directory "%s"', WALLPAPERS_DIR)
 mkdirSync(WALLPAPERS_DIR, { recursive: true })
 
 const getBingIndexPage = url => {
@@ -39,12 +48,15 @@ const downloadAndSetWallpaperFromUrl = async urlObj => {
   const pathToFile = join(WALLPAPERS_DIR, filename)
 
   if (!existsSync(pathToFile)) {
+    log('saving wallpaper as "%s"', pathToFile)
     const file = createWriteStream(pathToFile)
 
     get(urlObj, response => {
       response.pipe(file)
       response.on('end', () => setDesktopPicture(pathToFile))
     })
+  } else {
+    log('file already exists: "%s"', pathToFile)
   }
 }
 
@@ -60,6 +72,7 @@ const setDesktopPicture = pathToFile => {
     stdio: 'inherit',
   }
 
+  log('attempting to set desktop picture to "%s"', pathToFile)
   spawnSync('/usr/bin/osascript', args, options)
 }
 
@@ -77,6 +90,7 @@ const removeOldFiles = async () => {
     stdio: 'inherit',
   }
 
+  log('removing old wallpapers')
   spawnSync('find', args, options)
 }
 
