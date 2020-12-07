@@ -16,6 +16,6 @@ DEFAULT=$(git rev-parse --abbrev-ref origin/HEAD | sed 's/^origin\///')
 
 [ -n "${BRANCH}" ] && [ "${BRANCH}" != "${DEFAULT}" ] && COMMITMSG="${BRANCH}: ${COMMITMSG}"
 
-git reset --soft "${DEFAULT}"
-git commit -m "${COMMITMSG}"
-git push --force-with-lease
+git reset --soft "${DEFAULT}" && \
+  git commit -m "${COMMITMSG}" && \
+  git push --force-with-lease
