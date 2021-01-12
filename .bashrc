@@ -194,14 +194,12 @@ fi
 # shellcheck disable=SC1090
 source "$(brew --prefix)/etc/profile.d/z.sh"
 
-# enable direnv
-eval "$(direnv hook bash)"
-
 # set config path for ripgrep
 export RIPGREP_CONFIG_PATH="$HOME/.config/ripgrep/ripgreprc"
 
-# enable asdf
+# enable asdf and direnv
 export PATH="$HOME/.asdf/bin:$PATH"
+export DIRENV_LOG_FORMAT=""
 eval "$(asdf exec direnv hook bash)"
 
 # A shortcut for asdf-managed direnv
