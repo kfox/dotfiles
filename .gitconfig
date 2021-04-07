@@ -34,7 +34,7 @@
 	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
 	new = checkout -b
 	pf = push --force-with-lease
-	rm-merged = !git branch --list --format "%(if:equals=[gone])%(upstream:track)%(then)%(refname:short)%(end)" | xargs git branch -D
+	rm-merged = !git fetch -p && git branch --list --format '%(if:equals=[gone])%(upstream:track)%(then)%(refname:short)%(end)' | xargs git branch -D
 	skip = update-index --skip-worktree
 	skipped = !git ls-files -v | grep '^S' | cut -d' ' -f2
 	st = status
