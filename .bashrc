@@ -103,7 +103,7 @@ function iterm2_print_user_vars() {
   iterm2_set_user_var gitBranch "$(git rev-parse --abbrev-ref HEAD 2>/dev/null | xargs)"
   # shellcheck disable=SC2086
   iterm2_set_user_var nodeVersion "$(v=$(node -v 2>/dev/null); echo -n ${v/v/} || echo -n 'N/A')"
-  iterm2_set_user_var rubyVersion "$(rbenv version 2>/dev/null | cut -d ' ' -f1 || ruby -v)"
+  iterm2_set_user_var rubyVersion "$(ruby -v 2>/dev/null | cut -d' ' -f2)"
   # shellcheck disable=SC2086
   iterm2_set_user_var pythonVersion "$(v=$(python --version 2>&1); echo -n ${v/Python /})"
 }
@@ -166,10 +166,6 @@ export PROMPT_DIRTRIM=3
 # Golang stuff
 export GOPATH=$HOME/go
 
-# rbenv setup
-export PATH="$HOME/.rbenv/bin:$PATH"
-hash rbenv 2>/dev/null && eval "$(rbenv init -)" >/dev/null
-
 # NOTE: ruby-build installs a non-Homebrew OpenSSL for each Ruby version
 # installed, and these are never upgraded. The following environment variable
 # links Rubies to Homebrew's OpenSSL 1.1 (which does get upgraded).
@@ -177,7 +173,7 @@ hash rbenv 2>/dev/null && eval "$(rbenv init -)" >/dev/null
 export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
 
 # bash shell command completion
-# shellcheck disable=SC1090
+# shellcheck disable=SC1090,SC1091
 if type brew &>/dev/null; then
   HOMEBREW_PREFIX="$(brew --prefix)"
   if [[ -r "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh" ]]; then
@@ -191,20 +187,16 @@ fi
 
 # use z to track most-used directories and jump around more easily than
 # with cd
-# shellcheck disable=SC1090
+# shellcheck disable=SC1091
 source "$(brew --prefix)/etc/profile.d/z.sh"
 
 # set config path for ripgrep
 export RIPGREP_CONFIG_PATH="$HOME/.config/ripgrep/ripgreprc"
 
+# A shortcut for asdf-managed direnv
+direnv() { asdf exec direnv "$@"; }
+
 # enable asdf and direnv
 export PATH="$HOME/.asdf/bin:$PATH"
 export DIRENV_LOG_FORMAT=""
 eval "$(asdf exec direnv hook bash)"
-
-# A shortcut for asdf-managed direnv
-direnv() { asdf exec direnv "$@"; }
-
-# kubernetes-cli completion
-# shellcheck disable=SC1090
-source <(kubectl completion bash)
