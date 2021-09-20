@@ -791,7 +791,7 @@ Plug 'rust-lang/rust.vim', { 'for': 'rust' }
 Plug 'sheerun/vim-polyglot'
 Plug 'Shougo/unite.vim'
 Plug 'Shougo/vimproc.vim', {'do' : 'make'}
-Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
+"Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 Plug 'syngan/vim-vimlint', { 'for': 'vim' }
 Plug 'ternjs/tern_for_vim', { 'do': 'yarn', 'for': [ 'html', 'javascript', 'javascript.jsx' ] }
 Plug 'terryma/vim-expand-region'
