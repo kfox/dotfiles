@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# brew install httpie pup recode
+# brew install pup
 # usage: git commit -m "$(excuse)"
 
-http http://programmingexcuses.com/ | pup 'center a text{}' | recode html..ascii
+curl -s http://programmingexcuses.com/ | pup --plain 'center a text{}'
