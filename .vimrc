@@ -555,7 +555,7 @@ function! AirlineInit()
   " let g:airline_section_y = '%{strlen(&fenc)?&fenc:&enc}'
   let g:airline_section_z = airline#section#create(['%-14.( %l:%c/%L%)', ' ', '%<%P'])
 
-  let g:airline_section_error = '%{ALEGetStatusLine()}'
+  let g:airline#extensions#ale#enabled = 1
 
   if !exists('g:airline_symbols')
     let g:airline_symbols = {}
@@ -663,11 +663,6 @@ let g:delimitMate_expand_space = 1
 au FileType html,javascript let b:delimitMate_insert_eol_marker = 2
 au FileType html,javascript let g:delimitMate_eol_marker = ';'
 
-""""""""""""""""" IGNORE BROKEN HTMLCOMMENT HIGHLIGHTING
-
-" need this for Polymer
-let html_wrong_comments = 1
-
 """"""""""""""""" vim-javascript
 
 let g:javascript_plugin_jsdoc = 1
@@ -757,6 +752,13 @@ let g:plug_window = 'tab new'
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+" auto-install vim-plug and plugins
+let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
+if empty(glob(data_dir . '/autoload/plug.vim'))
+  silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
 call plug#begin('~/.vim/plugged')
 
 Plug 'airblade/vim-gitgutter'
@@ -807,7 +809,7 @@ Plug 'tpope/vim-vinegar'
 Plug 'vim-airline/vim-airline' | Plug 'vim-airline/vim-airline-themes'
 Plug 'vim-ruby/vim-ruby', { 'for': [ 'eruby', 'ruby' ] }
 Plug 'vim-scripts/indentpython.vim', { 'for': 'python' }
-Plug 'w0rp/ale'
+Plug 'dense-analysis/ale'
 
 " colorschemes
 Plug 'arcticicestudio/nord-vim'
