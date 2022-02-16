@@ -139,7 +139,7 @@ fi
 ################################################################################
 
 # set up the path
-export PATH="/usr/local/share/npm/bin:/usr/local/opt/go/libexec/bin:$HOME/go/bin:$HOME/.cargo/bin:/usr/local/sbin:$HOME/bin:$PATH"
+export PATH="$HOME/.local/bin:/usr/local/share/npm/bin:/usr/local/opt/go/libexec/bin:$HOME/go/bin:$HOME/.cargo/bin:/usr/local/sbin:$HOME/bin:$PATH"
 
 export CDPATH=.
 
@@ -193,10 +193,12 @@ source "$(brew --prefix)/etc/profile.d/z.sh"
 # set config path for ripgrep
 export RIPGREP_CONFIG_PATH="$HOME/.config/ripgrep/ripgreprc"
 
-# A shortcut for asdf-managed direnv
-direnv() { asdf exec direnv "$@"; }
-
 # enable asdf and direnv
 export PATH="$HOME/.asdf/bin:$PATH"
 export DIRENV_LOG_FORMAT=""
+# shellcheck disable=SC1091
+source "$(brew --prefix asdf)/libexec/asdf.sh"
 eval "$(asdf exec direnv hook bash)"
+
+# A shortcut for asdf-managed direnv
+direnv() { asdf exec direnv "$@"; }
