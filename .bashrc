@@ -194,8 +194,6 @@ source "$(brew --prefix)/etc/profile.d/z.sh"
 export RIPGREP_CONFIG_PATH="$HOME/.config/ripgrep/ripgreprc"
 
 # enable asdf and direnv
-export PATH="$HOME/.asdf/bin:$PATH"
-export DIRENV_LOG_FORMAT=""
 # shellcheck disable=SC1091
 source "$(brew --prefix asdf)/libexec/asdf.sh"
 eval "$(asdf exec direnv hook bash)"
