@@ -2,6 +2,7 @@
 alias ls='ls -aFG'
 alias ll='ls -l'
 alias c='clear'
+alias less='less -R'
 
 # ls replacement
 alias e='exa -bghla --git --color-scale --group-directories-first'
@@ -10,11 +11,9 @@ alias e='exa -bghla --git --color-scale --group-directories-first'
 alias be='bundle exec'
 alias ber='bundle exec rails'
 
-# macvim
-alias vt='mvim --remote-tab'
-
 # git-related aliases
 alias gd='git diff'
+alias gdc='git diff --cached'
 alias gdf='git diff --follow'
 alias gp='git rm-merged && git pull'
 alias gs='git status --ignore-submodules=dirty'
