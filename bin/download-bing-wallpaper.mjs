@@ -109,8 +109,10 @@ const extractWallpaperUrl = async url => {
   } catch (error) {
     console.log('DATA:')
     console.dir(data)
-    console.log('AFTER REGEX:')
-    console.dir(regex.exec(data))
+    console.log('REGEX:')
+    console.dir(regex)
+    console.log('DATA AFTER REGEX:')
+    console.dir(regex?.exec(data))
     console.log('ERROR:')
     console.error(error)
   }
