@@ -69,6 +69,7 @@
 	rebase = false
 [init]
 	defaultBranch = main
+	templateDir = ~/.git-template
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
