@@ -14,8 +14,22 @@ BRANCH=$(git branch --no-color --contains HEAD 2>/dev/null | \
 
 DEFAULT=$(git rev-parse --abbrev-ref origin/HEAD | sed 's/^origin\///')
 
-[ -n "${BRANCH}" ] && [ "${BRANCH}" != "${DEFAULT}" ] && COMMITMSG="${BRANCH}: ${COMMITMSG}"
+if [ -z "${BRANCH}" ]; then
+  echo "Branch not found!"
+  exit 2
+fi
 
-git reset --soft "${DEFAULT}" && \
-  git commit -m "${COMMITMSG}" && \
+if [ "${BRANCH}" = "${DEFAULT}" ]; then
+  echo "Cannot squash ${DEFAULT} branch!"
+  exit 3
+fi
+
+COMMITMSG="${BRANCH}: ${COMMITMSG}"
+
+git checkout "${DEFAULT}" && \
+  git fetch -p && \
+  git pull && \
+  git checkout "${BRANCH}" && \
+  git reset --soft "${DEFAULT}" && \
+  git commit -n -m "${COMMITMSG}" && \
   git push --force-with-lease
