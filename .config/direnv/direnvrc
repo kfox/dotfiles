@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 
-# shellcheck disable=SC1090,SC2016,SC2155
-
-source "$(asdf direnv hook asdf)"
+# shellcheck disable=SC2016,SC2155
 
 # make direnv silent by default
 export DIRENV_LOG_FORMAT=""
