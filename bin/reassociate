@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # usage: reassociate [application]
 #
@@ -7,8 +7,7 @@
 
 command -v duti >/dev/null 2>&1 || { brew install duti; }
 
-extensions=(
-  coffee
+EXTENSIONS=(
   erb
   haml
   js
@@ -27,14 +26,14 @@ extensions=(
   yml
 )
 
-[ -z "$1" ] && application='com.microsoft.VSCode' || application=$1
+[ -z "$1" ] && APPLICATION="com.microsoft.VSCode" || APPLICATION=$1
 
-duti -s ${application} public.plain-text all
+duti -s "${APPLICATION}" public.plain-text all
 
-for extension in "${extensions[@]}"
+for EXTENSION in "${EXTENSIONS[@]}"
 do
-  echo "==> Setting ${application} as the default application to edit ${extension} files"
-  duti -s ${application} ${extension} editor
+  echo "==> Setting ${APPLICATION} as the default application to edit ${EXTENSION} files"
+  duti -s "${APPLICATION}" "${EXTENSION}" editor
 done
 
 exit 0
