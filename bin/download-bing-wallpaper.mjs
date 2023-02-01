@@ -44,6 +44,10 @@ const getBingIndexPage = url => {
 }
 
 const downloadWallpaperFromUrl = async urlObj => {
+  if (!urlObj) {
+    throw new Error('Missing URL')
+  }
+
   const filename = queryParser(urlObj.query).id
     .replace(/^OHR./, '')
     .replace(/_EN-US[0-9]+/, '')
