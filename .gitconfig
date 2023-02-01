@@ -45,6 +45,7 @@
 	whatsnew = !sh -c 'git log $1@{1}..$1@{0} "$@"'
 	who = shortlog -sn --
 	whois = "!sh -c 'git log -i -1 --pretty=\"format:%an <%ae>\n\" --author=\"$1\"' -"
+	gri = !git pull --rebase=interactive origin master
 [filter "hawser"]
 	clean = git hawser clean %f
 	smudge = git hawser smudge %f
