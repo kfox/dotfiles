@@ -101,6 +101,7 @@ function gpr {
 function iterm2_print_user_vars() {
   iterm2_set_user_var gitRepo "$(git config --get remote.origin.url | xargs basename -s .git)"
   iterm2_set_user_var gitBranch "$(git rev-parse --abbrev-ref HEAD 2>/dev/null | xargs)"
+  iterm2_set_user_var goVersion "$(go version 2>/dev/null | cut -d' ' -f3 | tr -d '[:alpha:]')"
   # shellcheck disable=SC2086
   iterm2_set_user_var nodeVersion "$(v=$(node -v 2>/dev/null); echo -n ${v/v/} || echo -n 'N/A')"
   iterm2_set_user_var rubyVersion "$(ruby -v 2>/dev/null | cut -d' ' -f2)"
