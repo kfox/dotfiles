@@ -1,8 +1,9 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # homebrew
-env HOMEBREW_INSTALL_CLEANUP=1 HOMEBREW_UPGRADE_CLEANUP=1 \
-  command -v brew >/dev/null && \
+export HOMEBREW_INSTALL_CLEANUP=1 HOMEBREW_UPGRADE_CLEANUP=1 HOMEBREW_NO_ENV_HINTS=1
+
+command -v brew >/dev/null && \
   brew update && sleep 1 && \
   brew upgrade --cask && sleep 1 && \
   brew upgrade --ignore-pinned --display-times
