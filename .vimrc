@@ -502,7 +502,7 @@ endfunction
 
 """"""""""""""""" YouCompleteMe
 
-let g:ycm_python_binary_path = '/usr/local/bin/python3.6'
+let g:ycm_python_binary_path = '/usr/local/bin/python3'
 let g:ycm_collect_identifiers_from_comments_and_strings = 1
 let g:ycm_collect_identifiers_from_tags_files = 1
 
@@ -686,6 +686,9 @@ let g:ale_linters = {
 \    'standard',
 \    'stylelint'
 \  ],
+\  'python': [
+\    'pylint'
+\  ],
 \  'rust': [
 \    'cargo',
 \    'rustc'
@@ -713,9 +716,8 @@ let g:ale_fixers = {
 \    'stylelint'
 \  ],
 \  'python': [
+\		 'black',
 \    'isort',
-\    'add_blank_lines_for_python_control_statements',
-\    'autopep8',
 \    'remove_trailing_lines'
 \  ],
 \  'scss': [
@@ -737,7 +739,9 @@ let g:ale_javascript_eslint_executable = 'babel-eslint'
 let g:ale_javascript_standard_options = '--parser babel-eslint'
 
 " python
-let g:ale_python_flake8_options = '--ignore=E266,E501'
+let g:ale_python_auto_pipenv = 1
+let g:ale_python_pylint_auto_pipenv = 1
+let g:ale_python_pylint_options = '--extension-pkg-whitelist=cv2 --generated-members=cv2'
 
 nmap <silent> <C-k> <Plug>(ale_previous_wrap)
 nmap <silent> <C-j> <Plug>(ale_next_wrap)
