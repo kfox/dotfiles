@@ -6,7 +6,9 @@ export HOMEBREW_INSTALL_CLEANUP=1 HOMEBREW_UPGRADE_CLEANUP=1 HOMEBREW_NO_ENV_HIN
 command -v brew >/dev/null && \
   brew update && sleep 1 && \
   brew upgrade --cask && sleep 1 && \
-  brew upgrade --display-times
+  brew upgrade --display-times && sleep 1 && \
+  brew autoremove && sleep 1 && \
+  brew cleanup
 
 # npm
 if [ -n "$(command -v npm)" ]; then
