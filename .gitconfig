@@ -39,6 +39,7 @@
 	skip = update-index --skip-worktree
 	skipped = !git ls-files -v | grep '^S' | cut -d' ' -f2
 	st = status
+	u = restore --staged
 	undo-commit = reset --soft HEAD~1
 	unskip = update-index --no-skip-worktree
 	whatis = show -s --pretty='tformat:%h (%s, %ad)' --date=short
@@ -50,8 +51,6 @@
 	clean = git hawser clean %f
 	smudge = git hawser smudge %f
 	required = true
-[credential]
-	helper = osxkeychain
 [mailmap]
 	file = ~/.mailmap
 [color "diff-highlight"]
