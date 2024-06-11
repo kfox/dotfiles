@@ -1,6 +1,6 @@
+black
 pipenv
 pytest
-flake8
 pylint
 bandit
 pep8
