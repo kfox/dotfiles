@@ -6,10 +6,8 @@
 	tool = vscode
 [difftool "vscode"]
 	cmd = code --diff \"$LOCAL" \"$REMOTE"
-[user]
-	# see ~/.gitconfig_local
 [include]
-	path = ~/.gitconfig_local
+	path = .gitconfig_local
 [push]
 	default = simple
 [color]
