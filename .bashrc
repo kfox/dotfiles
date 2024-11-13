@@ -199,6 +199,9 @@ export RIPGREP_CONFIG_PATH="$HOME/.config/ripgrep/ripgreprc"
 source "$(brew --prefix asdf)/libexec/asdf.sh"
 eval "$(asdf exec direnv hook bash)"
 
+# stfu already
+export ASDF_GOLANG_MOD_VERSION_ENABLED=true
+
 # A shortcut for asdf-managed direnv
 direnv() { asdf exec direnv "$@"; }
 source "${XDG_CONFIG_HOME:-$HOME/.config}/asdf-direnv/bashrc"
