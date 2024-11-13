@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
 # shellcheck source=/dev/null
-if [ -n "$PS1" ]; then
-  [ -e "${HOME}/.bashrc" ] && . "${HOME}/.bashrc"
-  [ -e "${HOME}/.bash_aliases" ] && . "${HOME}/.bash_aliases"
-  [ -e "${HOME}/.bash_local" ] && . "${HOME}/.bash_local"
+if [[ $- == *i* ]]; then
+  [[ -f ${HOME}/.bashrc ]] && . "${HOME}/.bashrc"
+  [[ -f ${HOME}/.bash_aliases ]] && . "${HOME}/.bash_aliases"
+  [[ -f ${HOME}/.bash_local ]] && . "${HOME}/.bash_local"
 
   bind -f "${HOME}/.inputrc"
 fi
