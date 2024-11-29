@@ -122,7 +122,7 @@ export PS1="${STARTPROMPT}${ENDPROMPT}"
 export PS2='> '
 export PS4='+ '
 
-if [ -f "/usr/local/opt/bash-git-prompt/share/gitprompt.sh" ]; then
+if [ -f "/opt/homebrew/opt/bash-git-prompt/share/gitprompt.sh" ]; then
   export GIT_PROMPT_ONLY_IN_REPO=1
   # export GIT_PROMPT_SHOW_UPSTREAM=1
 
@@ -130,7 +130,7 @@ if [ -f "/usr/local/opt/bash-git-prompt/share/gitprompt.sh" ]; then
   export GIT_PROMPT_THEME_FILE=~/.git-prompt-colors.sh
 
   # shellcheck disable=SC1091
-  source /usr/local/opt/bash-git-prompt/share/gitprompt.sh
+  source /opt/homebrew/opt/bash-git-prompt/share/gitprompt.sh
 fi
 
 ################################################################################
@@ -140,7 +140,7 @@ fi
 ################################################################################
 
 # set up the path
-export PATH="$HOME/.local/bin:/usr/local/share/npm/bin:/usr/local/opt/go/libexec/bin:$HOME/go/bin:$HOME/.cargo/bin:/usr/local/sbin:$HOME/bin:$PATH"
+export PATH="$HOME/.local/bin:$HOME/bin:/opt/homebrew/bin:$PATH"
 
 export CDPATH=.
 
@@ -164,9 +164,6 @@ export HISTCONTROL=ignoreboth
 # trim the number of directories shown in a prompt
 export PROMPT_DIRTRIM=3
 
-# Golang stuff
-export GOPATH=$HOME/go
-
 # NOTE: ruby-build installs a non-Homebrew OpenSSL for each Ruby version
 # installed, and these are never upgraded. The following environment variable
 # links Rubies to Homebrew's OpenSSL 1.1 (which does get upgraded).
@@ -175,7 +172,9 @@ export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
 
 # bash shell command completion
 # shellcheck disable=SC1090,SC1091
-if type brew &>/dev/null; then
+BREW=/opt/homebrew/bin/brew
+
+if type $BREW &>/dev/null; then
   HOMEBREW_PREFIX="$(brew --prefix)"
   if [[ -r "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh" ]]; then
     source "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh"
