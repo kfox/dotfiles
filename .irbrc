@@ -1,6 +1,5 @@
 require 'irb/completion'
 require 'rubygems'
-require 'awesome_print'
 
 # Log to STDOUT if in Rails
 if ENV.include?('RAILS_ENV') && !Object.const_defined?('RAILS_DEFAULT_LOGGER')
@@ -16,4 +15,3 @@ class Object
 end
 
 ARGV.concat [ "--readline", "--prompt-mode", "simple" ]
-AwesomePrint.irb!

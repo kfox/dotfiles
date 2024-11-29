@@ -13,12 +13,14 @@ command -v brew >/dev/null && \
 
 # npm
 if [ -n "$(command -v npm)" ]; then
-  current_npm_version="$(npm -v | tr -d '\n')"
-  latest_npm_version="$(npm v npm@latest version | tr -d '\n')"
-  [ "$current_npm_version" != "$latest_npm_version" ] && npm install --location=global npm@latest
-  npm update --location=global
-  npm outdated --location=global
+  current_npm_version="$(asdf exec npm -v | tr -d '\n')"
+  latest_npm_version="$(asdf exec npm v npm@latest version | tr -d '\n')"
+  [ "$current_npm_version" != "$latest_npm_version" ] && asdf exec npm install --location=global npm@latest
+  asdf exec npm update --location=global
+  asdf exec npm outdated --location=global
 fi
 
 # asdf
+asdf current
 asdf plugin update --all
+asdf reshim
