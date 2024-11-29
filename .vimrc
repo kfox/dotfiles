@@ -263,7 +263,7 @@ let python_highlight_all = 1
 """"""""""""""""" cscope
 
 if has('cscope')
-  set csprg=/usr/local/bin/cscope
+  set csprg=/opt/homebrew/bin/cscope
   set csto=0
   set cscopetag
   set nocscopeverbose
@@ -408,7 +408,7 @@ let g:tagbar_autoclose   = 1
 let g:tagbar_autofocus   = 1
 let g:tagbar_autoshowtag = 1
 let g:tagbar_compact     = 1
-let g:tagbar_ctags_bin   = '/usr/local/bin/ctags'
+let g:tagbar_ctags_bin   = '/opt/homebrew/bin/ctags'
 let g:tagbar_left        = 1
 let g:tagbar_singleclick = 1
 let g:tagbar_width       = 40
@@ -502,7 +502,7 @@ endfunction
 
 """"""""""""""""" YouCompleteMe
 
-let g:ycm_python_binary_path = '/usr/local/bin/python3'
+let g:ycm_python_binary_path = '/opt/homebrew/bin/python3'
 let g:ycm_collect_identifiers_from_comments_and_strings = 1
 let g:ycm_collect_identifiers_from_tags_files = 1
 
