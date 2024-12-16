@@ -1,6 +1,6 @@
 # essentials
 alias ls='ls -aFG'
-alias ll='ls -l'
+alias ll='ls -lh'
 alias c='clear'
 alias less='less -R'
 
