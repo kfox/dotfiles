@@ -22,6 +22,6 @@ if [ -n "$(command -v npm)" ]; then
 fi
 
 # mise
-mise ls
+mise cache clear  # hack to fix "Error getting latest version for python: git failed"
 mise outdated
 mise upgrade -y

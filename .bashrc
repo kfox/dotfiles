@@ -185,6 +185,8 @@ if type $BREW &>/dev/null; then
   fi
 fi
 
+eval "$($BREW shellenv)"
+
 # use z to track most-used directories and jump around more easily than
 # with cd
 # shellcheck disable=SC1091
@@ -193,14 +195,8 @@ source "$(brew --prefix)/etc/profile.d/z.sh"
 # set config path for ripgrep
 export RIPGREP_CONFIG_PATH="$HOME/.config/ripgrep/ripgreprc"
 
-# enable asdf and direnv
-# shellcheck disable=SC1091
-source "$(brew --prefix asdf)/libexec/asdf.sh"
-eval "$(asdf exec direnv hook bash)"
+# mise
+eval "$(mise activate bash)"
 
-# stfu already
-export ASDF_GOLANG_MOD_VERSION_ENABLED=true
-
-# A shortcut for asdf-managed direnv
-direnv() { asdf exec direnv "$@"; }
-source "${XDG_CONFIG_HOME:-$HOME/.config}/asdf-direnv/bashrc"
+# direnv
+eval "$(direnv hook bash)"
