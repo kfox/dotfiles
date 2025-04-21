@@ -168,7 +168,7 @@ export PROMPT_DIRTRIM=3
 # installed, and these are never upgraded. The following environment variable
 # links Rubies to Homebrew's OpenSSL 1.1 (which does get upgraded).
 # shellcheck disable=SC2155
-export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
+export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@3)"
 
 # bash shell command completion
 # shellcheck disable=SC1090,SC1091
