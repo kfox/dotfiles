@@ -140,7 +140,7 @@ fi
 ################################################################################
 
 # set up the path
-export PATH="$HOME/.local/bin:$HOME/bin:/opt/homebrew/bin:$PATH"
+export PATH="$HOME/.local/bin:$HOME/bin:/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"
 
 export CDPATH=.
 
