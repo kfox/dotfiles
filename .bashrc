@@ -139,8 +139,10 @@ fi
 #
 ################################################################################
 
+export GOPATH="$HOME/go"
+
 # set up the path
-export PATH="$HOME/.local/bin:$HOME/bin:/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"
+export PATH="$HOME/.local/bin:$HOME/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/opt/homebrew/opt/coreutils/libexec/gnubin:$GOPATH/bin:$PATH"
 
 export CDPATH=.
 
