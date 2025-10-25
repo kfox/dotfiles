@@ -187,6 +187,8 @@ if type $BREW &>/dev/null; then
   fi
 fi
 
+export HOMEBREW_NO_ENV_HINTS=1
+
 eval "$($BREW shellenv)"
 
 # use z to track most-used directories and jump around more easily than
