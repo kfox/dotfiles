@@ -24,6 +24,6 @@ fi
 # mise
 # hack to fix "Error getting latest version for python: git failed"
 mise cache clear && \
-  mise outdated && \
+  mise outdated --yes && \
   mise upgrade --bump --yes && \
-  mise prune
+  mise prune --yes
