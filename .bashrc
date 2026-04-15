@@ -6,6 +6,16 @@
 ################################################################################
 
 #
+# play an audio file in a loop
+#
+# usage: loop <filename> [sox options]
+#
+
+loop() {
+  play "$1" silence 1 0.2 0.1% 1 0.2 0.3% repeat -
+}
+
+#
 # serve files via web server
 #
 # usage: serve [documentroot] [port]
