@@ -182,6 +182,8 @@ export PROMPT_DIRTRIM=3
 # shellcheck disable=SC2155
 export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@3)"
 
+export GPG_TTY=$(tty)
+
 # bash shell command completion
 # shellcheck disable=SC1090,SC1091
 BREW=/opt/homebrew/bin/brew
