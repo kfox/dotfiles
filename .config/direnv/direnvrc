@@ -16,3 +16,24 @@ layout_poetry() {
   export POETRY_ACTIVE=1
   PATH_add "$VENV"
 }
+
+layout_uv() {
+  local UV
+  UV=$(which uv || true)
+  if [ -z "$UV" ]; then
+    log_error "bin \`uv\` not found"
+    return 1
+  fi
+
+  export UV_PROJECT_ENVIRONMENT="$PWD/.venv"
+  PATH_add "$UV_PROJECT_ENVIRONMENT/bin"
+
+  if [ ! -d ".venv" ]; then
+    uv venv
+  fi
+
+  if [ -f "pyproject.toml" ]; then
+    uv sync
+  fi
+}
+
