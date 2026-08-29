@@ -7,17 +7,14 @@ export PATH=$PATH:/opt/homebrew/bin
 command -v brew >/dev/null && \
   brew ls && \
   brew update-if-needed && sleep 1 && \
-  arch -arm64 brew upgrade --cask && sleep 1 && \
-  arch -arm64 brew upgrade --display-times && sleep 1 && \
+  arch -arm64 brew upgrade --cask --yes && sleep 1 && \
+  arch -arm64 brew upgrade --display-times --yes && sleep 1 && \
   brew autoremove && sleep 1 && \
   brew cleanup
 
 # npm
 if [ -n "$(command -v npm)" ]; then
-  current_npm_version="$(npm -v | tr -d '\n')"
-  latest_npm_version="$(npm v npm@latest version | tr -d '\n')"
-  [ "$current_npm_version" != "$latest_npm_version" ] && npm install --location=global npm@latest
-  npm update --location=global
+  npm update --location=global --min-release-age=7
   npm outdated --location=global
 fi
 
