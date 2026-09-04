@@ -2,6 +2,7 @@
 	excludesfile = ~/.gitignore_global
 	editor = code --wait --new-window
 	pager = diff-so-fancy | less --tabs=4 -RFX
+	fsmonitor = true
 [diff]
 	tool = vscode
 [difftool "vscode"]
@@ -75,7 +76,14 @@
 	required = true
 [fetch]
 	prune = true
+	writeCommitGraph = true
 [commit]
 	gpgsign = true
 [tag]
 	gpgSign = true
+[url "ssh://git@github.com/"]
+	insteadOf = https://github.com/
+[feature]
+	manyFiles = true
+[uploadpack]
+	allowFilter = true
