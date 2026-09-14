@@ -62,27 +62,73 @@ If a function needs more than 3 arguments, pass an "options" object as the last 
 
 - Pick obvious names representative of the value or behavior.
 - Choose names that make the code read like a narrative.
-- Use long names when appropriate — unique names are easier to search for
+- Use long names when appropriate — unique names are easier to search for.
 - Define all magic numbers and strings as named constants (e.g. `NUMBER_OF_SECONDS_IN_A_DAY` instead of `86400`).
 - Check for namespace collisions — will the name be confused with an existing one?
 
 ## Code comments
 
-Use comments only for:
+The code is the narrative. A comment earns its place only when the code cannot
+be made to say the same thing through naming, a smaller function, or an
+extracted abstraction. Prose that restates the code is worse than nothing: it
+doubles the reading cost, it rots into a lie the moment the code moves, and the
+mismatch becomes review churn that fixes nothing real.
 
-- API documentation (Javadoc, JSDoc, Swagger, etc.)
-- Linter directives (ESLint, flake8, etc.)
-- Explaining unusual code forced in for non-obvious reasons — e.g. working around a known bug or a poorly-written API (link the issue when possible)
-- Illustrating program flow or data handling in code samples
-- Pseudocode, only as a temporary placeholder for real code
+Keep only:
 
-Do NOT use comments for:
+- **API documentation** — docstrings, Javadoc, JSDoc, Swagger. A module
+  docstring is a concise description of what the module is and does, or a
+  reference for its API. Not an essay defending it.
+- **Tool directives** — `# type: ignore`, `# noqa`, `# pragma`, `# pyright:`,
+  `# fmt: off`, `eslint-disable`, `#:schema`, a shebang, a `# vX.Y.Z` annotation
+  a bot reads.
+- **What the reader cannot reconstruct from the tree** — an upstream bug or
+  deprecation (link it), a hardware or external-system quirk, the provenance of
+  a measured constant, a cross-file contract stated at the line someone would
+  edit. One line where one line will do.
+- **Flow or data handling in code samples**, where illustrating is the point.
 
-- Describing normal or conventional functionality — the code should describe itself
-- Describing complex functionality — refactor the code instead
-- Disabling code, except for temporary debugging
-- Keeping code around "just in case" — delete it; version control remembers
-- Managing todos or future changes — use an external issue tracker
+Never:
+
+- **Narration** — describing what the next line does.
+- **Self-justification** — "deliberately not X", "this is safe because",
+  asserted invariants, arguing with an imagined reviewer, defending a choice
+  the code does not make look arbitrary or extraneous.
+- **War stories** — what an earlier version did and why it was replaced.
+- **Section banners and step numbering** — `# --- helpers ---`, `# Step 1:`.
+- **Describing complex functionality** — refactor instead.
+- **Disabling code**, except for temporary local debugging.
+- **Code kept "just in case"** — delete it; version control remembers.
+- **TODOs and future work** — use the issue tracker.
+
+The *why* behind a design belongs in the commit message and in the project's
+design notes, not in the source. When a comment feels necessary, reach first for
+a better name, a smaller function without side effects, or a named constant.
+
+## Commit messages
+
+The rule above displaces the *why* into the commit message. That is the right
+destination, but it moves the rot rather than removing it unless the message is
+held to the same standard — and a message is read as fact, by reviewers and by
+whoever runs `git log` in two years.
+
+Every checkable claim in a message is a promise you ran something. A number, a
+count, an enumeration, a causal "so", a flat "cannot" — each one is a place to
+be wrong, and volume is the strongest predictor of how many are.
+
+- **Prefer the artifact to the assertion.** Name the two versions rather than
+  counting the releases between them; the reader can subtract, and a count only
+  invites an argument about inclusive bounds that changes nothing.
+- **Never write a closed list you did not generate.** "The whole X surface here
+  is A, B and C" is a claim about absence, which is the expensive kind to check
+  and the easy kind to get wrong. Write "including", or cut it.
+- **Cut rather than repair.** When a reviewer disputes a sentence, first ask
+  whether its paragraph is load-bearing. A paragraph justifying a change that
+  justifies itself is pure surface area, and rewriting it preserves the
+  exposure at the same size.
+
+Length is the lever. Say what the change does and the one or two facts that
+make it the right change; stop there.
 
 ## Refactoring
 
@@ -133,4 +179,5 @@ When possible:
 - Use linters (eslint, pylint, etc.) and formatters (Prettier, Black, gofmt, etc.) with repo-committed configs.
 - Use EditorConfig and pre-commit hooks to enforce consistency.
 - Leverage type-checking
+- Containerize the development environment (Docker, devcontainer.json) when reproducibility across machines matters.
 - Don't reinvent the wheel without a good reason, but don't assume a popular tool is the best fit either.
