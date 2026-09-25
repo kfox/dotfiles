@@ -17,23 +17,26 @@ layout_poetry() {
   PATH_add "$VENV"
 }
 
+# Any arguments are passed through to `uv sync`, so a project that needs its
+# extras can ask for them with `layout uv --all-extras`.
 layout_uv() {
-  local UV
-  UV=$(which uv || true)
-  if [ -z "$UV" ]; then
+  if ! has uv; then
     log_error "bin \`uv\` not found"
     return 1
   fi
 
   export UV_PROJECT_ENVIRONMENT="$PWD/.venv"
-  PATH_add "$UV_PROJECT_ENVIRONMENT/bin"
-
-  if [ ! -d ".venv" ]; then
-    uv venv
-  fi
 
   if [ -f "pyproject.toml" ]; then
-    uv sync
+    watch_file pyproject.toml uv.lock
+    uv sync "$@" || log_error "uv sync failed; activating .venv as it stands"
   fi
+
+  if [ ! -d "$UV_PROJECT_ENVIRONMENT" ]; then
+    uv venv || return 1
+  fi
+
+  export VIRTUAL_ENV="$UV_PROJECT_ENVIRONMENT"
+  PATH_add "$UV_PROJECT_ENVIRONMENT/bin"
 }
 
