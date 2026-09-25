@@ -1,10 +1,12 @@
-set nocompatible
-
 if (has('termguicolors'))
   set termguicolors
 endif
 
-syntax on
+" every autocmd below goes in this group, so re-sourcing replaces them
+" rather than stacking another copy of each
+augroup vimrc
+  autocmd!
+augroup END
 
 let mapleader = ','
 
@@ -14,7 +16,7 @@ cabbrev help tab help
 
 " Quickly edit/reload the vimrc file
 nmap <silent> <leader>ev :e $MYVIMRC<CR>
-nmap <silent> <leader>sv :so $MYVIMRC <BAR> :so $MYGVIMRC<CR>
+nmap <silent> <leader>sv :so $MYVIMRC<CR>
 
 " Highlight matching parens
 set showmatch
@@ -27,7 +29,7 @@ set encoding=utf-8
 
 """"""""""""""""" Clipboard
 if !has('nvim')
-  set clipboard=autoselectplus
+  set clipboard=unnamed
 endif
 
 if has('nvim')
@@ -47,7 +49,6 @@ if has('multi_byte') && &encoding ==# 'utf-8'
   let &listchars = 'tab:⌐·,extends:»,precedes:«,nbsp:±,trail:·'
   let &fillchars = 'diff:▚'
   " let &showbreak = '↪ '
-  highlight VertSplit ctermfg=242
 endif
 set backspace=start,indent,eol
 
@@ -63,22 +64,11 @@ set report=0
 set noshowcmd
 set noshowmode
 
-set statusline=   " clear the statusline when vimrc is reloaded
-set statusline+=%1*\ %-3.3n\                      " buffer number
-set statusline+=%2*\ %t                           " file basename
-set statusline+=%h%m%r%w\                         " flags
-set statusline+=[%{strlen(&ft)?&ft:'none'},       " filetype
-set statusline+=%{strlen(&fenc)?&fenc:&enc},      " encoding
-set statusline+=%{&fileformat}]\                  " file format
-set statusline+=%=                                " right align
-set statusline+=%3*%{synIDattr(synID(line('.'),col('.'),1),'name')!=''?synIDattr(synID(line('.'),col('.'),1),'name'):'none'}  " highlight
-set statusline+=%4*\ %3b,0x%-8B                   " current char
-set statusline+=%-14.(%l/%L,%c%)\ %<%P            " offset
-
 """"""""""""""""" Terminal
-set ttyfast
 set mouse=a
-set paste
+set ttimeoutlen=10     " Esc leaves insert mode without a visible pause
+set lazyredraw         " don't redraw mid-macro or across multi-cursor edits
+set synmaxcol=300      " stop highlighting past column 300 (minified files)
 
 if !has('nvim')
   set ttymouse=xterm2
@@ -97,7 +87,7 @@ set wildignore+=*.o,.git,*.class,*.gif,*.png,*.jpg,*.pyc
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip
 
 """"""""""""""""" Folding
-set foldmethod=syntax
+set foldmethod=indent
 set foldnestmax=3
 set nofoldenable
 
@@ -107,14 +97,14 @@ set nofoldenable
 """"""""""""""""" Line Numbering
 set number
 set relativenumber
-autocmd VimEnter * nmap <silent> <leader>n :set nonumber! norelativenumber!<CR>
+nmap <silent> <leader>n :set nonumber! norelativenumber!<CR>
 
 """"""""""""""""" Window Title
 set title
 if !has("gui_macvim")
   set t_ts=k
   set t_fs=\
-  autocmd BufEnter * let &titlestring = 'Vim - ' . expand("%:t")
+  autocmd vimrc BufEnter * let &titlestring = 'Vim - ' . expand("%:t")
 endif
 
 """"""""""""""""" viminfo and history
@@ -135,12 +125,6 @@ set directory=~/.vim/backup
 nnoremap <C-L> :nohls<CR><C-L>
 inoremap <C-L> <C-O>:nohls<CR>
 
-""""""""""""""""" vimgrep result navigation
-map <A-o> :copen<CR>
-map <A-w> :cclose<CR>
-map <A-j> :cnext<CR>
-map <A-k> :cprevious<CR>
-
 """"""""""""""""" Visual search
 function! s:VSetSearch()
 
@@ -158,7 +142,7 @@ vnoremap # :<C-u>call <SID>VSetSearch()<CR>??<CR>
 
 "jump to last cursor position when opening a file
 "dont do it when writing a commit log entry
-autocmd BufReadPost * call SetCursorPosition()
+autocmd vimrc BufReadPost * call SetCursorPosition()
 function! SetCursorPosition()
   if &filetype !~ 'commit\c'
       if line("'\"") > 0 && line("'\"") <= line("$")
@@ -167,17 +151,6 @@ function! SetCursorPosition()
       endif
   end
 endfunction
-
-""""""""""""""""" Textmate-like indent/outdent
-nmap <D-[> <<
-nmap <D-]> >>
-imap <D-[> <<
-imap <D-]> >>
-vmap <D-[> <gv
-vmap <D-]> >gv
-
-""""""""""""""""" MacVIM shift+arrow-keys
-let macvim_hig_shift_movement = 1
 
 """"""""""""""""" diff mode
 if &diff
@@ -193,37 +166,35 @@ set formatoptions=crql
 
 """"""""""""""""" ctags
 
-map <leader>rt :!ctags --extra=+f -R *<CR><CR>
+" vim-gutentags keeps the tags file current; this just walks the matches
 map <C-\> :tnext<CR>
 set tags+=tags;$HOME
 
 """"""""""""""""" text wrapping
 
-if !exists("*s:setupWrapping")
-  function s:setupWrapping()
-    set wrap
-    set wrapmargin=2
-    set textwidth=72
-  endfunction
-endif
+function! s:setupWrapping()
+  setlocal wrap
+  setlocal wrapmargin=2
+  setlocal textwidth=72
+endfunction
 
 " Format text files
-au BufRead,BufNewFile *.txt,*.md call s:setupWrapping()
+autocmd vimrc BufRead,BufNewFile *.txt call s:setupWrapping()
 
 """"""""""""""""" file formatting
 
 " These files are Ruby
-autocmd BufRead,BufNewFile config.ru,{Brew,Gem,Guard,Rake,Thor}file set filetype=ruby
+autocmd vimrc BufRead,BufNewFile config.ru,{Brew,Gem,Guard,Rake,Thor}file set filetype=ruby
 
 " PostgreSQL config
-autocmd BufRead,BufNewFile .psqlrc set filetype=sql
+autocmd vimrc BufRead,BufNewFile .psqlrc set filetype=sql
 
 " cson (coffeescript)
-au BufNewFile,BufRead *.cson set filetype=coffee
+autocmd vimrc BufNewFile,BufRead *.cson set filetype=coffee
 
 " various rc files (json)
-au BufNewFile,BufRead .{babel,eslint,stylelint}rc set filetype=json
-au BufNewFile,BufRead .{direnv,env}rc set filetype=sh
+autocmd vimrc BufNewFile,BufRead .{babel,eslint,stylelint}rc set filetype=json
+autocmd vimrc BufNewFile,BufRead .{direnv,env}rc set filetype=sh
 
 " make javascript prettier
 " au FileType javascript set formatprg=prettier\ --stdin
@@ -231,23 +202,71 @@ au BufNewFile,BufRead .{direnv,env}rc set filetype=sh
 " au BufWritePre *.js exe 'normal! gggqG\<C-o>\<C-o>'
 
 " md, markdown, and mk are markdown and define buffer-local preview
-au BufRead,BufNewFile *.{md,markdown,mdown,mkd,mkdn} call s:setupMarkup()
+autocmd vimrc BufRead,BufNewFile *.{md,markdown,mdown,mkd,mkdn} call s:setupMarkup()
 
-if !exists("*s:setupMarkup")
-  function s:setupMarkup()
-    call s:setupWrapping()
-    map <buffer> <leader>p :Hammer<CR>
-  endfunction
-endif
+function! s:setupMarkup()
+  call s:setupWrapping()
+  nnoremap <buffer> <leader>p :Xmark<CR>
+endfunction
+
+" highlight code inside ```lang fences (vim-polyglot's markdown)
+let g:vim_markdown_fenced_languages = [
+  \ 'bash=sh', 'c', 'cpp', 'js=javascript', 'json', 'python', 'sh', 'vim', 'yaml'
+  \ ]
+
+" colored markdown headings and markup, in the One palette. Re-applied on
+" every colorscheme load, since a colorscheme starts with :hi clear.
+function! s:markdownColors()
+  let l:c = &background ==# 'dark'
+    \ ? {'red': '#e06c75', 'orange': '#d19a66', 'yellow': '#e5c07b',
+    \    'green': '#98c379', 'cyan': '#56b6c2', 'blue': '#61afef',
+    \    'purple': '#c678dd', 'gray': '#5c6370', 'codebg': '#2c313a'}
+    \ : {'red': '#e45649', 'orange': '#986801', 'yellow': '#c18401',
+    \    'green': '#50a14f', 'cyan': '#0184bc', 'blue': '#4078f2',
+    \    'purple': '#a626a4', 'gray': '#a0a1a7', 'codebg': '#e5e5e6'}
+
+  execute 'hi htmlH1 gui=bold guifg=' . l:c.red    . ' cterm=bold ctermfg=204'
+  execute 'hi htmlH2 gui=bold guifg=' . l:c.orange . ' cterm=bold ctermfg=173'
+  execute 'hi htmlH3 gui=bold guifg=' . l:c.yellow . ' cterm=bold ctermfg=180'
+  execute 'hi htmlH4 gui=bold guifg=' . l:c.green  . ' cterm=bold ctermfg=114'
+  execute 'hi htmlH5 gui=bold guifg=' . l:c.cyan   . ' cterm=bold ctermfg=38'
+  execute 'hi htmlH6 gui=bold guifg=' . l:c.purple . ' cterm=bold ctermfg=170'
+  execute 'hi mkdHeading guifg=' . l:c.gray . ' ctermfg=59'
+
+  execute 'hi mkdCode guifg=' . l:c.green . ' guibg=' . l:c.codebg . ' ctermfg=114'
+  execute 'hi mkdCodeDelimiter guifg=' . l:c.gray . ' ctermfg=59'
+  hi! link mkdCodeStart mkdCodeDelimiter
+  hi! link mkdCodeEnd   mkdCodeDelimiter
+
+  execute 'hi mkdLink      gui=underline guifg=' . l:c.blue . ' cterm=underline ctermfg=39'
+  execute 'hi mkdInlineURL gui=underline guifg=' . l:c.cyan . ' cterm=underline ctermfg=38'
+  execute 'hi mkdURL guifg=' . l:c.cyan . ' ctermfg=38'
+  execute 'hi mkdListItem gui=bold guifg=' . l:c.purple . ' cterm=bold ctermfg=170'
+  execute 'hi mkdBlockquote gui=italic guifg=' . l:c.gray . ' cterm=italic ctermfg=59'
+  execute 'hi mkdRule guifg=' . l:c.gray . ' ctermfg=59'
+
+  hi htmlBold       gui=bold        cterm=bold
+  hi htmlItalic     gui=italic      cterm=italic
+  hi htmlBoldItalic gui=bold,italic cterm=bold,italic
+endfunction
+
+" highlights of my own, which the colorscheme's :hi clear would wipe too
+function! s:customColors()
+  highlight VertSplit ctermfg=242
+  highlight BadWhitespace ctermbg=red guibg=red
+  highlight VendorPrefix guifg=#00ffff gui=bold
+endfunction
+
+autocmd vimrc ColorScheme * call s:customColors() | call s:markdownColors()
+autocmd vimrc Syntax markdown call s:markdownColors()
 
 " crontab stuff
-au filetype crontab setlocal nobackup nowritebackup
+autocmd vimrc FileType crontab setlocal nobackup nowritebackup
 
 " python
 " au FileType python setl tabstop=4 shiftwidth=4 softtabstop=4 textwidth=99 colorcolumn=101
-au FileType python setl tabstop=4 shiftwidth=4 softtabstop=4
-highlight BadWhitespace ctermbg=red guibg=red
-autocmd BufRead,BufNewFile *.py,*.pyw match BadWhitespace /^\t\+/
+autocmd vimrc FileType python setl tabstop=4 shiftwidth=4 softtabstop=4
+autocmd vimrc BufRead,BufNewFile *.py,*.pyw match BadWhitespace /^\t\+/
 let g:pyindent_open_paren = 'shiftwidth()'
 let python_highlight_all = 1
 
@@ -370,12 +389,6 @@ set sessionoptions-=options    " don't track global and local values
 " au VimLeave * :call UpdateSession()
 " map <leader>m :call MakeSession()<CR>
 
-""""""""""""""""" ultisnips
-
-let g:UltiSnipsExpandTrigger = "<c-enter>"
-let g:UltiSnipsJumpForwardTrigger = "<c-k>"
-let g:UltiSnipsJumpBackwardTrigger = "<c-j>"
-
 """"""""""""""""" vim-gitgutter
 
 " let g:gitgutter_highlight_lines = 1
@@ -426,53 +439,24 @@ let g:tagbar_type_coffee = {
 
 """"""""""""""""" Dispatch
 
-map <leader>t :Dispatch nosetests %<CR>
+map <leader>t :Dispatch pytest %<CR>
 
-""""""""""""""""" The Silver Searcher
+""""""""""""""""" ripgrep
 
-" if executable('ag')
-"   " use ag instead of grep
-"   set grepprg=ag\ --nogroup\ --nocolor
-"   set grepformat=%f:%l:%m
-"
-"   " bind K to grep word under cursor
-"   " nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
-"
-"   " bind \ (backward slash) to grep shortcut
-"   " command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
-"   nnoremap \ :Ag<SPACE>-i<SPACE>
-" endif
-
-""""""""""""""""" The Platinum Searcher
-
-command! -nargs=+ -complete=file -bar Pt silent! grep! <args>|cwindow|redraw!
-
-nnoremap <silent> <leader>f :<C-u>Unite grep:. -buffer-name=search-buffer<CR>
-if executable('pt')
-  let g:unite_source_grep_command = 'pt'
-  let g:unite_source_grep_default_opts = '--nogroup --nocolor'
-  let g:unite_source_grep_recursive_opt = ''
-  let g:unite_source_grep_encoding = 'utf-8'
+if executable('rg')
+  set grepprg=rg\ --vimgrep\ --smart-case
+  set grepformat=%f:%l:%c:%m
 endif
 
-""""""""""""""""" Unimpaired
+" :Grep {pattern} [path...] fills the quickfix list and opens it
+command! -nargs=+ -complete=file -bar Grep silent! grep! <args>|cwindow|redraw!
 
-" Bubble single lines
-nmap <C-Up> [e
-nmap <C-Down> ]e
-
-" Bubble multiple lines
-vmap <C-Up> [egv
-vmap <C-Down> ]egv
+nnoremap <leader>f :Grep<Space>
 
 """"""""""""""""" CSS
 
-augroup VimCSS3Syntax
-  autocmd!
-  autocmd FileType css setlocal iskeyword+=-
-  highlight VendorPrefix guifg=#00ffff gui=bold
-  match VendorPrefix /-\(moz\|webkit\|o\|ms\)-[a-zA-Z-]\+/
-augroup END
+autocmd vimrc FileType css setlocal iskeyword+=-
+autocmd vimrc FileType css match VendorPrefix /-\(moz\|webkit\|o\|ms\)-[a-zA-Z-]\+/
 
 """"""""""""""""" Tabularize
 
@@ -499,28 +483,6 @@ function! s:align()
     call search(repeat('[^|]*|',column).'\s\{-\}'.repeat('.',position),'ce',line('.'))
   endif
 endfunction
-
-""""""""""""""""" YouCompleteMe
-
-let g:ycm_python_binary_path = '/opt/homebrew/bin/python3'
-let g:ycm_collect_identifiers_from_comments_and_strings = 1
-let g:ycm_collect_identifiers_from_tags_files = 1
-
-function! BuildYCM(info)
-  " info is a dictionary with 3 fields
-  " - name:   name of the plugin
-  " - status: 'installed', 'updated', or 'unchanged'
-  " - force:  set on PlugInstall! or PlugUpdate!
-  if a:info.status == 'installed' || a:info.force
-    !./install.py
-  endif
-endfunction
-
-""""""""""""""""" tern_for_vim
-
-" let g:tern_show_argument_hints = 'on_hold'
-let g:tern_map_keys = 1
-let g:tern_map_prefix = '<leader>'
 
 """"""""""""""""" vim-airline
 
@@ -568,7 +530,7 @@ function! AirlineInit()
   let g:airline_symbols.whitespace = 'Ξ'
 endfunction
 
-autocmd User AirlineAfterInit call AirlineInit()
+autocmd vimrc User AirlineAfterInit call AirlineInit()
 
 let g:airline_powerline_fonts = 1
 let g:airline_theme = 'base16_isotope'
@@ -596,8 +558,6 @@ let g:airline_mode_map = {
       \ 'S'  : 'S',
       \ '' : 'S',
       \ }
-
-set t_Co=256
 
 """"""""""""""""" vim-easy-align
 
@@ -645,7 +605,7 @@ augroup dirvish_events
     \ |xnoremap <silent><buffer> t :call dirvish#open('tabedit', 0)<CR>
 
   " Enable fugitive.vim in Dirvish buffers.
-  autocmd FileType dirvish call fugitive#detect(@%)
+  autocmd FileType dirvish call FugitiveDetect(@%)
 
   " Map `gr` to reload.
   autocmd FileType dirvish nnoremap <silent><buffer>
@@ -660,8 +620,8 @@ augroup END
 
 let g:delimitMate_expand_cr = 1
 let g:delimitMate_expand_space = 1
-au FileType html,javascript let b:delimitMate_insert_eol_marker = 2
-au FileType html,javascript let g:delimitMate_eol_marker = ';'
+autocmd vimrc FileType html,javascript let b:delimitMate_insert_eol_marker = 2
+autocmd vimrc FileType html,javascript let g:delimitMate_eol_marker = ';'
 
 """"""""""""""""" vim-javascript
 
@@ -669,7 +629,7 @@ let g:javascript_plugin_jsdoc = 1
 
 """"""""""""""""" nginx
 
-au BufRead,BufNewFile *.nginx,{nginx,default}.conf set filetype=nginx
+autocmd vimrc BufRead,BufNewFile *.nginx,{nginx,default}.conf set filetype=nginx
 
 """"""""""""""""" vim-indent-guides
 
@@ -682,9 +642,8 @@ let g:ale_linters = {
 \  'javascript': [
 \    'standard'
 \  ],
-\  'jsx': [
-\    'standard',
-\    'stylelint'
+\  'javascriptreact': [
+\    'standard'
 \  ],
 \  'python': [
 \    'pylint'
@@ -698,10 +657,6 @@ let g:ale_linters = {
 \  ]
 \}
 
-let g:ale_linter_aliases = {
-\  'jsx': 'css'
-\}
-
 let g:ale_fixers = {
 \  'javascript': [
 \    'prettier',
@@ -710,13 +665,12 @@ let g:ale_fixers = {
 \  'json': [
 \    'prettier'
 \  ],
-\  'jsx': [
+\  'javascriptreact': [
 \    'prettier',
-\    'standard',
-\    'stylelint'
+\    'standard'
 \  ],
 \  'python': [
-\		 'black',
+\    'black',
 \    'isort',
 \    'remove_trailing_lines'
 \  ],
@@ -731,12 +685,7 @@ nmap <F8> <Plug>(ale_fix)
 
 let g:ale_sign_error = '❌'
 let g:ale_sign_warning = '💩'
-let g:ale_statusline_format = ['❌ %d', '💩 %d', '👍']
 let g:ale_echo_msg_format = '[%linter%] %s'
-
-" javascript
-let g:ale_javascript_eslint_executable = 'babel-eslint'
-let g:ale_javascript_standard_options = '--parser babel-eslint'
 
 " python
 let g:ale_python_auto_pipenv = 1
@@ -760,24 +709,17 @@ let g:plug_window = 'tab new'
 let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
 if empty(glob(data_dir . '/autoload/plug.vim'))
   silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+  autocmd vimrc VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
 call plug#begin('~/.vim/plugged')
 
 Plug 'airblade/vim-gitgutter'
 Plug 'bogado/file-line'
-Plug 'cakebaker/scss-syntax.vim', { 'for': 'scss' }
 Plug 'ctrlpvim/ctrlp.vim' | Plug 'FelikZ/ctrlp-py-matcher'
-Plug 'ekalinin/Dockerfile.vim', { 'for': [ 'docker-compose', 'Dockerfile' ] }
-Plug 'elzr/vim-json', { 'for': 'json' }
 Plug 'ervandew/supertab'
-Plug 'fatih/vim-go', { 'for': 'go' }
 Plug 'godlygeek/tabular'
-Plug 'hail2u/vim-css3-syntax', { 'for': [ 'css', 'html' ] }
-Plug 'jelera/vim-javascript-syntax', { 'for': [ 'html', 'javascript', 'javascript.jsx' ] }
 Plug 'jmcantrell/vim-virtualenv'
-Plug 'JulesWang/css.vim', { 'for': [ 'css', 'html' ] }
 Plug 'junegunn/rainbow_parentheses.vim'
 Plug 'junegunn/vim-easy-align'
 Plug 'junegunn/vim-xmark', { 'do': 'make' }
@@ -786,22 +728,12 @@ Plug 'kshenoy/vim-signature'
 Plug 'lilydjwg/colorizer', { 'for': [ 'css', 'html', 'scss', 'vim' ]}
 Plug 'ludovicchabant/vim-gutentags'
 Plug 'majutsushi/tagbar'
-Plug 'mxw/vim-jsx', { 'for': 'javascript.jsx' }
+Plug 'mg979/vim-visual-multi', { 'branch': 'master' }
 Plug 'nathanaelkane/vim-indent-guides'
-Plug 'nazo/pt.vim'
-Plug 'othree/html5.vim', { 'for': 'html' }
-Plug 'othree/nginx-contrib-vim', { 'for': 'nginx' }
-" Plug 'othree/yajs.vim', { 'for': [ 'html', 'javascript' ] } | Plug 'othree/es.next.syntax.vim'
 Plug 'Raimondi/delimitMate'
-Plug 'rust-lang/rust.vim', { 'for': 'rust' }
 Plug 'sheerun/vim-polyglot'
-Plug 'Shougo/unite.vim'
-Plug 'Shougo/vimproc.vim', {'do' : 'make'}
-"Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 Plug 'syngan/vim-vimlint', { 'for': 'vim' }
-Plug 'ternjs/tern_for_vim', { 'do': 'yarn', 'for': [ 'html', 'javascript', 'javascript.jsx' ] }
 Plug 'terryma/vim-expand-region'
-Plug 'terryma/vim-multiple-cursors'
 Plug 'tomtom/tcomment_vim'
 Plug 'tpope/vim-characterize'
 Plug 'tpope/vim-dispatch'
@@ -811,8 +743,6 @@ Plug 'tpope/vim-obsession'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-vinegar'
 Plug 'vim-airline/vim-airline' | Plug 'vim-airline/vim-airline-themes'
-Plug 'vim-ruby/vim-ruby', { 'for': [ 'eruby', 'ruby' ] }
-Plug 'vim-scripts/indentpython.vim', { 'for': 'python' }
 Plug 'dense-analysis/ale'
 
 " colorschemes
@@ -826,4 +756,6 @@ call plug#end()
 colorscheme one
 
 " source a local vim configuration (if present)
-silent! so .vimlocal
+if filereadable('.vimlocal')
+  source .vimlocal
+endif
