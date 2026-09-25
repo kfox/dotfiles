@@ -2,7 +2,6 @@
 	excludesfile = ~/.gitignore_global
 	editor = code --wait --new-window
 	pager = diff-so-fancy | less --tabs=4 -RFX
-	fsmonitor = true
 [diff]
 	tool = vscode
 [difftool "vscode"]
