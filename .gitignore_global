@@ -15,5 +15,5 @@ cscope.out
 tags
 tags.lock
 tags.temp
-
 **/.claude/settings.local.json
+**/.claude/worktrees/**
