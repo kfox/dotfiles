@@ -1,11 +1,9 @@
 **/.idea
 *.log
 .DS_Store
-.code_swarm
 .direnv
 .env
 .envrc
-.gource
 .metals
 .ruby-version
 .vimlocal
@@ -17,3 +15,4 @@ tags.lock
 tags.temp
 **/.claude/settings.local.json
 **/.claude/worktrees/**
+**/__pycache__
