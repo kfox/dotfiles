@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+readarray -t worktrees < <(git worktree list | cut -f1 -d' ' | grep -Ev "^$(pwd)$")
+
+for wt in "${worktrees[@]}"; do
+  git worktree remove "$wt"
+done
