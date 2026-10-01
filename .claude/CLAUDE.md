@@ -61,8 +61,26 @@ minute and they are the difference between a fix and a plausible fix.
 
 **One review per changeset, scoped to that changeset.** Every commit gets its
 own review before it is pushed — that SHA alone, never the branch. There is no
-trivial-diff exemption: at low effort a two-line commit costs seconds, and "this
-one is obviously fine" is exactly the judgment that fails.
+trivial-diff exemption for code: at low effort a two-line commit costs seconds,
+and "this one is obviously fine" is exactly the judgment that fails.
+
+**A prose-only change is exempt, and a command decides what counts as one, not
+the diff's size.** If `git diff <old> <new> -- ':!*.md'` is empty, the change is
+prose-only and needs no review. A comment inside a code file is still code. So
+is anything in Markdown that the code has to match: a code block, a table of
+constants, a documented default. Those keep their review.
+
+**Recording a measured result is prose-only by that test, and needs its
+evidence named instead of a review.** Flipping a "verified" cell, or updating a
+figure from a run just made, must name the run in the report that reaches the
+user: the command, the frame, the exit record. A result nobody can point to is
+a claim, and claims get reviewed.
+
+**Folding a prose-only change into a reviewed commit does not void that
+commit's review.** The SHA changes, but the empty `':!*.md'` diff between the
+old and new SHAs shows the reviewed code is the same, so the review still
+stands. Keep the old SHA on a branch until the push, and put the diff command
+and its empty result in the report.
 
 **Which reviewer.** The default is the cheap one, and escalation is a claim
 about the commit rather than about the code's quality.
