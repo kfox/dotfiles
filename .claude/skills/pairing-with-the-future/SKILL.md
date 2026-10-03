@@ -250,7 +250,10 @@ Refactor for **testability**:
 **Source control:**
 - Work in a feature branch.
 - Commit early and often, with meaningful commit messages.
-- Squash changes before merging.
+- Follow the repository's merge policy. Where it has none, don't rewrite a
+  commit once it has been reviewed: no squash, no rebase, no amend. Merge with
+  `--no-ff` when you want one entry per feature on the main line, and read it
+  with `git log --first-parent`.
 
 **Third-party APIs:**
 - Wrap external services in generalized wrappers when they may need replacing later, so the underlying service can be swapped with minimal disruption.
