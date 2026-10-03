@@ -99,11 +99,8 @@ Escalating one commit in a stack is ordinary; needing to escalate all of them
 means the stack is the wrong shape, and splitting it is the cheaper fix.
 
 Review attention is the scarce resource, and a wide scope spends it before it
-reaches the small commit. A branch-scoped pass over 7.1k lines verified five
-separate arithmetic claims and walked past a 3-file commit that doubled a
-latency budget; the same reviewer pointed at that commit alone found it
-immediately. A clean wide pass is evidence of dilution at least as often as it
-is evidence of clean code.
+reaches the small commit. A clean wide pass is evidence of dilution at least as
+often as it is evidence of clean code.
 
 A batch- or branch-wide review is still worth running — as the *second* net,
 once, before the PR. Never as the first one.
@@ -195,10 +192,9 @@ This is a scope rule, not a severity rule. Downgrading a writing quibble to
 "low" does not make it cheap — someone still reads it, decides, and writes down
 why, which is a full round spent on a sentence. And the fix for a writing
 finding is more writing, which carries new claims, which yields new findings:
-that loop has no fixed point, and it is why the review gates here were retired
-rather than tuned. A finding that cannot be written as actor, action and wrong
-result is out of scope — answer "declined, prose" and spend nothing further
-on it.
+that loop has no fixed point. A finding that cannot be written as actor, action
+and wrong result is out of scope — answer "declined, prose" and spend nothing
+further on it.
 
 Commit messages are the one channel where even a false claim usually stays
 unfixed, because rewording one changes the SHA and invalidates every recorded

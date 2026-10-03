@@ -167,11 +167,7 @@ a better name, a smaller function without side effects, or a named constant.
 Three of those "never" classes are checked mechanically where the prose-gate
 comment linter is installed — section banners, `TODO:`/`FIXME:` markers, and
 commented-out code — and only against the comments a diff *adds*, never the file
-around them. The rest stay judgment on
-purpose: lexical rules for war stories and self-justification were measured
-against a real tree and flagged legitimate provenance and hardware-quirk
-comments far more often than the narration they were aimed at, which would make
-the hook a nuisance and teach people to bypass it.
+around them. The rest are judgment calls.
 
 ## Commit messages
 
