@@ -37,8 +37,8 @@ is the only thing holding.
 
 ## Fixing a reported defect
 
-Three habits, each earned by watching a fix fail review repeatedly. They cost a
-minute and they are the difference between a fix and a plausible fix.
+Three habits. They cost a minute and they are the difference between a fix and
+a plausible fix.
 
 - **Fix every site, not the cited one.** A report names where the reporter
   happened to look. Before committing, grep for the pattern, predicate, or shape
