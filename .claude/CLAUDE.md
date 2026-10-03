@@ -200,3 +200,27 @@ Commit messages are the one channel where even a false claim usually stays
 unfixed, because rewording one changes the SHA and invalidates every recorded
 review of that commit and of everything stacked on it. Report what it should
 have said and leave the decision upstream.
+
+## Naming a subagent
+
+**A subagent's label names its target, in as few characters as will
+identify it.** The Agent tool's `description` is the label the agent list
+shows, and the display truncates it, so put the target first and drop
+everything else: `PR#123`, `a1b2c3d`, `audio.py`, `#532 CI`. Leave out
+anything the display already shows — the verb "review", the repository, and
+for a typed agent its own name, which prints alongside, so an `adversary`
+spawned with `PR#123` shows both. Three short words at most,
+and a short SHA (7 characters) rather than a full one. Several agents on one
+target differ by what they do with it: `a1b2c3d fix`, `a1b2c3d tests`.
+
+## Opening a pull request
+
+**Every PR opens as a Draft** (`gh pr create --draft`), in every repository,
+including when a skill's or a project's own recipe omits the flag. A Draft says
+the branch is still moving: more commits, reviews, or CI fixes are expected.
+
+**Mark it Ready for Review (`gh pr ready <number>`) only once every change is
+done** — all commits pushed, every review run and its fixes landed, all
+verification finished, and CI green. Readiness is the signal that the next step
+is the merge. If more work turns up after that, convert it back with
+`gh pr ready --undo <number>` until it is done again.
