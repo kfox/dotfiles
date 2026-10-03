@@ -85,7 +85,8 @@ and its empty result in the report.
 **Which reviewer.** The default is the cheap one, and escalation is a claim
 about the commit rather than about the code's quality.
 
-- `/code-review <sha>` — the default, for every commit. One reviewer, one pass.
+- `/code-review medium <sha>` — the default, for every commit. One reviewer,
+  one pass, at medium effort; raise the level only when the commit warrants it.
 - `/panel-review <sha>` — four lane reviewers in parallel (Auditor, Adversary,
   Steward, Pragmatist), each fixing in its own lane. Reach for it when the
   commit is large, or when being wrong is expensive: a trust boundary, authn or
