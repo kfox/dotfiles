@@ -67,6 +67,7 @@ ALL_POSITIONALS = frozenset(
     }
 )
 LAST_POSITIONAL = frozenset({"cp", "install", "ln", "mv", "rsync"})
+LEADING_OPERAND = frozenset({"chgrp", "chmod", "chown"})
 IN_PLACE = frozenset({"gsed", "perl", "ruby", "sed"})
 DD = "dd"
 DD_TARGET = "of="
@@ -286,6 +287,8 @@ def _named_targets(name: str, args: list[str], base: Path | None) -> list[str]:
             return positionals
         return positionals[-1:]
     if name in ALL_POSITIONALS:
+        if name in LEADING_OPERAND and not any(f.startswith("--reference") for f in flags):
+            positionals = positionals[1:]
         # `patch` reads its target from the diff it is handed, so a command that
         # names none writes somewhere under the directory it runs in.
         if positionals:
