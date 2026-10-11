@@ -203,15 +203,19 @@ have said and leave the decision upstream.
 
 ## Naming a subagent
 
-**A subagent's label names its target, in as few characters as will
-identify it.** The Agent tool's `description` is the label the agent list
-shows, and the display truncates it, so put the target first and drop
-everything else: `PR#123`, `a1b2c3d`, `audio.py`, `#532 CI`. Leave out
-anything the display already shows — the verb "review", the repository, and
-for a typed agent its own name, which prints alongside, so an `adversary`
-spawned with `PR#123` shows both. Three short words at most,
-and a short SHA (7 characters) rather than a full one. Several agents on one
-target differ by what they do with it: `a1b2c3d fix`, `a1b2c3d tests`.
+**A subagent's label says why it exists, in as few characters as will
+identify it.** The Agent tool's `description` leads the agent's row in the
+agent panel — not by default, but through `subagentStatusLine` in
+`~/.claude/settings.json`, whose script prints the label, the token count and
+the live progress summary in that order. The default row shows the agent type
+instead, so without that script the label is invisible. Name the issue, PR,
+commit, file or question the agent is there for: `Issue #678`, `PR#123`,
+`a1b2c3d`, `DMA research`, `#532 CI`. Leave out what the row already shows —
+the verb "review", the repository, and any type other than `general-purpose`,
+which the script prints ahead of the label, so an `adversary` spawned with
+`PR#123` shows both. Three short words at most, and a short SHA (7
+characters) rather than a full one. Several agents on one target differ by
+what they do with it: `a1b2c3d fix`, `a1b2c3d tests`.
 
 ## Opening a pull request
 
