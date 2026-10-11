@@ -1,0 +1,68 @@
+#!/usr/bin/env bash
+
+# Open a QuickTime Player movie recording whose camera and microphone are the
+# first capture device present, in the order given below.
+
+set -euo pipefail
+
+devices=("Cam Link" "ShadowCast")
+prefs=com.apple.QuickTimePlayerX
+
+# Prints "<video unique ID>\t<audio unique ID or empty>\t<device name>" for the
+# first device in the arguments that has a camera, or exits 1 if none does.
+find_device() {
+    osascript -l JavaScript - "$@" 2>/dev/null <<'JXA'
+function run(wanted) {
+    $.NSBundle.bundleWithPath("/System/Library/Frameworks/AVFoundation.framework").load;
+    const AVCaptureDevice = $.NSClassFromString("AVCaptureDevice");
+    const list = (type) => {
+        const found = AVCaptureDevice.devicesWithMediaType($(type));
+        const out = [];
+        for (let i = 0; i < found.count; i++) {
+            const d = found.objectAtIndex(i);
+            out.push({ name: d.localizedName.js, id: d.uniqueID.js });
+        }
+        return out;
+    };
+    const cameras = list("vide");
+    const mics = list("soun");
+    const has = (d, w) => d.name.toLowerCase().includes(w.toLowerCase());
+    for (const w of wanted) {
+        const cam = cameras.find((d) => has(d, w));
+        if (cam) {
+            const mic = mics.find((d) => has(d, w));
+            return [cam.id, mic ? mic.id : "", cam.name].join("\t");
+        }
+    }
+    throw new Error("no matching device");
+}
+JXA
+}
+
+if ! found=$(find_device "${devices[@]}"); then
+    printf -v wanted '%s or ' "${devices[@]}"
+    echo "qt: no ${wanted% or } video device found" >&2
+    exit 1
+fi
+IFS=$'\t' read -r video_id audio_id name <<<"$found"
+
+# A running QuickTime keeps its device choice in memory and writes it back on
+# quit, which would undo the preference written below.
+if pgrep -xq "QuickTime Player"; then
+    osascript -e 'tell application "QuickTime Player" to quit'
+    while pgrep -xq "QuickTime Player"; do sleep 0.2; done
+fi
+
+defaults write "$prefs" MGDeviceRecordingDocumentViewControllerVideoDeviceSelectionUniqueID -string "$video_id"
+if [[ -n "$audio_id" ]]; then
+    defaults write "$prefs" MGDeviceRecordingDocumentViewControllerAudioDeviceSelectionUniqueID -string "$audio_id"
+else
+    echo "qt: no ${name} audio input found; microphone left unchanged" >&2
+fi
+
+osascript -e 'tell application "QuickTime Player"
+    activate
+    new movie recording
+end tell' >/dev/null
+
+echo "QuickTime recording using ${name}"
