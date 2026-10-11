@@ -11,6 +11,7 @@ from __future__ import annotations
 import json
 import os
 import sys
+import tempfile
 from collections.abc import Callable
 from pathlib import Path
 
@@ -103,7 +104,19 @@ def checkout_needing_a_worktree(target: Path) -> Path | None:
     if marker.is_file():
         return None if _is_linked_worktree(marker) else marker.parent
     root = marker.parent
-    return None if _under_worktrees_dir(target, root) else root
+    if _under_worktrees_dir(target, root) or _scratch_clone(root):
+        return None
+    return root
+
+
+def _scratch_clone(root: Path) -> bool:
+    """Whether `root` is a clone under the temp directory: a throwaway copy that
+    no other session or person stands in, so there is nothing to protect."""
+    temps = {Path(tempfile.gettempdir()).resolve()}
+    if os.environ.get("TMPDIR"):
+        temps.add(Path(os.environ["TMPDIR"]).resolve())
+    resolved = root.resolve()
+    return any(temp in resolved.parents for temp in temps)
 
 
 def worktree_for(root: Path, *directories: Path) -> Path | None:
