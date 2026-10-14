@@ -3,6 +3,14 @@
 When writing, refactoring, or reviewing code, follow the
 `pairing-with-the-future` skill.
 
+**Comments.** The code is the narrative. Comment only what the code cannot say
+through a name, a smaller function, or a named constant: an external
+constraint (an API that rejects a value, a limit, a name another file must
+match), or why something that looks wrong is right. Never describe what the
+code does; the why behind a design belongs in the commit message. A subagent
+that writes or fixes code gets this paragraph in its prompt, since it will not
+load the skill on its own.
+
 ## Where a change gets made
 
 **Every change gets its own git worktree on its own branch; the primary
@@ -195,6 +203,11 @@ finding is more writing, which carries new claims, which yields new findings:
 that loop has no fixed point. A finding that cannot be written as actor, action
 and wrong result is out of scope — answer "declined, prose" and spend nothing
 further on it.
+
+A comment that restates the code is the exception: it is a finding, not prose.
+Its actor, action, and wrong result are always the same — every later reader
+pays to read it, and it goes false the moment the code moves — and its fix is
+a deletion, which carries no new claims, so the loop above cannot start.
 
 Commit messages are the one channel where even a false claim usually stays
 unfixed, because rewording one changes the SHA and invalidates every recorded
