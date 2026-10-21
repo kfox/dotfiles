@@ -168,8 +168,7 @@ without having watched it fail.
 Default: fix it. A stale docstring, an unregenerated schema, a test that cannot
 fail — repair it here and leave it as its own commit, never an amend of the commit
 under review, because amending changes its SHA and the review it already passed
-then points at nothing. Follow the fix discipline in `~/.claude/CLAUDE.md`
-("Fixing a reported defect"): fix every site rather than the cited one, and claim
+then points at nothing. Follow the fix discipline: fix every site rather than the cited one, and claim
 no verification you did not run. When you add or repair a test, break the behavior
 deliberately and watch the test fail — "tests cover this" means exactly that, and
 otherwise say "tests exist".

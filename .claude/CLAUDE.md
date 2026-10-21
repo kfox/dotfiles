@@ -67,10 +67,24 @@ a plausible fix.
 
 ## Reviewing a change
 
-**One review per changeset, scoped to that changeset.** Every commit gets its
-own review before it is pushed — that SHA alone, never the branch. There is no
-trivial-diff exemption for code: at low effort a two-line commit costs seconds,
-and "this one is obviously fine" is exactly the judgment that fails.
+**One review per change, at an effort its size and risk call for.** A change
+is one logical concern: usually one commit, sometimes a short run of commits
+reviewed as one `BASE..TIP` range, never a whole multi-concern branch. A branch
+that is a single change under about 300 changed code lines gets one review,
+and that review is also its final pass.
+
+| Change | Review |
+|---|---|
+| Prose-only (below) | none |
+| Trivial: ≤10 changed code lines, mechanical (rename, typo, dictated line, dependency bump), no pinned path | none |
+| ≤50 changed code lines, a merge or conflict resolution, or a reviewer's fix commit | `low` |
+| Anything else | `medium` |
+| Touches a path the project pins as high-risk | `high` |
+| Eligible for a panel by `panel-review`'s "When a panel is an option" | optionally `/panel-review`, *instead of* the reviewer at `high` |
+
+**A reviewer's fix commit gets one `low` review, and that ends the chain.**
+What that second pass finds, it fixes, and nothing reviews it again; anything
+needing more depth goes to the final pass or to the user.
 
 **A prose-only change is exempt, and a command decides what counts as one, not
 the diff's size.** If `git diff <old> <new> -- ':!*.md'` is empty, the change is
@@ -93,25 +107,31 @@ and its empty result in the report.
 **Which reviewer.** The default is the cheap one, and escalation is a claim
 about the commit rather than about the code's quality.
 
-- `/code-review medium <sha>` — the default, for every commit. One reviewer,
-  one pass, at medium effort; raise the level only when the commit warrants it.
-- `/panel-review <sha>` — four lane reviewers in parallel (Auditor, Adversary,
-  Steward, Pragmatist), each fixing in its own lane. Reach for it when the
-  commit is large, or when being wrong is expensive: a trust boundary, authn or
-  authz, money, data deletion or migration, a public API or wire format,
-  concurrency, a bounded resource under load. Also when a single pass came back
-  clean on a diff big enough that a clean pass is itself the suspicious result.
+- The `reviewer` agent — the default. `Agent(subagent_type="reviewer")` with
+  three lines of prompt: the absolute worktree path, the target, the effort. It
+  works in that worktree, fixes what it finds as one commit, and reports. A
+  project's own `reviewer` agent overrides the user-level one. Do not wrap
+  `/code-review` in a general-purpose agent: the wrapper repeats setup and
+  gates and costs most of what the review does, and the fork reads the primary
+  checkout rather than the worktree.
+- `/panel-review <sha>` — four lane reviewers (Auditor, Adversary, Steward,
+  Pragmatist), each fixing in its own lane. An optional choice for a change
+  that meets the eligibility thresholds in the `panel-review` skill's "When a
+  panel is an option", which is the one place they are defined. It replaces the
+  reviewer for that change and never stacks on it.
 
-A panel costs roughly four passes and is not the default for that reason.
-Escalating one commit in a stack is ordinary; needing to escalate all of them
-means the stack is the wrong shape, and splitting it is the cheaper fix.
+A panel costs roughly a whole session at default models and is not the default
+for that reason. Escalating one change in a stack is ordinary; needing to
+escalate all of them means the stack is the wrong shape, and splitting it is the
+cheaper fix.
 
 Review attention is the scarce resource, and a wide scope spends it before it
-reaches the small commit. A clean wide pass is evidence of dilution at least as
+reaches the small change. A clean wide pass is evidence of dilution at least as
 often as it is evidence of clean code.
 
-A batch- or branch-wide review is still worth running — as the *second* net,
-once, before the PR. Never as the first one.
+A final branch-wide pass is the *second* net, once, before the PR, at
+`medium` — and only when the branch had two or more reviewed changes. Never
+as the first net.
 
 **Who applies the fix.** A reviewer that finds an in-tree defect fixes it and
 hands it back as its own commit, never an amend. Amending the commit under
@@ -135,7 +155,10 @@ repair a sentence or delete its paragraph needs the whole-branch view that a
 single-commit reviewer cannot have by construction. Five weak claims across four
 commits is a fact about claim density; no one reviewing one commit can see it.
 
-**Confirm the review read the tree you meant.** The `/code-review` fork resolves
+**Confirm the review read the tree you meant.** The `reviewer` agent checks
+its target against the worktree's branch before reading, and its fix commit
+must show up in `git branch --contains` for that branch. Where `/code-review`
+is used anyway, the rest of this section applies. The `/code-review` fork resolves
 its working directory against the session's primary checkout rather than the
 caller's, so a review invoked from a worktree can read a different branch end to
 end and report it under this one's name. Nothing in the report says so: the

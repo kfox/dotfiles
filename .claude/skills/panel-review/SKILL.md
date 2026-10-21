@@ -1,6 +1,6 @@
 ---
 name: panel-review
-description: "Review one commit with four specialist lane reviewers in parallel — Auditor (correctness and missing bounds), Adversary (abuse and availability), Steward (contract and test drift), Pragmatist (structure). Each lane fixes what it finds in its own lane. Use for a large commit, or one where being wrong is expensive: a trust boundary, authn/authz, money, data deletion or migration, a public API or wire format, concurrency, a bounded resource under load. Also use when a single-reviewer pass came back clean on a diff big enough that a clean pass is itself suspicious. For an ordinary commit use /code-review instead."
+description: "Review one commit with four specialist lane reviewers in parallel — Auditor (correctness and missing bounds), Adversary (abuse and availability), Steward (contract and test drift), Pragmatist (structure). Each lane fixes what it finds in its own lane. An optional choice, in place of the reviewer at high, for a change of 50+ changed code lines that crosses a trust boundary, changes a wire format/public API/persisted data, changes concurrency, or changes behavior in a pinned path; or for an unsplittable change over 400 lines. The panel replaces the single reviewer for that change, never runs on top of it. For an ordinary change use the reviewer agent instead."
 ---
 
 # Panel review
@@ -9,10 +9,46 @@ Four reviewers, one commit, disjoint lanes. The point is not more eyes — it is
 that each lane has a scope narrow enough to be answerable, and evidence rules
 that make a finding checkable by someone who does not own the lane.
 
-This is the expensive path. `/code-review` is the default for every commit; a
-panel is roughly four passes, and the escalation is a claim about the commit
-rather than about the code's quality. See `~/.claude/CLAUDE.md` → "Reviewing a
-change → Which reviewer".
+This is the expensive path. The `reviewer` agent is the default for every
+change; a panel at default models costs roughly a whole session, and the
+escalation is a claim about the commit rather than about the code's quality.
+It **replaces** the reviewer for this commit: do not also run the reviewer on
+the same SHA, before or after. Never run two panels at once, or a panel beside
+another heavy agent.
+
+## When a panel is an option
+
+A panel is an optional choice of review for one logical change, in place of
+the `reviewer` agent at `high`. It is never a stage every change goes
+through. These thresholds are the only place the choice is defined; other
+docs point here.
+
+*Changed code lines* is the added + deleted count from
+`git diff --numstat <base> <tip> -- ':!*.md'`.
+
+A change is **eligible** when it has at least **50 changed code lines** and
+at least one of these is true:
+
+1. **Trust boundary.** It changes authn or authz, a token or secret, or how
+   input from the network or another user is parsed or checked.
+2. **Contract others depend on.** It changes a wire format, a public API, or
+   persisted data (a migration, a deletion, a format change).
+3. **Concurrency.** It adds or changes a lock, a thread, or state shared
+   between threads.
+4. **Pinned path.** It changes behavior (not only names or layout) in a path
+   the project pins as high-risk.
+
+A change of more than **400 changed code lines** that cannot be split is also
+eligible. If it can be split, split it instead.
+
+**Choosing.** For an eligible change, pick the reviewer at `high` or a panel.
+Prefer the panel when two or more of the criteria above apply. Say which one
+you picked, and which threshold made the change eligible, in the report to the
+user.
+
+**Never a panel:** a change below 50 changed code lines (the reviewer at `high`
+covers a risky small one), a prose-only or trivial change, a merge resolution,
+a reviewer's fix commit, or a lane's fix commit.
 
 ## Target
 
@@ -29,6 +65,9 @@ git log -1 --format=%B <target>   # the author's own claims about it
 If `$ARGUMENTS` names a branch or a range, stop and say so: pick a SHA, or run
 the branch-wide pass separately as the second net before the PR.
 
+Lane fix commits are not reviewed by another panel. Each gets one `low` pass
+from the `reviewer` agent, and that ends the chain.
+
 ## Lanes
 
 Run all four by default — the caller already decided this commit is worth it.
@@ -36,7 +75,7 @@ Run all four by default — the caller already decided this commit is worth it.
 | Lane | Owns | Model |
 |---|---|---|
 | `auditor` | Correctness, logic, algorithmic soundness, operations with no bound | opus |
-| `adversary` | Abuse, trust boundaries, availability under load | opus |
+| `adversary` | Abuse, trust boundaries, availability under load | opus when the diff crosses a trust boundary or authn/authz; sonnet otherwise |
 | `steward` | Contract drift (docs, schemas, generated files), tests as claims | sonnet |
 | `pragmatist` | Structure, coupling, design fit — advisory only | sonnet |
 
@@ -111,8 +150,7 @@ finding instead of re-filing it:
 ```
 Apply your findings now, in the working tree. One commit per lane, never an
 amend of <target> — amending changes its SHA and the review it passed points at
-nothing. Follow ~/.claude/CLAUDE.md "Fixing a reported defect": every site not
-the cited one, the class not the instance, and no verification you did not run.
+nothing. Fix every site, not the cited one; the class not the instance, and no verification you did not run.
 Re-run the reproduction after the fix. Report what you fixed, what you declined,
 and why.
 Findings merged across lanes, including yours: <merged list>

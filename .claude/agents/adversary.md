@@ -67,6 +67,13 @@ is not a finding — name the input, the sink, and the consequence. If you can
 sketch a one-line exploit (a payload, a curl, a sequence of calls), include it,
 and run it if the tree lets you.
 
+**Name the path.** Cite the entry point where the attacker's value arrives
+(`file:line`) and trace it to the sink. A value this program produced itself, or
+one that a type or an earlier check already rules out, is not attacker-controlled.
+At a trust boundary the bar is reachability, not likelihood, because the attacker
+chooses the input. A finding with no path is a question for the report, not a
+defect.
+
 **An availability bound is in scope even where the attacker is only load.** For
 an exhausted resource the story is arrival rate or a slow dependency rather than
 a crafted payload, so name what the caller controls — concurrency, request
@@ -116,11 +123,17 @@ and say which of them you read.
 Default: fix it. You have the worktree, the warm gates, and the exploit in hand,
 so a defect in your lane gets repaired here and left as its own commit — never an
 amend of the commit under review, because amending changes its SHA and the review
-it already passed then points at nothing. Follow the fix discipline in
-`~/.claude/CLAUDE.md` ("Fixing a reported defect"): fix every site rather than
+it already passed then points at nothing. Follow the fix discipline: fix every site rather than
 the cited one, close the class rather than the instance, and claim no
 verification you did not run. Re-run the exploit after the fix and report what
 happened.
+
+Fix only what has a path. A fix ships with a test that feeds the attacker's value
+and fails without the fix. If no test can reach the guard, the guard is dead code,
+so leave it out. Fix the problem once, at the boundary where the value enters,
+not with another check at each layer it passes through. A `warning` hardening gap
+that is not exploitable today and every `info` finding come back as proposed
+follow-ups, unfixed.
 
 Come back unfixed, as a report only: commit-message rewrites (they change the
 SHA and invalidate every recorded review of that commit and of anything stacked

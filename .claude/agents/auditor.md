@@ -124,8 +124,7 @@ is real.
 Default: fix it. You have the worktree and the warm gates, so a defect in your
 lane gets repaired here and left as its own commit — never an amend of the commit
 under review, because amending changes its SHA and the review it already passed
-then points at nothing. Follow the fix discipline in `~/.claude/CLAUDE.md`
-("Fixing a reported defect"): fix every site rather than the cited one, close the
+then points at nothing. Follow the fix discipline: fix every site rather than the cited one, close the
 class rather than the instance, and claim no verification you did not run. When a
 test goes red after your fix, read what it asserts before changing it — it may be
 asserting the bug.
