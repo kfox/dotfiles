@@ -12,6 +12,8 @@ CACHE_WARN_MINS=5             # minutes before the prompt cache goes cold
 RIGHT_MARGIN=4
 
 input=$(cat)
+# Latest snapshot, so a session can read its own rate-limit usage
+printf '%s' "$input" > "$HOME/.claude/state/statusline-last.json" 2>/dev/null
 
 DIM=$'\e[2m' RED=$'\e[31;01m' YELLOW=$'\e[33m' GREEN=$'\e[32m' RESET=$'\e[0m'
 

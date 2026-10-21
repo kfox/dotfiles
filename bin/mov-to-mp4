@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+
+command -v ffmpeg &> /dev/null || { echo "Install ffmpeg first!"; exit 1; }
+
+[ -z "${*}" ] && echo "usage: $0 <filename.mov>" && exit
+
+FILENAME=$(basename -s .mov "$@")
+
+echo "==> Analyzing ${FILENAME}.mov ..."
+
+CROP_FILTER=$(ffmpeg \
+  -i "${FILENAME}.mov" \
+  -vf cropdetect \
+  -f null - 2>&1 | \
+  grep -o 'crop=.*' | \
+  sort | \
+  uniq -c | \
+  sort -rn | \
+  head -1 | \
+  awk '{ print $2 }')
+
+echo "==> Processing using crop filter: $CROP_FILTER"
+
+ffmpeg \
+  -i "${FILENAME}.mov" \
+  -vf "${CROP_FILTER},scale=1920:-2:flags=neighbor" \
+  -c:v libx264 -preset slow -crf 16 -tune animation \
+  -pix_fmt yuv420p \
+  -color_range tv -colorspace bt709 -color_primaries bt709 -color_trc bt709 \
+  -c:a aac -b:a 320k \
+  -movflags +faststart \
+  "${FILENAME}.mp4"
+
+echo "==> Output saved as ${FILENAME}.mp4"
