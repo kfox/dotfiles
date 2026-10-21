@@ -65,6 +65,22 @@ a plausible fix.
   re-run exploit, a mutation. And when a test goes red after a fix, read what it
   asserts before changing it — it may be asserting the bug.
 
+## Adding a guard
+
+**A guard ships only with the input that reaches it.** A check, retry,
+fallback or validation names three things: the caller at `file:line`, the
+value, and the wrong result without the guard. That input comes from an
+observed failure, an external contract, or a trust boundary. A value this code
+produced, or one its types already rule out, is not an input. The guard's test
+feeds that input and fails without it; a guard no test can reach is dead code.
+Guards for failures never seen go in the PR body as proposed follow-ups, not in
+the diff.
+
+**At a trust boundary the bar is reachability, not likelihood.** The attacker
+chooses the input, so cite the path from entry point to sink instead of
+arguing odds. Validate once where the value enters, not again at each layer it
+passes through. A finding with no path is declined as unreachable.
+
 ## Reviewing a change
 
 **One review per change, at an effort its size and risk call for.** A change
