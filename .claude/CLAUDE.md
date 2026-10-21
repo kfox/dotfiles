@@ -73,6 +73,10 @@ reviewed as one `BASE..TIP` range, never a whole multi-concern branch. A branch
 that is a single change under about 300 changed code lines gets one review,
 and that review is also its final pass.
 
+*Changed code lines* is the added + deleted count from
+`git diff --numstat <base> <tip> -- ':!*.md'`. Count them with that command;
+don't estimate from the diff.
+
 | Change | Review |
 |---|---|
 | Prose-only (below) | none |
