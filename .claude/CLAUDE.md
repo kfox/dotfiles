@@ -177,36 +177,11 @@ commits is a fact about claim density; no one reviewing one commit can see it.
 
 **Confirm the review read the tree you meant.** The `reviewer` agent checks
 its target against the worktree's branch before reading, and its fix commit
-must show up in `git branch --contains` for that branch. Where `/code-review`
-is used anyway, the rest of this section applies. The `/code-review` fork resolves
-its working directory against the session's primary checkout rather than the
-caller's, so a review invoked from a worktree can read a different branch end to
-end and report it under this one's name. Nothing in the report says so: the
-findings come back as ordinary findings about real code. Measured with several
-worktrees live at once — one pass reviewed a sibling branch from start to finish
-and handed it back as the requester's.
-
-Give it an explicit SHA rather than a range. `origin/main..HEAD` resolves to
-*empty* in a clean primary checkout, and the fork then stops to ask which of the
-worktrees it should read — a question nobody can answer, because every candidate
-belongs to a different agent, and naming one reviews a tree whose owner did not
-ask while leaving the real requester still waiting.
-
-Then check the pass before spending anything on it. `git branch -a --contains
-<fix-sha>` must name only the reviewed branch: a fix commit can land solely in
-the tree the reviewer wrote to, which is what makes it proof. The paths in the
-report are not proof — a fork that read the right tree still renders the odd
-finding's path in primary-checkout form, so a mismatch there is a reason to look
-rather than a verdict. A report with no findings leaves no fix commit to check,
-and there the file list it claims goes against `git show --stat <sha>` instead.
-
-The fork is also always named `code-review`, so two callers at once collide on
-it and a message addressed to that name reaches whichever registered last —
-the earlier one becomes unaddressable. Correct the *reviewer* rather than its
-fork: the reviewer has a stable agent id, and a mid-run message to that id
-carrying the absolute worktree path has been seen to land and move a reviewer
-back onto the right base, with several forks alive and the name already
-collided.
+must show up in `git branch -a --contains <fix-sha>` for that branch and no
+other. `/code-review` resolves against the primary checkout rather than the
+caller's worktree, and has reviewed a sibling branch end to end and reported it
+under the requester's name. Before using it anyway, read
+`~/.claude/references/code-review-fork.md`.
 
 Write the review down where the next reader will find it: what you looked at,
 what you found, and what you did about each finding. A review that leaves
@@ -214,48 +189,25 @@ nothing behind did not happen. Put it in the report that reaches the user, not
 into a commit message — prose that a process depends on is prose that has to be
 argued about.
 
-**Review claims, not writing.** Documentation is review surface. A docstring, a
-README, an architecture note, a schema, a config default and a test name all
-make checkable claims about the system, and a claim that has gone false gets
-believed by whoever reads it next. Keeping those in step with the code is part
-of the change, not a courtesy after it, and drift is an ordinary finding that
-gets fixed like any other.
+**Review claims, not writing.** A docstring, README, architecture note,
+schema, config default or test name makes checkable claims about the system.
+Keeping them in step with the code is part of the change, and a claim that has
+gone false is an ordinary finding, fixed like any other. Prose *as writing* —
+style, tone, precision, thinness, completeness — is not review surface.
 
-What is not review surface is prose *as writing*: style, tone, precision,
-thinness, completeness, whether a sentence could be clearer or a paragraph
-better arranged. A finding about one of those does not get reported.
+The line is whether a finding names an actor, an action and a wrong result:
+"the docstring says the timeout is 30s and the code passes 300" does — the next
+caller sizes a retry budget off it. "A reader could be misled" names none. A
+finding that cannot be written that way is answered "declined, prose" and
+spends nothing further: downgrading it to "low" still costs a round, and its
+fix is more prose carrying new claims, a loop with no fixed point. Also out: a
+claim that is merely *absent* (write it if cheap, say nothing if not), and one
+false only about *intent*, since the code is the authority on what it does.
 
-The line between them is whether you can name an actor, an action, and a wrong
-result. "The docstring says the timeout is 30s and the code passes 300" names
-all three — the next caller sizes a retry budget off that sentence and gets it
-wrong. "A reader could be misled" names none of them; it is a feeling about a
-sentence, and there is always another sentence.
-
-Two shapes sit close to the line and are worth calling by name. A claim that is
-merely *absent* — an undocumented decision, a thin commit message — is not a
-false claim, so it is not a finding; write the missing prose if it is cheap and
-say nothing if it is not. And a claim that is false only about *intent* rather
-than behavior is out too: the code is the authority on what it does, and a
-comment that describes the same behavior less well than the code does is
-writing, not drift.
-
-This is a scope rule, not a severity rule. Downgrading a writing quibble to
-"low" does not make it cheap — someone still reads it, decides, and writes down
-why, which is a full round spent on a sentence. And the fix for a writing
-finding is more writing, which carries new claims, which yields new findings:
-that loop has no fixed point. A finding that cannot be written as actor, action
-and wrong result is out of scope — answer "declined, prose" and spend nothing
-further on it.
-
-A comment that restates the code is the exception: it is a finding, not prose.
-Its actor, action, and wrong result are always the same — every later reader
-pays to read it, and it goes false the moment the code moves — and its fix is
-a deletion, which carries no new claims, so the loop above cannot start.
-
-Commit messages are the one channel where even a false claim usually stays
-unfixed, because rewording one changes the SHA and invalidates every recorded
-review of that commit and of everything stacked on it. Report what it should
-have said and leave the decision upstream.
+A comment that restates the code is the exception: it is a finding, and its fix
+is a deletion. A commit message that makes a false claim is reported rather
+than fixed — rewording it changes the SHA and invalidates every review of that
+commit and of everything stacked on it.
 
 ## Naming a subagent
 
