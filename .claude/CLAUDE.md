@@ -73,13 +73,41 @@ value, and the wrong result without the guard. That input comes from an
 observed failure, an external contract, or a trust boundary. A value this code
 produced, or one its types already rule out, is not an input. The guard's test
 feeds that input and fails without it; a guard no test can reach is dead code.
-Guards for failures never seen go in the PR body as proposed follow-ups, not in
-the diff.
+Guards for failures never seen stay out of the diff, and they are not filed
+as issues either.
 
 **At a trust boundary the bar is reachability, not likelihood.** The attacker
 chooses the input, so cite the path from entry point to sink instead of
 arguing odds. Validate once where the value enters, not again at each layer it
 passes through. A finding with no path is declined as unreachable.
+
+## Disposing of a finding
+
+**Every finding is fixed, filed or dropped — and fixed is the default.** This
+binds the main session and every subagent: a finder, a review lane, a
+reviewer. A project's CLAUDE.md may say more, and where it does, it wins.
+Hand these rules to a subagent by pointing at this section or the project's,
+never by paraphrasing them into one line — the paraphrase is what drops the
+guard bar.
+
+1. **A finding is a real defect:** a concrete input or state that produces a
+   wrong result, a crash, a hang, a leak or a security hole, proven by a test
+   that fails before the fix.
+2. **Fix it.** Every sibling site in the same commit. Another instance of the
+   class the change fixes — the same mechanism one call away — is fixed in this
+   change as its own commit with its own failing-first test, not filed. Small
+   is a reason to fix it, never to file it. A defect outside that class stays
+   out of this change's commits and PR, even in a file the change touches: file
+   it under 4 or drop it under 5.
+3. **A guard meets "Adding a guard"** above, or it is not a fix.
+4. **File it** only when it cannot be fixed here (outside the class the change
+   fixes, a design decision that is the user's, hardware nobody authorized, files another in-flight branch is
+   changing, or a materially bigger or riskier change) *and* it names the
+   caller at `file:line`, the input that reaches it, and the wrong result.
+5. **Drop it — everything else:** suspicions no input reaches, latent traps,
+   guards for failures never seen, design opinions, flake risks never seen
+   failing. One line under "Declined" in the report; never committed, never
+   filed. Don't manufacture work.
 
 ## Reviewing a change
 
@@ -230,6 +258,17 @@ what they do with it: `a1b2c3d fix`, `a1b2c3d tests`.
 **Every PR opens as a Draft** (`gh pr create --draft`), in every repository,
 including when a skill's or a project's own recipe omits the flag. A Draft says
 the branch is still moving: more commits, reviews, or CI fixes are expected.
+
+**No follow-ups in PR descriptions — ever.** A PR description is where
+follow-ups go to die: nobody reads it after the merge. Every follow-up,
+candidate issue, deferred finding, "outside this change" note or open question
+is either fixed in the change, filed as an issue in the repository's tracker
+(one per item, linked back to the PR) when it clears the bar in "Disposing of
+a finding", or dropped — before the PR is marked ready. The PR
+description says what the change does, how it was reviewed and verified, and
+nothing about what it leaves undone. This holds when a skill's, a project's or
+a subagent's own template has a follow-ups section; drop the section and file
+the issues instead.
 
 **Mark it Ready for Review (`gh pr ready <number>`) only once every change is
 done** — all commits pushed, every review run and its fixes landed, all

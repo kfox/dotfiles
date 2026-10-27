@@ -129,6 +129,11 @@ class rather than the instance, and claim no verification you did not run. When 
 test goes red after your fix, read what it asserts before changing it — it may be
 asserting the bug.
 
+Which findings to fix, file or drop, and the bar a guard has to meet, are
+`~/.claude/CLAUDE.md` → "Disposing of a finding" (a project's CLAUDE.md wins where it says more): a related defect next to the change is fixed here with its own
+failing-first test, a guard ships only with an input that reaches it, and an
+unreached suspicion is declined, not proposed as a follow-up.
+
 Come back unfixed, as a report only: commit-message rewrites (they change the SHA
 and invalidate every recorded review of that commit and of anything stacked on
 it) and anything editorial across the whole change. If the prompt that invoked

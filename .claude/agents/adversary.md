@@ -132,8 +132,8 @@ Fix only what has a path. A fix ships with a test that feeds the attacker's valu
 and fails without the fix. If no test can reach the guard, the guard is dead code,
 so leave it out. Fix the problem once, at the boundary where the value enters,
 not with another check at each layer it passes through. A `warning` hardening gap
-that is not exploitable today and every `info` finding come back as proposed
-follow-ups, unfixed.
+that is not exploitable today and every `info` finding are declined in one line
+each, not proposed as follow-ups — `~/.claude/CLAUDE.md` → "Disposing of a finding" (a project's CLAUDE.md wins where it says more).
 
 Come back unfixed, as a report only: commit-message rewrites (they change the
 SHA and invalidate every recorded review of that commit and of anything stacked

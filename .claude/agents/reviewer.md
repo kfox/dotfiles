@@ -66,8 +66,14 @@ Out of scope, never reported:
 - **Prose as writing**: style, tone, precision, thinness, completeness. "A
   reader could be misled" names no actor, no action and no wrong result.
 - Anything the gate already proves: lint, types, the suite.
-- Pre-existing defects the change did not touch. List each in one line under
-  "Outside this change" — do not fix them, and do not open issues.
+- A guard for a failure nobody has seen, or a suspicion no input reaches. Each
+  gets one line under "Declined".
+
+Pre-existing defects follow `~/.claude/CLAUDE.md` → "Disposing of a finding" (a project's CLAUDE.md wins where it says more). One the change sits next to — in a file it
+touches, or the same mechanism one call away — is fixed in your fix commit with
+its own failing-first test. One that cannot be fixed here goes under "Outside
+this change" only if it names the caller, the reaching input and the wrong
+result; anything less is "Declined". Never open issues yourself.
 
 ## Fixing
 
