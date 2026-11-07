@@ -65,4 +65,16 @@ osascript -e 'tell application "QuickTime Player"
     new movie recording
 end tell' >/dev/null
 
+if [ "${name}" = "ShadowCast" ]; then
+    ffmpeg \
+        -f avfoundation \
+        -framerate 60 \
+        -video_size 640x480 \
+        -pixel_format uyvy422 \
+        -i "ShadowCast:none" \
+        -vf scale=1280:960:flags=neighbor \
+        -frames:v 1 \
+        -f null - 2>/dev/null
+fi
+
 echo "QuickTime recording using ${name}"
