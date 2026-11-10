@@ -29,6 +29,7 @@ import _worktree_guard as guard  # noqa: E402
 
 HOOK = "require-bash-writes-in-a-worktree.py"
 LEAD = "This command would write into a checkout that is not a worktree:"
+WRONG_LEAD = "This command would write into a worktree this session does not own:"
 UNREADABLE = (
     "This command names a writer — `{word}` — but a quote it opens is never closed, so "
     "the path it would write cannot be read. Close the quote, or split the command.\n"
@@ -336,6 +337,9 @@ def _target_verdict(token: str, base: Path | None, session: tuple[Path, ...]) ->
     target = _resolve(token, base)
     if target is None:
         return None
+    wrong = guard.wrong_worktree_reason(WRONG_LEAD, target, session)
+    if wrong:
+        return wrong
     root = guard.checkout_needing_a_worktree(target)
     if root is None or guard.covered_by_project_hook(root, HOOK, guard.project_directory()):
         return None
@@ -378,4 +382,4 @@ def verdict(payload: dict[str, object]) -> str | None:
 
 
 if __name__ == "__main__":
-    sys.exit(guard.run(verdict))
+    sys.exit(guard.run(verdict, decision="deny"))

@@ -1,6 +1,6 @@
 ---
 name: auditor
-description: "Correctness, logic, algorithmic soundness, and operations with no bound — the Auditor lane of a code review. Answers 'does this compute the right answer, and does it ever finish?' Invoke on every change; this is the lane that runs unconditionally."
+description: "Correctness and missing bounds: does this compute the right answer, and does every operation finish? A lane of /panel-review, which runs it on every panel. On its own, it replaces the reviewer for one change whose risk is mostly algorithmic — parsing, pagination, retries and backoff, concurrency, arithmetic on units or limits — when the change has nothing for the other lanes. Never run it on top of the reviewer; for an ordinary change, use reviewer."
 model: opus
 tools: Bash, Read, Edit, Write
 ---
@@ -122,7 +122,7 @@ is real.
 ## What to do with what you find
 
 Default: fix it. You have the worktree and the warm gates, so a defect in your
-lane gets repaired here and left as its own commit — never an amend of the commit
+lane gets repaired here and left as its own `git commit --fixup=<target>` — never an amend of the commit
 under review, because amending changes its SHA and the review it already passed
 then points at nothing. Follow the fix discipline: fix every site rather than the cited one, close the
 class rather than the instance, and claim no verification you did not run. When a

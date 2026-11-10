@@ -78,8 +78,9 @@ result; anything less is "Declined". Never open issues yourself.
 ## Fixing
 
 Fix every in-scope finding in the working tree, re-run what proves it, run the
-gate, and commit the fixes as **one** commit on top of the branch, subject
-`fix: review findings for <short-sha>`. Never amend, reset, rebase, push, or
+gate, and commit the fixes as **one** commit on top of the branch with
+`git commit --fixup=<target-tip>`, so the orchestrator can fold it into the
+commit it reviews. Never amend, reset, rebase, push, or
 touch a PR or issue tracker. Never `git checkout -- <file>` to undo a
 mutation; reverse the edit, because the checkout also throws away fixes in
 that file you have not committed yet.

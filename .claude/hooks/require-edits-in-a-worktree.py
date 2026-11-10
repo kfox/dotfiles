@@ -6,9 +6,11 @@ The target path decides, not the session's directory: an edit reaching into some
 other repository's primary checkout changes that checkout just as much as one
 reaching into this session's.
 
-The decision is `ask` rather than `deny`, because a primary checkout has changes
-that belong to it — a merge, a release, an edit the user is making by hand — so
-the point is to make writing there deliberate rather than impossible.
+The decision is `deny`. A primary checkout does have changes that belong to
+it — a merge, a release, an edit the user is making by hand — but those are the
+user's to make; an approval prompt was answered by habit often enough that a
+session kept writing into the wrong tree. An edit into another linked worktree
+of a repository this session has its own worktree of is denied too.
 
 Only the file-editing tools reach here. A write driven through the shell is
 `require-bash-writes-in-a-worktree.py`'s decision.
@@ -26,6 +28,7 @@ import _worktree_guard as guard  # noqa: E402
 
 HOOK = "require-edits-in-a-worktree.py"
 LEAD = "This edit would land in a checkout that is not a worktree:"
+WRONG_LEAD = "This edit would land in a worktree this session does not own:"
 PATH_KEYS = ("file_path", "notebook_path")
 
 
@@ -44,6 +47,9 @@ def verdict(payload: dict[str, object]) -> str | None:
     target = _target(payload.get("tool_input") or {}, session)  # type: ignore[arg-type]
     if target is None:
         return None
+    wrong = guard.wrong_worktree_reason(WRONG_LEAD, target, session)
+    if wrong:
+        return wrong
     root = guard.checkout_needing_a_worktree(target)
     if root is None or guard.covered_by_project_hook(root, HOOK, guard.project_directory()):
         return None
@@ -51,4 +57,4 @@ def verdict(payload: dict[str, object]) -> str | None:
 
 
 if __name__ == "__main__":
-    sys.exit(guard.run(verdict))
+    sys.exit(guard.run(verdict, decision="deny"))

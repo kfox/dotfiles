@@ -20,9 +20,17 @@ HOOK_EVENT = "PreToolUse"
 WORKTREE_PARTS = (".claude", "worktrees")
 
 GUIDANCE = '~/.claude/CLAUDE.md, "Where a change gets made"'
-APPROVE = (
-    "Approve this if the change belongs to the primary checkout itself — a merge, a "
-    "release, or something the user is doing there by hand."
+HAND_TO_USER = (
+    "If the change belongs to the primary checkout itself — a merge, a release, "
+    "something the user is doing there by hand — stop and ask the user to make it."
+)
+WRONG_WORKTREE = (
+    "{lead}\n"
+    "  repository:          {root}\n"
+    "  target:              {target}\n"
+    "  this session's tree: {own}\n"
+    "That tree belongs to another session or agent. Make the change in this session's "
+    "worktree, or hand it to whoever owns that one."
 )
 ENTER = (
     "Call EnterWorktree with a `name`, give the worktree an environment of its own "
@@ -168,18 +176,44 @@ def reason(lead: str, target: Path, root: Path, worktree: Path | None) -> str:
         f"  repository: {root}\n"
         f"  target:     {target}\n"
         f"A change to a repository is made in a worktree of it ({GUIDANCE}).\n"
-        f"{instruction}\n{APPROVE}"
+        f"{instruction}\n{HAND_TO_USER}"
     )
 
 
-def ask(text: str) -> None:
-    """Hand the decision to the user, with `text` as the reason."""
+def linked_worktree(path: Path) -> Path | None:
+    """The linked worktree `path` sits in, or None when it sits in a primary
+    checkout, a submodule or no repository."""
+    marker = _git_marker(path)
+    if marker is None or not marker.is_file() or not _is_linked_worktree(marker):
+        return None
+    return marker.parent
+
+
+def wrong_worktree_reason(lead: str, target: Path, session: tuple[Path, ...]) -> str | None:
+    """Why `target` is off limits when it sits in a linked worktree of a
+    repository this session has its own, different worktree of — or None.
+
+    A session with no worktree of that repository has nothing to confuse it
+    with, so a worktree it reaches into is left alone; that is how work in a
+    second repository proceeds.
+    """
+    tree = linked_worktree(target)
+    if tree is None:
+        return None
+    root = primary_checkout(tree)
+    own = worktree_for(root, *session) if root else None
+    if own is None or own.resolve() == tree.resolve():
+        return None
+    return WRONG_WORKTREE.format(lead=lead, root=root, target=target, own=own)
+
+
+def _emit(decision: str, text: str) -> None:
     print(
         json.dumps(
             {
                 "hookSpecificOutput": {
                     "hookEventName": HOOK_EVENT,
-                    "permissionDecision": "ask",
+                    "permissionDecision": decision,
                     "permissionDecisionReason": text,
                 }
             }
@@ -187,8 +221,9 @@ def ask(text: str) -> None:
     )
 
 
-def run(decide: Callable[[dict[str, object]], str | None]) -> int:
-    """Read a hook payload from stdin and ask when `decide` returns a reason.
+def run(decide: Callable[[dict[str, object]], str | None], decision: str = "ask") -> int:
+    """Read a hook payload from stdin and return `decision` when `decide`
+    returns a reason.
 
     A hook that raises becomes an error on every tool call it matches, so a
     failure in here allows the call instead.
@@ -199,5 +234,5 @@ def run(decide: Callable[[dict[str, object]], str | None]) -> int:
     except Exception:
         return 0
     if text:
-        ask(text)
+        _emit(decision, text)
     return 0

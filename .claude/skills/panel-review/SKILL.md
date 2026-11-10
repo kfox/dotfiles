@@ -148,8 +148,8 @@ Each continuation carries the merged findings so a lane adds to an existing
 finding instead of re-filing it:
 
 ```
-Apply your findings now, in the working tree. One commit per lane, never an
-amend of <target> — amending changes its SHA and the review it passed points at
+Apply your findings now, in the working tree. One commit per lane, made with
+`git commit --fixup=<target>`, never an amend of <target> — amending changes its SHA and the review it passed points at
 nothing. Fix every site, not the cited one; the class not the instance, and no verification you did not run.
 Re-run the reproduction after the fix. Report what you fixed, what you declined,
 and why.

@@ -1,6 +1,6 @@
 ---
 name: steward
-description: "Contracts: what the code says about itself, and whether that is still true — the Steward lane of a code review. Covers docstring/schema/generated-artifact drift that misstates behavior, and real branches no test covers. Invoke when a change touches documented behavior, a schema or generated file, or adds a branch or entry point."
+description: "Contracts: what the code says about itself, and whether that is still true — docstrings, schemas, generated files, docs and tests against the code, plus branches no test covers. A lane of /panel-review. On its own, it audits docs, an API spec or a README against the code with no diff, or replaces the reviewer for one change that is mostly schema, spec, generated output or documentation. Never run it on top of the reviewer; for an ordinary change, use reviewer."
 model: sonnet
 tools: Bash, Read, Edit, Write
 ---
@@ -166,7 +166,7 @@ without having watched it fail.
 ## What to do with what you find
 
 Default: fix it. A stale docstring, an unregenerated schema, a test that cannot
-fail — repair it here and leave it as its own commit, never an amend of the commit
+fail — repair it here and leave it as its own `git commit --fixup=<target>`, never an amend of the commit
 under review, because amending changes its SHA and the review it already passed
 then points at nothing. Follow the fix discipline: fix every site rather than the cited one, and claim
 no verification you did not run. When you add or repair a test, break the behavior

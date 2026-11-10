@@ -11,6 +11,17 @@ code does; the why behind a design belongs in the commit message. A subagent
 that writes or fixes code gets this paragraph in its prompt, since it will not
 load the skill on its own.
 
+## Text for the user to paste elsewhere
+
+**Anything written for the user to paste — a reply, a Slack message, a PR or
+issue comment, an email — is copied to the clipboard and shown plain.** Write
+it to a file in the scratchpad and run `pbcopy < <file>`, then say in one line
+that it is on the clipboard. In the reply, show it as-is: never inside a
+blockquote, never with a `>` on each line, and never inside a fenced block of
+its own, since every one of those has to be stripped by hand before it pastes.
+Format it for where it will be pasted (Slack mrkdwn, Jira wiki markup, GitHub
+Markdown), and keep any code blocks it needs as part of that text.
+
 ## Where a change gets made
 
 **Every change gets its own git worktree on its own branch; the primary
@@ -35,13 +46,17 @@ environment re-points that environment's editable install at the worktree, so
 the next gate run in the primary checkout imports code that checkout does not
 contain — and passes. Both halves of that failure are green.
 
-Two hooks ask before a write lands outside a worktree:
-`~/.claude/hooks/require-edits-in-a-worktree.py` on the file-editing tools, and
-`require-bash-writes-in-a-worktree.py` on the shell's own writers — a
-redirection, a heredoc, `tee`, `sed -i`, `cp`, `rm`. A write from inside a
-program they run (`python -c`, a script, a make recipe), a path they cannot
-expand, and git's own tree commands are outside their scope, so there this rule
-is the only thing holding.
+Three hooks deny a change outside this session's worktree — in a primary
+checkout, or in another worktree of a repository this session has its own
+worktree of: `~/.claude/hooks/require-edits-in-a-worktree.py` on the
+file-editing tools, `require-bash-writes-in-a-worktree.py` on the shell's own
+writers (a redirection, a heredoc, `tee`, `sed -i`, `cp`, `rm`), and
+`require-git-changes-in-a-worktree.py` on git commands that change a tree, its
+index, HEAD or branches. `fetch`, `pull`, `worktree`, `push`, `notes`, `tag`
+and reads are left alone. A change that belongs to the primary checkout itself
+is the user's to make. A write from inside a program they run (`python -c`, a
+script, a make recipe) and a path they cannot expand are outside their scope,
+so there this rule is the only thing holding.
 
 ## Fixing a reported defect
 
@@ -109,6 +124,10 @@ guard bar.
    failing. One line under "Declined" in the report; never committed, never
    filed. Don't manufacture work.
 
+**A defect found in merged code is labeled `escaped-review`** where the
+repository has that label: on its issue when it is filed, otherwise on the PR
+that fixes it. The `review-audit` skill counts those labels.
+
 ## Reviewing a change
 
 **One review per change, at an effort its size and risk call for.** A change
@@ -167,6 +186,20 @@ about the commit rather than about the code's quality.
   that meets the eligibility thresholds in the `panel-review` skill's "When a
   panel is an option", which is the one place they are defined. It replaces the
   reviewer for that change and never stacks on it.
+- One lane agent on its own — `auditor`, `adversary` or `steward`, in place of
+  the reviewer, when a change's whole risk sits in that lane's lens and the
+  other lenses have nothing to find: a parser or retry loop for the Auditor, an
+  auth check or webhook handler too small for a panel for the Adversary, an API
+  spec or schema change for the Steward. A lane goes deeper than the reviewer
+  in one lens and ignores the rest, so when in doubt use the reviewer. Prompt it
+  as you would the reviewer: worktree, target, effort. It is the change's one
+  review and gets the same single `low` pass on its fix.
+
+Two lanes are also useful with no change under review. The `adversary` can
+threat-model existing code (an endpoint, a token flow), and the `steward` can
+check docs, an API spec or a README against the code. The `pragmatist` gives a
+design read before or after a refactor; its findings are advice and never
+count as a change's review.
 
 A panel costs roughly a whole session at default models and is not the default
 for that reason. Escalating one change in a stack is ordinary; needing to
@@ -184,6 +217,11 @@ as the first net.
 **Who applies the fix.** A reviewer that finds an in-tree defect fixes it and
 hands it back as its own commit, never an amend. Amending the commit under
 review changes its SHA, so the review it already passed points at nothing.
+The fix is a `git commit --fixup=<reviewed-sha>`, and once the change's review
+chain has ended, before the branch's first push,
+`GIT_SEQUENCE_EDITOR=: git rebase -i --autosquash <base>` folds it into the commit it reviewed, so each coherent piece reaches the PR as
+one commit. Name both SHAs in the report. A fix made after the first push stays
+its own commit, since folding it would need a force-push.
 This holds for a review subagent, and its prompt has to say so out loud:
 `/code-review` without `--fix` is a report-only run, so a subagent told merely
 to review leaves the tree untouched and the findings arrive here as prose. The
@@ -275,3 +313,12 @@ done** — all commits pushed, every review run and its fixes landed, all
 verification finished, and CI green. Readiness is the signal that the next step
 is the merge. If more work turns up after that, convert it back with
 `gh pr ready --undo <number>` until it is done again.
+
+## The work reads as mine
+
+**No Claude or Anthropic attribution, anywhere** — commits, commit messages,
+PR titles and bodies, code comments, issues, Slack or Jira text. No commit is
+authored or co-authored by Claude. `attribution.commit` and `attribution.pr`
+are empty in `settings.json`, which stops the automatic trailer and footer;
+text written by hand (a heredoc commit body, a PR description) is not covered
+by that setting, so leave it out there too.
