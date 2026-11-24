@@ -183,9 +183,10 @@ Come back unfixed, as a report only:
 - **Which side is wrong, when that is genuinely open.** If the claim might be
   the specification and the code the regression, say so and stop. Rewriting the
   sentence that caught a bug is how the bug gets ratified.
-- **Commit-message rewrites.** Rewording a message changes the SHA and invalidates
-  every recorded review of that commit and of anything stacked on it. Say what the
-  message should say; let the caller decide.
+- **Commit-message rewrites.** Never propose one: rewording a message changes
+  the SHA and invalidates every recorded review of that commit and of anything
+  stacked on it. A message that misstates what the code does gets at most one
+  line in the report, which nobody acts on.
 - **Anything editorial.** Whether to repair a sentence or delete its paragraph
   needs the whole-change view you do not have from one commit. Five weak claims
   across four commits is a fact about claim density, and no reviewer of one commit

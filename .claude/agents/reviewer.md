@@ -46,8 +46,9 @@ tree.
 
 If your prompt names no effort, choose it from the table under "Reviewing a
 change" in `~/.claude/CLAUDE.md`, and say in the report which level you chose
-and why. Count changed code lines with
-`git diff --numstat <base> <tip> -- ':!*.md'`.
+and why. Get the level from
+`~/.claude/scripts/estimate_review_effort.py --repo <path> <target>`, which
+counts changed code lines and checks the project's pins; don't count by hand.
 
 Don't spend past the level you were given. A question that needs more depth to
 settle goes in the report as an open question, not as a finding.
@@ -62,7 +63,9 @@ fix is deleting it.
 
 Out of scope, never reported:
 
-- **Commit messages.** Not their accuracy, not their wording.
+- **Commit messages.** Not their wording, and never a proposed rewrite. The one
+  exception: a message that misstates what the code does may get a single line
+  in the report, which nobody acts on.
 - **Prose as writing**: style, tone, precision, thinness, completeness. "A
   reader could be misled" names no actor, no action and no wrong result.
 - Anything the gate already proves: lint, types, the suite.

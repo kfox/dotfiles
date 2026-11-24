@@ -156,6 +156,17 @@ class Escapes(unittest.TestCase):
             review_audit.subprocess.run = real
         self.assertIsNone(found)
 
+    def test_a_label_search_with_no_match_prints_nothing(self):
+        def fake_run(cmd, **kwargs):
+            out = "" if cmd[1] == "label" else '[{"number": 7}]'
+            return subprocess.CompletedProcess(cmd, 0, stdout=out, stderr="")
+        real, review_audit.subprocess.run = review_audit.subprocess.run, fake_run
+        try:
+            found = review_audit.escapes(Path("."), {"since": "2026-10-01", "until": "2026-10-02"})
+        finally:
+            review_audit.subprocess.run = real
+        self.assertIsNone(found)
+
     def test_other_gh_failures_still_stop_the_report(self):
         def fake_run(cmd, **kwargs):
             raise subprocess.CalledProcessError(1, cmd, stderr="HTTP 401: Bad credentials\n")

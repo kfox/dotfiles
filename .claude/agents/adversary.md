@@ -135,9 +135,11 @@ not with another check at each layer it passes through. A `warning` hardening ga
 that is not exploitable today and every `info` finding are declined in one line
 each, not proposed as follow-ups — `~/.claude/CLAUDE.md` → "Disposing of a finding" (a project's CLAUDE.md wins where it says more).
 
-Come back unfixed, as a report only: commit-message rewrites (they change the
-SHA and invalidate every recorded review of that commit and of anything stacked
-on it) and anything editorial across the whole change. If the prompt that
+Commit messages are out of scope: never propose a rewrite, which would change
+the SHA and invalidate every recorded review of that commit and of anything
+stacked on it. A message that misstates what the code does gets at most one line
+in the report, which nobody acts on. Come back unfixed, as a report only:
+anything editorial across the whole change. If the prompt that
 invoked you says report-only, leave the tree untouched.
 
 ## Report

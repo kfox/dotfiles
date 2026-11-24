@@ -136,20 +136,31 @@ reviewed as one `BASE..TIP` range, never a whole multi-concern branch. A branch
 that is a single change under about 300 changed code lines gets one review,
 and that review is also its final pass.
 
-*Changed code lines* is the added + deleted count from
-`git diff --numstat <base> <tip> -- ':!*.md'`. Count them with that command;
-don't estimate from the diff.
+*Changed code lines* is the added + deleted count outside Markdown, less any
+file the tip's `.gitattributes` marks `linguist-generated`,
+`linguist-vendored` or `-diff`/`binary`. Get it, and the level the table
+gives, from `~/.claude/scripts/estimate_review_effort.py --repo <worktree>
+<BASE..TIP | SHA>` (add `--fix-commit` for a reviewer's fix commit); don't
+count by hand or estimate from the diff. The script answers `low` for ten
+lines or fewer; dropping that to none for a mechanical change is your call.
 
 | Change | Review |
 |---|---|
 | Prose-only (below) | none |
 | Trivial: ≤10 changed code lines, mechanical (rename, typo, dictated line, dependency bump), no pinned path | none |
-| ≤50 changed code lines, a merge or conflict resolution, or a reviewer's fix commit | `low` |
+| ≤50 changed code lines, a merge or conflict resolution, or a reviewer's fix commit not touching a pinned path | `low` |
 | Anything else | `medium` |
-| Touches a path the project pins as high-risk | `high` |
+| Touches a path the project pins as high-risk (below) | `high` |
 | Eligible for a panel by `panel-review`'s "When a panel is an option" | optionally `/panel-review`, *instead of* the reviewer at `high` |
 
-**A reviewer's fix commit gets one `low` review, and that ends the chain.**
+A project pins paths in a `## High-risk paths` section of its root
+`CLAUDE.md`, one bullet per pin: ``- `<git pathspec glob>` — reason`` (`*`
+bullets work too). Pins match with git's `:(glob)` semantics, are read at the
+change's tip, and apply to every changed non-Markdown file, generated or not.
+A bullet in that section that does not parse makes the script fail.
+
+**A reviewer's fix commit gets one review, and that ends the chain:** `low`,
+or `high` when it touches a pinned path.
 What that second pass finds, it fixes, and nothing reviews it again; anything
 needing more depth goes to the final pass or to the user.
 
@@ -210,9 +221,11 @@ Review attention is the scarce resource, and a wide scope spends it before it
 reaches the small change. A clean wide pass is evidence of dilution at least as
 often as it is evidence of clean code.
 
-A final branch-wide pass is the *second* net, once, before the PR, at
-`medium` — and only when the branch had two or more reviewed changes. Never
-as the first net.
+A final branch-wide pass is the *second* net, once, before the PR, at `low` —
+and only when the branch had two or more reviewed changes. It looks for
+interactions between changes that each had their own review, so depth is
+already spent; it runs at `high` only when a pinned path changed after its own
+review. Never as the first net.
 
 **Who applies the fix.** A reviewer that finds an in-tree defect fixes it and
 hands it back as its own commit, never an amend. Amending the commit under
@@ -271,22 +284,25 @@ claim that is merely *absent* (write it if cheap, say nothing if not), and one
 false only about *intent*, since the code is the authority on what it does.
 
 A comment that restates the code is the exception: it is a finding, and its fix
-is a deletion. A commit message that makes a false claim is reported rather
-than fixed — rewording it changes the SHA and invalidates every review of that
-commit and of everything stacked on it.
+is a deletion. Commit messages are out of review scope. A reviewer may note in
+one line a message that misstates what the code does, and nobody acts on the
+note: rewording changes the SHA and invalidates every review of that commit and
+of everything stacked on it, and message findings have driven review loops that
+produced nothing.
 
 ## Naming a subagent
 
 **A subagent's label says why it exists, in as few characters as will
 identify it.** The Agent tool's `description` leads the agent's row in the
-agent panel — not by default, but through `subagentStatusLine` in
-`~/.claude/settings.json`, whose script prints the label, the token count and
-the live progress summary in that order. The default row shows the agent type
-instead, so without that script the label is invisible. Name the issue, PR,
+agent panel — not by default, but through the `agent-row` mod in
+`~/.claude/mods/agent-row`, where a machine loads it. It prints the label, the
+token count and the live progress summary in that order. The default row shows
+the agent type instead, so without that mod the label is invisible, but name it
+this way regardless. Name the issue, PR,
 commit, file or question the agent is there for: `Issue #678`, `PR#123`,
 `a1b2c3d`, `DMA research`, `#532 CI`. Leave out what the row already shows —
 the verb "review", the repository, and any type other than `general-purpose`,
-which the script prints ahead of the label, so an `adversary` spawned with
+which the mod prints ahead of the label, so an `adversary` spawned with
 `PR#123` shows both. Three short words at most, and a short SHA (7
 characters) rather than a full one. Several agents on one target differ by
 what they do with it: `a1b2c3d fix`, `a1b2c3d tests`.
@@ -318,7 +334,6 @@ is the merge. If more work turns up after that, convert it back with
 
 **No Claude or Anthropic attribution, anywhere** — commits, commit messages,
 PR titles and bodies, code comments, issues, Slack or Jira text. No commit is
-authored or co-authored by Claude. `attribution.commit` and `attribution.pr`
-are empty in `settings.json`, which stops the automatic trailer and footer;
-text written by hand (a heredoc commit body, a PR description) is not covered
-by that setting, so leave it out there too.
+authored or co-authored by Claude. Don't count on a machine's settings to strip
+an automatic trailer or footer: leave attribution out of everything written,
+commit bodies and PR descriptions included, and remove any the tooling adds.

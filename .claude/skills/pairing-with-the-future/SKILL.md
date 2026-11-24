@@ -251,7 +251,9 @@ Refactor for **testability**:
 - Work in a feature branch.
 - Commit early and often, with meaningful commit messages.
 - Follow the repository's merge policy. Where it has none, don't rewrite a
-  commit once it has been reviewed: no squash, no rebase, no amend. Merge with
+  commit once it has been reviewed: no squash, no rebase, no amend. The one
+  exception is folding a review's `fixup!` commits into the commit they
+  reviewed, with `rebase -i --autosquash`, before the branch's first push. Merge with
   `--no-ff` when you want one entry per feature on the main line, and read it
   with `git log --first-parent`.
 

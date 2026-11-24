@@ -14,9 +14,14 @@ In the session's own linked worktree it stays silent. Reverting a mutation in
 your own branch is routine. The tree that has to be protected is the one
 somebody else may be standing in.
 
+The stash is the exception: every worktree of a repository shares one stash
+stack, so `stash drop`, `stash clear` and `stash pop` can take another
+session's entry from any tree, the session's own included. Those always ask.
+
 Commands that move no work are out of scope: `restore --staged`, `reset` without
-`--hard`/`--merge`, `checkout <branch>`, `stash` and `stash pop`. When the
-command text cannot be parsed and names a discarding subcommand, the hook asks.
+`--hard`/`--merge`, `checkout <branch>`, `stash push` and `stash apply`. When
+the command text cannot be parsed and names a discarding subcommand, the hook
+asks.
 """
 
 from __future__ import annotations
@@ -49,8 +54,14 @@ MAX_SHELL_DEPTH = 4
 # git's own options that take a value as the next word.
 GLOBAL_VALUE_OPTIONS = frozenset({"-C", "-c", "--git-dir", "--work-tree", "--namespace", "--exec-path"})
 DISCARDING_WORDS = frozenset({"restore", "reset", "checkout", "switch", "clean", "stash", "rm", "worktree"})
+SHARED_STASH_TAKERS = frozenset({"drop", "clear", "pop"})
 
 LEAD = "This git command would discard uncommitted work in a tree this session does not own:"
+SHARED_STASH = (
+    "This removes an entry from the stash stack, which every worktree of this repository shares, "
+    "so it may be another session's work:\n  command: git stash {args}\n"
+    "Approve only if the entry is this session's own (check `git stash list`)."
+)
 UNREADABLE = (
     "This command runs `git {word}`, but a quote it opens is never closed, so what it would "
     "discard cannot be read. Close the quote, or split the command.\nUnreadable: {text}"
@@ -115,7 +126,7 @@ def discards(sub: str, args: list[str], base: Path | None) -> bool:
     if sub == "clean":
         return not ("n" in short or "--dry-run" in long)
     if sub == "stash":
-        return bool(positionals) and positionals[0] in {"drop", "clear"}
+        return bool(positionals) and positionals[0] in SHARED_STASH_TAKERS
     if sub == "rm":
         return "f" in short or "--force" in long
     if sub == "worktree":
@@ -159,6 +170,8 @@ def scan(cmd: str, base: Path | None, session: tuple[Path, ...], depth: int = 0)
         where, sub, sub_args = _git_invocation(args, base)
         if not discards(sub, sub_args, where):
             continue
+        if sub == "stash":
+            return SHARED_STASH.format(args=" ".join(sub_args))
         tree = _tree(where)
         if _owned(tree, session):
             continue

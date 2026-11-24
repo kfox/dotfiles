@@ -363,10 +363,15 @@ def kind_group(kind):
     return kind.split(":")[0] if kind.startswith("lane:") else kind
 
 
+def gh_list(checkout, *args):
+    listed = subprocess.run(["gh", *args], cwd=checkout, check=True, capture_output=True, text=True).stdout
+    # `gh label list --json` prints nothing, not [], when the search matches no label.
+    return json.loads(listed) if listed.strip() else []
+
+
 def has_escape_label(checkout):
-    listed = subprocess.run(["gh", "label", "list", "--search", ESCAPE_LABEL, "--limit", "100", "--json", "name"],
-                            cwd=checkout, check=True, capture_output=True, text=True).stdout
-    return any(item["name"] == ESCAPE_LABEL for item in json.loads(listed))
+    listed = gh_list(checkout, "label", "list", "--search", ESCAPE_LABEL, "--limit", "100", "--json", "name")
+    return any(item["name"] == ESCAPE_LABEL for item in listed)
 
 
 def escapes(checkout, period):
@@ -376,15 +381,13 @@ def escapes(checkout, period):
     numbers = set()
     for kind in ("issue", "pr"):
         try:
-            listed = subprocess.run(
-                ["gh", kind, "list", "--label", ESCAPE_LABEL, "--state", "all", "--limit", "500",
-                 "--search", f"created:{period['since']}..{period['until']}", "--json", "number"],
-                cwd=checkout, check=True, capture_output=True, text=True).stdout
+            listed = gh_list(checkout, kind, "list", "--label", ESCAPE_LABEL, "--state", "all", "--limit", "500",
+                             "--search", f"created:{period['since']}..{period['until']}", "--json", "number")
         except subprocess.CalledProcessError as failed:
             if kind == "issue" and ISSUES_DISABLED in (failed.stderr or ""):
                 continue
             raise
-        numbers.update(item["number"] for item in json.loads(listed))
+        numbers.update(item["number"] for item in listed)
     return sorted(numbers)
 
 

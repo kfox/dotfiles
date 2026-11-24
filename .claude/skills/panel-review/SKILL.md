@@ -5,6 +5,11 @@ description: "Review one commit with four specialist lane reviewers in parallel 
 
 # Panel review
 
+**A project's own copy wins.** If the repository has
+`.claude/skills/panel-review/SKILL.md`, read that file and follow it instead of
+this one: when two skills share a name, Claude Code loads the user-level one
+and never lists the project's.
+
 Four reviewers, one commit, disjoint lanes. The point is not more eyes — it is
 that each lane has a scope narrow enough to be answerable, and evidence rules
 that make a finding checkable by someone who does not own the lane.
@@ -23,8 +28,10 @@ the `reviewer` agent at `high`. It is never a stage every change goes
 through. These thresholds are the only place the choice is defined; other
 docs point here.
 
-*Changed code lines* is the added + deleted count from
-`git diff --numstat <base> <tip> -- ':!*.md'`.
+*Changed code lines* is the `counted` figure from
+`~/.claude/scripts/estimate_review_effort.py --repo <worktree> <target>`: added +
+deleted lines outside Markdown, less generated, vendored and binary files. It
+also reports the pinned paths the change touches.
 
 A change is **eligible** when it has at least **50 changed code lines** and
 at least one of these is true:
@@ -65,8 +72,9 @@ git log -1 --format=%B <target>   # the author's own claims about it
 If `$ARGUMENTS` names a branch or a range, stop and say so: pick a SHA, or run
 the branch-wide pass separately as the second net before the PR.
 
-Lane fix commits are not reviewed by another panel. Each gets one `low` pass
-from the `reviewer` agent, and that ends the chain.
+Lane fix commits are not reviewed by another panel. Each gets one pass from the
+`reviewer` agent, `low` or `high` when it touches a pinned path, and that ends
+the chain.
 
 ## Lanes
 
@@ -159,9 +167,10 @@ Findings merged across lanes, including yours: <merged list>
 Two classes never go to a lane, because a single-commit reviewer cannot see what
 they need:
 
-- **Commit-message rewrites.** They change the SHA and invalidate every recorded
-  review of that commit and of everything stacked on it. Report what the message
-  should have said; the decision is the author's.
+- **Commit-message rewrites.** Never proposed: they change the SHA and
+  invalidate every recorded review of that commit and of everything stacked on
+  it. A message that misstates what the code does gets at most one line in the
+  report, which nobody acts on.
 - **Editorial judgment across the change.** Whether to repair a sentence or cut
   its paragraph needs the whole-branch view. Five weak claims across four
   commits is a fact about claim density, invisible from inside one commit.

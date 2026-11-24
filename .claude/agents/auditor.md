@@ -134,9 +134,11 @@ Which findings to fix, file or drop, and the bar a guard has to meet, are
 failing-first test, a guard ships only with an input that reaches it, and an
 unreached suspicion is declined, not proposed as a follow-up.
 
-Come back unfixed, as a report only: commit-message rewrites (they change the SHA
-and invalidate every recorded review of that commit and of anything stacked on
-it) and anything editorial across the whole change. If the prompt that invoked
+Commit messages are out of scope: never propose a rewrite, which would change
+the SHA and invalidate every recorded review of that commit and of anything
+stacked on it. A message that misstates what the code does gets at most one line
+in the report, which nobody acts on. Come back unfixed, as a report only:
+anything editorial across the whole change. If the prompt that invoked
 you says report-only, leave the tree untouched.
 
 ## Report

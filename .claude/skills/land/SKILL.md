@@ -1,16 +1,21 @@
 ---
-name: ship
+name: land
 description: >
   Take a change all the way to a pull request that is ready to merge: branch in
   a worktree, implement, commit, review each change once at an effort set by its
   size and risk, open the PR as a draft, watch CI until green, then mark it
   ready for review. Stops before merging — the merge is always the user's. Use
   when asked to implement a non-trivial change, or to take a change through the
-  full branch-review-PR workflow ("ship", "land", "take this to a PR"). A
-  project's own ship skill, where one exists, overrides this one.
+  full branch-review-PR workflow ("land", "ship", "take this to a PR"). A
+  project's own land skill, where one exists, overrides this one.
 ---
 
-# Ship a change
+# Land a change
+
+**A project's own copy wins.** If the repository has
+`.claude/skills/land/SKILL.md`, read that file and follow it instead of this
+one: when two skills share a name, Claude Code loads the user-level one and
+never lists the project's.
 
 ```
 worktree → (implement → commit → review that change)* → final pass (if needed)
@@ -33,9 +38,10 @@ Before the first edit, read what the project says about itself: `CLAUDE.md`,
   gate, if there is one.
 - **How the environment is created** (`uv sync`, `npm ci`, …) and whether its
   path can be overridden per checkout.
-- **Pinned paths**, if the project names any: high-risk files that are reviewed
-  at `high` whatever the diff size. If it names none, treat code at a trust
-  boundary (auth, secrets, untrusted input) as pinned.
+- **Pinned paths**, if the project lists any under `## High-risk paths` in its
+  root `CLAUDE.md`: high-risk files that are reviewed at `high` whatever the
+  diff size. If it names none, treat code at a trust boundary (auth, secrets,
+  untrusted input) as pinned.
 - **Documentation and changelog obligations.** For example, docs updated in the
   same change, or a changelog fragment format.
 - **Commit message conventions.**
@@ -81,13 +87,15 @@ against code they don't contain.
 ## 3. Commit, then review the change
 
 Run the gate, then commit related changes together with a message that says
-*why*. Write the message carefully once. It is not review surface, and is
-reworded only if it misstates what the code does, and never after the push.
+*why*. Write the message carefully once. It is not review surface and is not
+reworded after review: a reviewer's one-line note that it misstates the code
+goes into the step 7 report and nowhere else.
 
 **Review each change once**, sized by the table under "Reviewing a change" in
 `~/.claude/CLAUDE.md`. A *change* is one logical concern: usually one commit,
-sometimes a short `BASE..TIP` run of commits. Count changed code lines with
-`git diff --numstat <base> <tip> -- ':!*.md'`; don't estimate.
+sometimes a short `BASE..TIP` run of commits. Get the level from
+`~/.claude/scripts/estimate_review_effort.py --repo <worktree> <target>`, adding
+`--fix-commit` for a reviewer's fix commit; don't estimate or count by hand.
 
     Agent(subagent_type="reviewer", description="<short-sha>",
           prompt="Worktree: <absolute worktree path>\nTarget: <sha or BASE..TIP>\nEffort: <level>")
@@ -101,7 +109,8 @@ adding to it.
 - **A small branch gets one review.** When the whole branch is one change under
   about 300 changed code lines, review it once as `origin/<default>..HEAD`.
   That review is also the final pass, so step 4 is skipped.
-- **The reviewer's fix commit gets one `low` review, and that ends the chain.**
+- **The reviewer's fix commit gets one review, and that ends the chain:** `low`,
+  or `high` when it touches a pinned path.
 - **Don't commit or edit in the worktree while a reviewer runs.** It mutates the
   tree and runs the suite.
 
@@ -122,10 +131,10 @@ back:
 Run a final pass only when the branch had **two or more** reviewed changes:
 
     Agent(subagent_type="reviewer", description="<branch-slug> final",
-          prompt="Worktree: <absolute worktree path>\nTarget: origin/<default>..HEAD\nEffort: medium\nEvery change on this branch has had its own review. Look for interactions between them, not for defects inside one diff.")
+          prompt="Worktree: <absolute worktree path>\nTarget: origin/<default>..HEAD\nEffort: low\nEvery change on this branch has had its own review. Look for interactions between them, not for defects inside one diff.")
 
-Use `medium`, or `high` only when a pinned path changed after its own review.
-Its fix commit gets one `low` review. A defect still open afterwards is a stop:
+Use `low`, or `high` only when a pinned path changed after its own review.
+Its fix commit gets one review, `low` or `high` by the same rule. A defect still open afterwards is a stop:
 report it and ask before opening the PR.
 
 ## 5. Open the PR
