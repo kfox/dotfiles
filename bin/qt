@@ -72,7 +72,6 @@ if [ "${name}" = "ShadowCast" ]; then
         -video_size 640x480 \
         -pixel_format uyvy422 \
         -i "ShadowCast:none" \
-        -vf scale=1280:960:flags=neighbor \
         -frames:v 1 \
         -f null - 2>/dev/null
 fi
